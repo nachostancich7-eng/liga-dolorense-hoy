@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Carga · Liga Dolorense Hoy</title>
+<style>
+:root{
+  --bg:#2A1210; --bg-alt:#341612; --panel:#3B1A16; --header:#210D0B;
+  --border:rgba(255,255,255,.12); --text:#F5EEE9; --muted:#C9A9A2; --dim:#A98882;
+  --red:#C6402F; --red-bright:#E5502F; --gold:#F2A93B; --teal:#33CE9B; --danger:#FF5C55;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:15px;line-height:1.45;padding-bottom:90px;}
+header{background:var(--header);padding:14px 16px;position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid var(--border);}
+header h1{margin:0;font-size:16px;letter-spacing:.02em;}
+header .estado{font-size:11px;color:var(--muted);}
+main{padding:14px;max-width:760px;margin:0 auto;}
+section{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:14px;}
+h2{margin:0 0 10px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--gold);}
+label{display:block;font-size:12px;color:var(--muted);margin:10px 0 4px;}
+input,select,textarea,button{font-family:inherit;font-size:16px;}
+input,select,textarea{width:100%;background:var(--bg-alt);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:11px 12px;}
+textarea{min-height:130px;resize:vertical;line-height:1.5;}
+button{cursor:pointer;border:none;border-radius:8px;padding:12px 16px;font-weight:600;background:var(--bg-alt);color:var(--text);border:1px solid var(--border);}
+button.primary{background:var(--red);color:#fff;border-color:transparent;}
+button.gold{background:var(--gold);color:#3A2205;border-color:transparent;}
+button:disabled{opacity:.45;cursor:not-allowed;}
+.row{display:flex;gap:8px;flex-wrap:wrap;}
+.row>*{flex:1;min-width:0;}
+details summary{cursor:pointer;font-size:13px;color:var(--muted);padding:4px 0;}
+.hint{font-size:12px;color:var(--dim);margin-top:6px;}
+.aviso{padding:10px 12px;border-radius:8px;font-size:13px;margin-top:10px;}
+.aviso.err{background:rgba(255,92,85,.14);border:1px solid rgba(255,92,85,.4);color:#FFC9C6;}
+.aviso.warn{background:rgba(242,169,59,.12);border:1px solid rgba(242,169,59,.35);color:#F7D9A6;}
+.aviso.ok{background:rgba(51,206,155,.12);border:1px solid rgba(51,206,155,.35);color:#B6EFD8;}
+
+.partido{background:var(--bg-alt);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px;}
+.partido .cab{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;}
+.partido .cab .meta{font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:.04em;}
+.partido .borrar{background:none;border:none;color:var(--dim);font-size:20px;padding:0 6px;line-height:1;}
+.lado{display:grid;grid-template-columns:1fr 62px;gap:8px;align-items:center;margin-bottom:6px;}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin:4px 0 8px;}
+.chip{font-size:11px;padding:3px 8px;border-radius:20px;border:1px solid var(--border);color:var(--muted);}
+.chip.ok{border-color:rgba(51,206,155,.5);color:#9DE8CB;}
+.chip.corregido{border-color:rgba(242,169,59,.55);color:#F7D9A6;}
+.chip.nuevo{border-color:rgba(79,168,224,.55);color:#A9D8F5;}
+.barra{position:fixed;left:0;right:0;bottom:0;background:var(--header);border-top:1px solid var(--border);padding:10px 14px;display:flex;gap:8px;z-index:30;}
+.barra button{flex:1;}
+.oculto{display:none !important;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Carga de resultados</h1>
+  <span class="estado" id="estado">sin conectar</span>
+</header>
+
+<main>
+
+  <!-- ============ CONFIGURACIÓN ============ -->
+  <section>
+    <details id="det-config">
+      <summary>⚙️ Configuración de GitHub (se guarda en este dispositivo)</summary>
+      <label>Usuario / organización</label>
+      <input id="cfg-owner" placeholder="tu-usuario" autocapitalize="off" autocorrect="off">
+      <label>Repositorio</label>
+      <input id="cfg-repo" placeholder="liga-dolorense-hoy" autocapitalize="off" autocorrect="off">
+      <label>Rama</label>
+      <input id="cfg-branch" value="main" autocapitalize="off" autocorrect="off">
+      <label>Ruta del archivo de datos</label>
+      <input id="cfg-path" value="data.js" autocapitalize="off" autocorrect="off">
+      <label>Token de acceso</label>
+      <input id="cfg-token" type="password" placeholder="github_pat_..." autocapitalize="off" autocorrect="off">
+      <div class="hint">El token queda solo en este teléfono/computadora. Nadie que entre a esta página desde otro dispositivo puede modificar nada.</div>
+      <div class="row" style="margin-top:12px">
+        <button class="primary" onclick="guardarConfig()">Guardar y conectar</button>
+        <button onclick="olvidarConfig()">Olvidar token</button>
+      </div>
+    </details>
+    <div id="cfg-aviso"></div>
+  </section>
+
+  <!-- ============ PEGAR MENSAJE ============ -->
+  <section id="sec-pegar">
+    <h2>1 · Pegar el mensaje</h2>
+    <div class="row">
+      <div>
+        <label>División</label>
+        <select id="in-division">
+          <option>Primera</option><option>3ra</option><option>4ta</option><option>5ta</option><option>6ta</option>
+        </select>
+      </div>
+      <div>
+        <label>Fecha N°</label>
+        <input id="in-fecha" type="number" min="1" value="1" inputmode="numeric">
+      </div>
+    </div>
+    <label>Mensaje de Fran (podés pegar varios partidos juntos)</label>
+    <textarea id="in-texto" placeholder="6ta: San Pedro 1 (Facundo Recalde) - Comercio 0&#10;6ta: Sarmiento 2 (Pérez, Gómez) - Atlanta 1 (López)"></textarea>
+    <div class="hint">Si el mensaje trae la división adelante (ej. <b>6ta:</b>), se respeta esa y no la de arriba.</div>
+    <div class="row" style="margin-top:12px">
+      <button class="primary" onclick="procesar()">Procesar</button>
+      <button onclick="agregarVacio()">+ Cargar a mano</button>
+    </div>
+  </section>
+
+  <!-- ============ REVISIÓN ============ -->
+  <section id="sec-revision" class="oculto">
+    <h2>2 · Revisar antes de guardar</h2>
+    <div id="lista-partidos"></div>
+    <div id="revision-avisos"></div>
+    <button onclick="agregarVacio()" style="width:100%;margin-top:6px">+ Agregar otro partido</button>
+  </section>
+
+  <!-- ============ HERRAMIENTAS ============ -->
+  <section>
+    <details>
+      <summary>🧰 Herramientas</summary>
+      <div class="hint" style="margin:10px 0">Arrancar un torneo nuevo: borra partidos y goleadores, y <b>conserva</b> tabla anual, campeones históricos, planteles, escudos y auspiciantes.</div>
+      <label>Nombre del torneo nuevo</label>
+      <input id="in-torneo-nuevo" placeholder="Torneo Clausura 2026">
+      <button class="gold" style="width:100%;margin-top:10px" onclick="nuevoTorneo()">Dejar todo en cero</button>
+      <hr style="border:none;border-top:1px solid var(--border);margin:16px 0">
+      <button style="width:100%" onclick="descargarData()">⬇ Descargar data.js</button>
+      <div class="hint">Por si preferís subirlo a mano en vez de guardar en GitHub.</div>
+    </details>
+  </section>
+
+</main>
+
+<div class="barra">
+  <button onclick="recargarDesdeRepo()">↻ Recargar</button>
+  <button class="primary" id="btn-guardar" onclick="guardarEnGitHub()" disabled>Guardar y publicar</button>
+</div>
+
+<script>
+/* ============================================================
+   ESTADO
+   ============================================================ */
+let DATA = null;          // contenido de data.js
+let SHA = null;           // sha del archivo en GitHub
+let PENDIENTES = [];      // partidos en revisión
+let ALIAS = JSON.parse(localStorage.getItem('ldh_alias') || '{}');   // "san pedro" -> "San Martín de S.P"
+
+const CFG_KEYS = ['owner','repo','branch','path','token'];
+function cfg(){ const o={}; CFG_KEYS.forEach(k=>o[k]=localStorage.getItem('ldh_'+k)||''); return o; }
+
+/* ============================================================
+   UTILIDADES DE TEXTO
+   ============================================================ */
+function norm(s){
+  return (s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .toLowerCase().replace(/[.\-_]/g,' ').replace(/\s+/g,' ').trim();
+}
+function distancia(a,b){
+  const m=a.length,n=b.length; if(!m) return n; if(!n) return m;
+  let prev=Array.from({length:n+1},(_,j)=>j), cur=new Array(n+1);
+  for(let i=1;i<=m;i++){ cur[0]=i;
+    for(let j=1;j<=n;j++) cur[j]=Math.min(prev[j]+1, cur[j-1]+1, prev[j-1]+(a[i-1]===b[j-1]?0:1));
+    [prev,cur]=[cur,prev];
+  }
+  return prev[n];
+}
+function b64aTexto(b64){
+  const bin=atob(b64.replace(/\s/g,''));
+  return new TextDecoder().decode(Uint8Array.from(bin,c=>c.charCodeAt(0)));
+}
+function textoAb64(s){
+  const bytes=new TextEncoder().encode(s); let bin='';
+  bytes.forEach(b=>bin+=String.fromCharCode(b)); return btoa(bin);
+}
+function esc(s){ return (s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+/* ============================================================
+   EQUIPOS Y CATEGORÍAS
+   ============================================================ */
+function todosLosEquipos(){ return [...(DATA.teams.A||[]), ...(DATA.teams.B||[])]; }
+function categoriaDe(equipo){
+  if((DATA.teams.A||[]).includes(equipo)) return 'A';
+  if((DATA.teams.B||[]).includes(equipo)) return 'B';
+  return null;
+}
+// Resuelve un nombre suelto contra la lista real de clubes.
+function resolverEquipo(txt){
+  const n = norm(txt);
+  if(!n) return null;
+  if(ALIAS[n]) return ALIAS[n];
+  const equipos = todosLosEquipos();
+  let exacto = equipos.find(e=>norm(e)===n);
+  if(exacto) return exacto;
+  // contiene / empieza
+  let parcial = equipos.find(e=>norm(e).includes(n)||n.includes(norm(e)));
+  if(parcial) return parcial;
+  // distancia
+  let mejor=null, mejorD=99;
+  equipos.forEach(e=>{ const d=distancia(n,norm(e)); if(d<mejorD){mejorD=d;mejor=e;} });
+  return mejorD<=3 ? mejor : null;
+}
+
+/* ============================================================
+   JUGADORES: nombres conocidos por club
+   Se alimenta de los planteles cargados + de todos los goles ya registrados.
+   ============================================================ */
+function nombresConocidos(club){
+  const set = new Map(); // normalizado -> grafía canónica
+  const agregar = n => { const k=norm(n); if(k && !set.has(k)) set.set(k,n); };
+  const roster = (DATA.rosters||{})[club];
+  if(Array.isArray(roster)) roster.forEach(j=> agregar(typeof j==='string'? j : (j.nombre||j.jugador||'')));
+  (DATA.matches||[]).forEach(m=>{
+    if(m.local===club) (m.goleadoresLocal||[]).forEach(agregar);
+    if(m.visitante===club) (m.goleadoresVisitante||[]).forEach(agregar);
+  });
+  return set;
+}
+// Devuelve {nombre, estado} donde estado = ok | corregido | nuevo
+function resolverJugador(txt, club){
+  const limpio = (txt||'').replace(/\s+/g,' ').trim();
+  if(!limpio) return null;
+  const conocidos = nombresConocidos(club);
+  const n = norm(limpio);
+  if(conocidos.has(n)){
+    const canon = conocidos.get(n);
+    return { nombre: canon, estado: canon===limpio ? 'ok' : 'corregido' };
+  }
+  // apellido suelto o error de tipeo
+  let mejor=null, mejorD=99;
+  conocidos.forEach((canon,key)=>{
+    let d = distancia(n,key);
+    if(key.split(' ').some(p=>p===n) || key.includes(n)) d = Math.min(d,1);
+    if(d<mejorD){ mejorD=d; mejor=canon; }
+  });
+  if(mejor && mejorD<=2) return { nombre: mejor, estado:'corregido' };
+  return { nombre: limpio, estado:'nuevo' };
+}
+
+/* ============================================================
+   PARSER DEL MENSAJE
+   ============================================================ */
+const RE_DIV = /^\s*(primera|1ra|1era|3ra|3era|4ta|5ta|6ta)\b[^:]*:?\s*/i;
+function normDivision(d){
+  const n = norm(d);
+  if(n.startsWith('prim')||n.startsWith('1')) return 'Primera';
+  if(n.startsWith('3')) return '3ra';
+  if(n.startsWith('4')) return '4ta';
+  if(n.startsWith('5')) return '5ta';
+  if(n.startsWith('6')) return '6ta';
+  return null;
+}
+// "Nombre, Otro (2)" -> ["Nombre","Otro","Otro"]
+function partirGoleadores(txt){
+  if(!txt) return [];
+  return txt.split(/,| y |;/i).map(s=>s.trim()).filter(Boolean).flatMap(s=>{
+    const m = s.match(/^(.*?)\s*(?:x\s*(\d+)|\((\d+)\))\s*$/i);
+    if(m){ const veces=parseInt(m[2]||m[3],10)||1; return Array(veces).fill(m[1].trim()); }
+    return [s];
+  });
+}
+function parsearLinea(linea, divisionActual){
+  let div = divisionActual;
+  const mDiv = linea.match(RE_DIV);
+  if(mDiv){ div = normDivision(mDiv[1]) || div; linea = linea.replace(RE_DIV,''); }
+  linea = linea.trim();
+  if(!linea) return { division: div, partido: null };
+
+  const re = /^(.*?)\s+(\d+)\s*(?:\(([^)]*)\))?\s*(?:[-–—]|vs\.?|v\.?)?\s*(.*?)\s+(\d+)\s*(?:\(([^)]*)\))?\s*$/i;
+  const m = linea.match(re);
+  if(!m) return { division: div, partido: null, error: linea };
+
+  const eqL = resolverEquipo(m[1]), eqV = resolverEquipo(m[4]);
+  const p = {
+    division: div,
+    localTexto: m[1].trim(), visitanteTexto: m[4].trim(),
+    local: eqL, visitante: eqV,
+    golesLocal: parseInt(m[2],10), golesVisitante: parseInt(m[5],10),
+    goleadoresLocal: partirGoleadores(m[3]),
+    goleadoresVisitante: partirGoleadores(m[6]),
+  };
+  return { division: div, partido: p };
+}
+function parsearMensaje(texto, divisionDefault){
+  const out=[], errores=[];
+  let div = divisionDefault;
+  texto.split(/\r?\n/).forEach(l=>{
+    if(!l.trim()) return;
+    // línea que es solo un encabezado de división
+    const soloDiv = l.trim().match(/^(primera|1ra|1era|3ra|3era|4ta|5ta|6ta)\b[^\d]*$/i);
+    if(soloDiv){ div = normDivision(soloDiv[1]) || div; return; }
+    const r = parsearLinea(l, div);
+    div = r.division;
+    if(r.partido) out.push(r.partido);
+    else if(r.error) errores.push(r.error);
+  });
+  return { partidos: out, errores };
+}
+
+/* ============================================================
+   RENDER DE LA REVISIÓN
+   ============================================================ */
+function procesar(){
+  if(!DATA){ avisar('cfg-aviso','err','Primero conectá el repositorio o esperá a que cargue el archivo.'); return; }
+  const texto = document.getElementById('in-texto').value;
+  const div = document.getElementById('in-division').value;
+  const { partidos, errores } = parsearMensaje(texto, div);
+  partidos.forEach(p=>PENDIENTES.push(p));
+  if(errores.length){
+    avisar('revision-avisos','warn','No pude interpretar estas líneas, cargalas a mano:<br>'+errores.map(e=>'· '+esc(e)).join('<br>'));
+  }
+  if(!partidos.length && !errores.length){ avisar('revision-avisos','err','No encontré ningún partido en el texto.'); }
+  document.getElementById('in-texto').value='';
+  pintar();
+}
+function agregarVacio(){
+  if(!DATA) return;
+  PENDIENTES.push({ division: document.getElementById('in-division').value,
+    local:null, visitante:null, golesLocal:0, golesVisitante:0,
+    goleadoresLocal:[], goleadoresVisitante:[] });
+  pintar();
+}
+function optsEquipos(sel){
+  return '<option value="">— elegir club —</option>' + todosLosEquipos()
+    .map(e=>`<option value="${esc(e)}" ${e===sel?'selected':''}>${esc(e)} (${categoriaDe(e)})</option>`).join('');
+}
+function chipsDe(nombres, club){
+  if(!club) return '';
+  return nombres.map(n=>{ const r=resolverJugador(n,club); if(!r) return '';
+    const t = r.estado==='corregido' ? `${esc(n)} → ${esc(r.nombre)}` : esc(r.nombre);
+    const et = r.estado==='nuevo' ? ' · nuevo' : '';
+    return `<span class="chip ${r.estado}">${t}${et}</span>`; }).join('');
+}
+function pintar(){
+  const cont = document.getElementById('lista-partidos');
+  document.getElementById('sec-revision').classList.toggle('oculto', PENDIENTES.length===0);
+  cont.innerHTML = PENDIENTES.map((p,i)=>{
+    const cat = p.local ? categoriaDe(p.local) : (p.visitante ? categoriaDe(p.visitante) : '—');
+    return `
+    <div class="partido">
+      <div class="cab">
+        <span class="meta">${esc(p.division)} · Categoría ${cat||'?'}</span>
+        <button class="borrar" onclick="quitar(${i})">×</button>
+      </div>
+      <div class="lado">
+        <select onchange="setCampo(${i},'local',this.value)">${optsEquipos(p.local)}</select>
+        <input type="number" min="0" inputmode="numeric" value="${p.golesLocal}" onchange="setCampo(${i},'golesLocal',this.value)">
+      </div>
+      <input placeholder="Goleadores del local (separados por coma)" value="${esc(p.goleadoresLocal.join(', '))}"
+             onchange="setGoleadores(${i},'goleadoresLocal',this.value)">
+      <div class="chips">${chipsDe(p.goleadoresLocal,p.local)}</div>
+      <div class="lado">
+        <select onchange="setCampo(${i},'visitante',this.value)">${optsEquipos(p.visitante)}</select>
+        <input type="number" min="0" inputmode="numeric" value="${p.golesVisitante}" onchange="setCampo(${i},'golesVisitante',this.value)">
+      </div>
+      <input placeholder="Goleadores del visitante (separados por coma)" value="${esc(p.goleadoresVisitante.join(', '))}"
+             onchange="setGoleadores(${i},'goleadoresVisitante',this.value)">
+      <div class="chips">${chipsDe(p.goleadoresVisitante,p.visitante)}</div>
+      ${avisosDe(p)}
+    </div>`;
+  }).join('');
+  document.getElementById('btn-guardar').disabled = PENDIENTES.length===0 || !cfg().token;
+}
+function avisosDe(p){
+  const a=[];
+  if(!p.local || !p.visitante) a.push(['err','Falta elegir uno de los clubes.']);
+  else{
+    if(categoriaDe(p.local)!==categoriaDe(p.visitante)) a.push(['err','Los dos clubes son de categorías distintas.']);
+    const fecha = parseInt(document.getElementById('in-fecha').value,10);
+    const dup = (DATA.matches||[]).some(m=>m.division===p.division && m.fecha===fecha &&
+      ((m.local===p.local&&m.visitante===p.visitante)||(m.local===p.visitante&&m.visitante===p.local)));
+    if(dup) a.push(['warn','Este partido ya estaba cargado en esta fecha. Se va a reemplazar.']);
+  }
+  const fl=p.golesLocal-p.goleadoresLocal.length, fv=p.golesVisitante-p.goleadoresVisitante.length;
+  if(fl>0||fv>0) a.push(['warn',`Faltan autores: ${fl>0?fl+' gol(es) del local':''}${fl>0&&fv>0?' y ':''}${fv>0?fv+' del visitante':''}. Se guarda igual.`]);
+  if(fl<0||fv<0) a.push(['err','Hay más goleadores que goles.']);
+  return a.map(([t,m])=>`<div class="aviso ${t}">${m}</div>`).join('');
+}
+function setCampo(i,campo,val){
+  PENDIENTES[i][campo] = (campo==='golesLocal'||campo==='golesVisitante') ? (parseInt(val,10)||0) : val;
+  // aprender alias de club
+  if(campo==='local' && PENDIENTES[i].localTexto) ALIAS[norm(PENDIENTES[i].localTexto)]=val;
+  if(campo==='visitante' && PENDIENTES[i].visitanteTexto) ALIAS[norm(PENDIENTES[i].visitanteTexto)]=val;
+  localStorage.setItem('ldh_alias', JSON.stringify(ALIAS));
+  pintar();
+}
+function setGoleadores(i,campo,val){ PENDIENTES[i][campo]=partirGoleadores(val); pintar(); }
+function quitar(i){ PENDIENTES.splice(i,1); pintar(); }
+
+/* ============================================================
+   APLICAR A DATA
+   ============================================================ */
+function aplicarPendientes(){
+  const fecha = parseInt(document.getElementById('in-fecha').value,10);
+  PENDIENTES.forEach(p=>{
+    const cat = categoriaDe(p.local);
+    // sacar duplicado previo
+    DATA.matches = DATA.matches.filter(m=>!(m.division===p.division && m.fecha===fecha &&
+      ((m.local===p.local&&m.visitante===p.visitante)||(m.local===p.visitante&&m.visitante===p.local))));
+    DATA.matches.push({
+      fecha, categoria: cat, division: p.division,
+      local: p.local, visitante: p.visitante,
+      golesLocal: p.golesLocal, golesVisitante: p.golesVisitante,
+      goleadoresLocal: p.goleadoresLocal.map(n=>resolverJugador(n,p.local).nombre),
+      goleadoresVisitante: p.goleadoresVisitante.map(n=>resolverJugador(n,p.visitante).nombre),
+      fase:'liga'
+    });
+  });
+  PENDIENTES=[];
+}
+function serializar(){ return 'window.SITE_DATA = ' + JSON.stringify(DATA,null,1) + ';'; }
+
+function nuevoTorneo(){
+  if(!DATA) return;
+  const nombre = document.getElementById('in-torneo-nuevo').value.trim();
+  if(!nombre){ alert('Escribí el nombre del torneo nuevo.'); return; }
+  if(!confirm(`Se van a borrar los partidos y goleadores del torneo actual.\n\nLa tabla del torneo que termina pasa al acumulado anual.\nSe conservan: tabla anual, campeones históricos, planteles, escudos y auspiciantes.\n\n¿Arrancar "${nombre}"?`)) return;
+
+  // La tabla del torneo que cierra pasa a sumar en el acumulado anual
+  if(DATA.posicionesFinales){
+    const previo = DATA.anualPrevio || { A:[], B:[] };
+    ['A','B'].forEach(cat=>{
+      const acc = {};
+      [...(previo[cat]||[]), ...(DATA.posicionesFinales[cat]||[])].forEach(f=>{
+        if(!acc[f.equipo]) acc[f.equipo]={equipo:f.equipo,pj:0,pg:0,pe:0,pp:0,gf:0,gc:0,pts:0};
+        ['pj','pg','pe','pp','gf','gc','pts'].forEach(c=>acc[f.equipo][c]+=(f[c]||0));
+      });
+      previo[cat] = Object.values(acc).sort((a,b)=>b.pts-a.pts||((b.gf-b.gc)-(a.gf-a.gc)));
+    });
+    DATA.anualPrevio = previo;
+    delete DATA.posicionesFinales;
+  }
+
+  DATA.torneo = nombre;
+  DATA.matches = [];
+  DATA.fixtureDemo = { A:[], B:[] };
+  delete DATA.goleadores;   // pasa a calcularse solo desde los partidos
+  PENDIENTES = [];
+  pintar();
+  avisar('cfg-aviso','ok','Listo. Ahora tocá <b>Guardar y publicar</b> para que quede en la web.');
+  document.getElementById('btn-guardar').disabled = !cfg().token;
+}
+function descargarData(){
+  if(!DATA) return;
+  if(PENDIENTES.length && confirm('Hay partidos sin aplicar. ¿Incluirlos?')) aplicarPendientes();
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([serializar()],{type:'text/javascript'}));
+  a.download='data.js'; a.click();
+}
+
+/* ============================================================
+   GITHUB
+   ============================================================ */
+function api(ruta,opts={}){
+  const c=cfg();
+  return fetch(`https://api.github.com/repos/${c.owner}/${c.repo}/${ruta}`,{
+    ...opts,
+    headers:{ 'Authorization':`Bearer ${c.token}`, 'Accept':'application/vnd.github+json',
+              'Content-Type':'application/json', ...(opts.headers||{}) }
+  });
+}
+async function recargarDesdeRepo(){
+  const c=cfg();
+  if(c.owner&&c.repo&&c.token){
+    try{
+      const r = await api(`contents/${encodeURIComponent(c.path)}?ref=${encodeURIComponent(c.branch)}`);
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      const j = await r.json();
+      SHA = j.sha;
+      const txt = b64aTexto(j.content);
+      DATA = JSON.parse(txt.replace(/^\s*window\.SITE_DATA\s*=\s*/,'').replace(/;\s*$/,''));
+      setEstado('conectado · '+(DATA.torneo||''));
+      avisar('cfg-aviso','ok','Datos cargados desde GitHub.');
+      document.getElementById('det-config').open=false;
+      pintar(); return;
+    }catch(e){
+      avisar('cfg-aviso','err','No pude leer el archivo en GitHub ('+e.message+'). Revisá usuario, repo, rama, ruta y token.');
+    }
+  }
+  // Fallback: leer el data.js que está al lado de esta página
+  try{
+    const r = await fetch('data.js?'+Date.now());
+    const txt = await r.text();
+    DATA = JSON.parse(txt.replace(/^\s*window\.SITE_DATA\s*=\s*/,'').replace(/;\s*$/,''));
+    SHA = null;
+    setEstado('solo lectura');
+    avisar('cfg-aviso','warn','Cargué los datos del sitio, pero sin GitHub configurado solo vas a poder descargar el archivo.');
+    pintar();
+  }catch(e){ setEstado('sin datos'); }
+}
+async function guardarEnGitHub(){
+  const c=cfg();
+  if(!c.token){ alert('Falta configurar GitHub.'); return; }
+  const malos = PENDIENTES.filter(p=>!p.local||!p.visitante||categoriaDe(p.local)!==categoriaDe(p.visitante));
+  if(malos.length){ alert('Hay partidos con clubes sin elegir o de categorías distintas. Corregilos primero.'); return; }
+  const btn=document.getElementById('btn-guardar');
+  btn.disabled=true; btn.textContent='Guardando…';
+  try{
+    const fecha=document.getElementById('in-fecha').value;
+    const cant=PENDIENTES.length;
+    aplicarPendientes();
+    const r = await api(`contents/${encodeURIComponent(c.path)}`,{
+      method:'PUT',
+      body: JSON.stringify({
+        message: cant ? `Fecha ${fecha}: ${cant} partido(s)` : `Actualizar ${DATA.torneo||'datos'}`,
+        content: textoAb64(serializar()),
+        sha: SHA || undefined,
+        branch: c.branch
+      })
+    });
+    if(!r.ok){ const t=await r.text(); throw new Error('HTTP '+r.status+' '+t.slice(0,120)); }
+    const j=await r.json(); SHA=j.content.sha;
+    avisar('revision-avisos','ok','✅ Guardado. En un minuto queda publicado en la web.');
+    pintar();
+  }catch(e){
+    avisar('revision-avisos','err','No se pudo guardar: '+e.message);
+  }finally{
+    btn.textContent='Guardar y publicar'; btn.disabled=PENDIENTES.length===0 && !DATA;
+  }
+}
+
+/* ============================================================
+   CONFIG / ARRANQUE
+   ============================================================ */
+function guardarConfig(){
+  CFG_KEYS.forEach(k=>localStorage.setItem('ldh_'+k, document.getElementById('cfg-'+k).value.trim()));
+  recargarDesdeRepo();
+}
+function olvidarConfig(){
+  localStorage.removeItem('ldh_token');
+  document.getElementById('cfg-token').value='';
+  avisar('cfg-aviso','warn','Token borrado de este dispositivo.');
+}
+function setEstado(t){ document.getElementById('estado').textContent=t; }
+function avisar(id,tipo,html){ document.getElementById(id).innerHTML=`<div class="aviso ${tipo}">${html}</div>`; }
+
+(function init(){
+  const c=cfg();
+  CFG_KEYS.forEach(k=>{ if(c[k]) document.getElementById('cfg-'+k).value=c[k]; });
+  if(!c.token) document.getElementById('det-config').open=true;
+  recargarDesdeRepo();
+})();
+</script>
+</body>
+</html>

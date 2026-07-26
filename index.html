@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no, url=no">
+<title>Liga Dolorense Hoy</title>
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="android-chrome-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="android-chrome-512x512.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=Montserrat:wght@700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="site-header">
+  <div class="brand">
+    <div class="brand-badge"><img id="liga-logo" alt="Liga Dolorense Hoy"></div>
+    <span class="brand-name">Liga Dolorense Hoy</span>
+  </div>
+  <button class="menu-btn" id="menu-btn" aria-label="Más contenido">☰</button>
+</header>
+
+<nav class="mobile-dropdown" id="mobile-dropdown">
+  <button data-target="inicio">Inicio</button>
+  <button data-target="fixture">Fixture</button>
+  <button data-target="plantel">Planteles</button>
+  <button data-target="campeones">Campeones</button>
+</nav>
+
+<div class="torneo-credit">
+  <img id="torneo-logo" alt="Liga Dolorense de Fútbol">
+  <span>Torneo: Liga Dolorense de Fútbol</span>
+</div>
+
+<div class="layout" id="layout">
+
+  <div class="extra-panel col-fd" data-panel="fd">
+    <a class="side-card fd-side-card" href="https://www.instagram.com/fotodeportiva.vd/" target="_blank" rel="noopener noreferrer" aria-label="Fotodeportiva en Instagram">
+      <span>Datos y fotos de</span>
+      <img id="fd-logo-desktop" alt="Fotodeportiva">
+    </a>
+    <p class="fd-credito">Estos datos existen gracias a una red de colaboradores del fútbol del Valle de Traslasierra, que semana a semana comparten resultados y planillas de sus equipos. Gracias a ellos, esta información llega a todos.</p>
+    <div class="sponsors-label">Auspiciantes</div>
+    <div class="sponsors-desktop" id="sponsors-desktop"></div>
+  </div>
+
+  <div class="torneo-group">
+    <div class="group-label torneo-group-label" id="torneo-label"></div>
+
+    <main class="main-col">
+      <div class="view-toggle">
+        <button data-view="resultados" class="active">Resultados</button>
+        <button data-view="posiciones">Posiciones</button>
+        <button data-view="goleadores">Goleadores</button>
+        <button data-view="valla">Valla</button>
+      </div>
+
+      <div id="division-chips" class="division-chips"></div>
+
+      <div id="view-root"></div>
+    </main>
+
+    <div class="extra-panel col-fixture" data-panel="fixture">
+      <div class="side-card" id="fixture-card"></div>
+    </div>
+  </div>
+
+  <div class="club-group">
+    <div class="group-label club-group-label">Clubes</div>
+
+    <div class="extra-panel col-cumpleanos" data-panel="cumpleanos">
+      <div id="cumpleanos-card"></div>
+    </div>
+
+    <div class="extra-panel col-plantel" data-panel="plantel">
+      <div class="side-card" id="plantel-card"></div>
+    </div>
+
+    <div class="extra-panel col-campeones" data-panel="campeones">
+      <div class="side-card" id="campeones-card"></div>
+    </div>
+  </div>
+
+  <p class="fd-credito fd-credito-mobile">Estos datos existen gracias a una red de colaboradores del fútbol del Valle de Traslasierra, que semana a semana comparten resultados y planillas de sus equipos. Gracias a ellos, esta información llega a todos.</p>
+  <div class="sponsors-label sponsors-label-mobile">Auspiciantes</div>
+  <div class="sponsors-mobile" id="sponsors-mobile"></div>
+
+</div>
+
+<footer class="site-footer">Liga Dolorense Hoy</footer>
+
+<script src="imagenes.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

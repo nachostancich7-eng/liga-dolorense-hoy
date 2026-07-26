@@ -1,0 +1,435 @@
+:root{
+  --bg:#2A1210;
+  --bg-alt:#341612;
+  --panel:#3B1A16;
+  --panel-alt:#45201B;
+  --header:#210D0B;
+  --border:rgba(255,255,255,.09);
+  --text:#F5EEE9;
+  --text-muted:#C9A9A2;
+  --text-dim:#A98882;
+
+  --brand-red:#C6402F;
+  --brand-red-bright:#E5502F;
+  --blue:#4FA8E0;
+  --gold:#F2A93B;
+  --gold-text:#3A2205;
+  --teal:#33CE9B;
+  --danger:#FF5C55;
+
+  --sponsor-bg:rgba(233,218,198,.92);
+  --sponsor-border:rgba(42,18,16,.14);
+
+  --radius:10px;
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-display: 'Oswald', 'Arial Narrow', sans-serif;
+  --font-brand: 'Montserrat', 'Oswald', sans-serif;
+}
+
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  font-size:14px;
+  line-height:1.4;
+}
+
+/* Header */
+.site-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:10px 14px;
+  background:var(--header);
+  color:#fff;
+  position:sticky;
+  top:0;
+  z-index:10;
+  border-bottom:1px solid var(--border);
+}
+.site-header .brand{display:flex;align-items:center;gap:8px;flex:1;min-width:0;}
+.site-header .brand-badge{
+  height:32px;width:auto;background:transparent;
+  display:flex;align-items:center;justify-content:center;
+  overflow:visible;flex-shrink:0;
+}
+.site-header .brand-badge img{height:100%;width:auto;object-fit:contain;display:block;}
+.site-header .brand-name{
+  font-weight:800;font-size:15px;letter-spacing:0;font-family:var(--font-brand);
+  text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.menu-btn{background:none;border:none;color:#fff;font-size:20px;cursor:pointer;padding:4px 6px;line-height:1;flex-shrink:0;}
+
+/* Mobile dropdown nav */
+.mobile-dropdown{
+  display:none;flex-direction:column;background:var(--panel);border-bottom:1px solid var(--border);
+  position:fixed;left:0;right:0;z-index:20;max-width:480px;margin:0 auto;
+}
+.mobile-dropdown.open{display:flex;}
+.mobile-dropdown button{
+  padding:13px 16px;background:none;border:none;border-bottom:1px solid var(--border);
+  color:var(--text);font-family:inherit;font-size:14px;font-weight:600;text-align:left;cursor:pointer;
+}
+.mobile-dropdown button:last-child{border-bottom:none;}
+
+/* Torneo credit (LDF) - now prominent, not a tiny footnote */
+.torneo-credit{
+  display:flex;align-items:center;justify-content:center;gap:12px;
+  padding:12px 14px;background:var(--header);border-bottom:1px solid var(--border);
+  font-size:13px;color:var(--text-muted);font-weight:600;
+}
+.torneo-credit img{height:44px;width:auto;}
+
+/* Layout: mobile = single column. FD + Cumpleaños always visible; Fixture/Plantel/Campeones hidden until picked from the dropdown */
+.layout{max-width:480px;margin:0 auto;display:flex;flex-direction:column;}
+.main-col{background:var(--bg);}
+.torneo-group,.club-group{display:flex;flex-direction:column;}
+.group-label{
+  padding:12px 16px 14px;font-family:var(--font-display);font-weight:700;font-size:13px;
+  letter-spacing:.05em;text-transform:uppercase;text-align:center;
+}
+.torneo-group{background:rgba(198,64,47,.06);border:1px solid rgba(198,64,47,.28);border-radius:12px;margin:10px;overflow:hidden;}
+.torneo-group-label{background:rgba(198,64,47,.16);color:var(--brand-red-bright);}
+.club-group{background:rgba(242,169,59,.05);border:1px solid rgba(242,169,59,.25);border-radius:12px;margin:10px;overflow:hidden;}
+.club-group-label{background:rgba(242,169,59,.15);color:var(--gold);}
+.extra-panel{border-bottom:6px solid var(--bg-alt);}
+.col-fixture,.col-plantel,.col-campeones{display:none;}
+.col-fixture.mobile-shown,.col-plantel.mobile-shown,.col-campeones.mobile-shown{display:block;}
+
+.fd-side-card{
+  display:flex;flex-direction:column;align-items:center;gap:10px;
+  padding:18px 14px;text-align:center;font-size:13px;color:var(--text-muted);
+  text-decoration:none;
+}
+.fd-side-card img{height:40px;width:auto;filter:brightness(0) invert(1);opacity:.92;}
+
+.fd-credito{
+  display:none;
+  margin:0;padding:0 20px 16px;text-align:center;
+  font-size:11.5px;line-height:1.5;color:var(--text-dim);
+}
+.fd-credito.fd-credito-mobile{
+  display:block;padding:20px 24px 18px;
+  margin-top:14px;border-top:6px solid var(--bg-alt);
+}
+
+.sponsors-label{
+  display:none;
+  text-align:center;font-size:11px;font-weight:700;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--gold);
+  padding:2px 20px 8px;border-top:1px solid var(--border);margin:0 14px;
+}
+.sponsors-label.sponsors-label-mobile{
+  display:block;margin:0 24px;padding-top:14px;
+}
+
+/* Toggle */
+.view-toggle{display:flex;gap:6px;padding:12px 12px 10px;}
+.view-toggle button{
+  flex:1;padding:9px 4px;border-radius:8px;border:1px solid var(--border);
+  background:var(--panel);color:var(--text-muted);font-weight:700;font-size:13px;
+  cursor:pointer;font-family:inherit;letter-spacing:.01em;
+}
+.view-toggle button.active{background:var(--brand-red);border-color:var(--brand-red);color:#fff;}
+
+/* Division chips */
+.division-chips{display:flex;gap:6px;padding:0 12px 10px;overflow-x:auto;}
+.division-chips .chip{
+  padding:5px 12px;border-radius:6px;font-size:13px;white-space:nowrap;
+  color:var(--text-muted);cursor:pointer;flex-shrink:0;font-weight:600;
+}
+.division-chips .chip.active{background:var(--gold);color:var(--gold-text);}
+.division-chips .chip.disabled{opacity:.35;cursor:not-allowed;}
+
+/* Fecha switcher */
+.fecha-switcher{
+  display:flex;align-items:center;justify-content:center;gap:16px;
+  padding:8px 12px;background:var(--bg-alt);border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+}
+.fecha-switcher .fecha-label{font-weight:700;font-size:14px;letter-spacing:.04em;color:#fff;min-width:80px;text-align:center;font-family:var(--font-display);text-transform:uppercase;}
+.fecha-arrow{
+  background:var(--panel);border:1px solid var(--border);color:#fff;
+  width:28px;height:28px;border-radius:6px;font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-family:inherit;
+}
+.fecha-arrow:disabled{opacity:.3;cursor:not-allowed;}
+
+/* Category section header */
+.cat-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:9px 16px;font-weight:600;font-size:14px;color:#fff;
+  background:var(--panel-alt);border-left:5px solid transparent;
+  font-family:var(--font-display);letter-spacing:.03em;text-transform:uppercase;
+}
+.cat-header.cat-A{border-left-color:var(--blue);}
+.cat-header.cat-B{border-left-color:var(--brand-red-bright);}
+.cat-header .sub{font-weight:600;font-size:11px;opacity:.8;}
+
+/* Match card */
+.matches{padding:8px;display:flex;flex-direction:column;gap:8px;}
+.match{background:var(--panel);border-radius:8px;overflow:hidden;border:1px solid var(--border);}
+.match-row{display:flex;align-items:center;gap:10px;padding:10px 12px;}
+.match-row .team{flex:1;font-size:13.5px;}
+.match-row .team.away{text-align:right;}
+.match-row .score{font-weight:700;padding:0 6px;white-space:nowrap;color:#fff;font-family:var(--font-display);font-size:15px;letter-spacing:.02em;}
+.badge{
+  width:40px;height:40px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;
+  background:transparent;
+}
+.badge img{width:100%;height:100%;object-fit:contain;}
+.scorers{display:flex;justify-content:space-between;padding:6px 12px 6px 40px;font-size:11px;color:var(--text-muted);gap:8px;background:var(--header);border-top:1px solid var(--border);}
+.scorers span{flex:1;}
+.scorers span.away-scorers{text-align:right;}
+
+.empty-state{padding:28px 16px;text-align:center;color:var(--text-muted);font-size:13px;}
+
+/* Category block wrapper */
+.cat-block{border-radius:8px;overflow:hidden;margin:0 10px 12px;border:1px solid var(--border);}
+.cat-block.cat-block-A{background:rgba(79,168,224,.07);}
+.cat-block.cat-block-B{background:rgba(229,80,47,.07);}
+
+/* Playoff (semifinales / final) */
+.playoff-wrap{padding:8px;display:flex;flex-direction:column;gap:14px;}
+.playoff-serie{display:flex;flex-direction:column;gap:8px;}
+.playoff-serie-label{font-size:11px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.03em;}
+.playoff-leg-card{margin:0;}
+.playoff-leg{display:flex;align-items:center;gap:8px;padding:10px 12px;}
+.playoff-leg .leg-tag{width:30px;font-size:11px;color:var(--text-muted);flex-shrink:0;}
+.playoff-leg .team{flex:1;font-size:13px;}
+.playoff-leg .team.away{text-align:right;}
+.playoff-leg .score{font-weight:700;padding:0 6px;color:#fff;white-space:nowrap;}
+.playoff-leg .team-tbd{flex:1;color:var(--text-dim);font-style:italic;font-size:12px;}
+.playoff-global{padding:8px 12px;font-size:12.5px;font-weight:600;color:var(--gold);background:rgba(242,169,59,.08);border:1px solid rgba(242,169,59,.22);border-radius:8px;text-align:center;}
+
+/* Tables */
+.table-scroll{overflow-x:auto;}
+table.pos-table{width:100%;border-collapse:collapse;font-size:12px;}
+table.pos-table th{
+  text-align:center;font-size:10px;color:var(--text-dim);font-weight:700;
+  padding:7px 4px;text-transform:uppercase;letter-spacing:.02em;
+  border-bottom:1px solid var(--border);background:var(--bg-alt);
+}
+table.pos-table th.col-equipo{text-align:left;padding-left:10px;}
+table.pos-table td{padding:7px 4px;text-align:center;white-space:nowrap;color:var(--text-dim);font-size:11.5px;}
+table.pos-table td.col-equipo{text-align:left;padding-left:6px;color:var(--text);font-size:13px;}
+table.pos-table td.col-pts{font-weight:700;color:var(--gold);font-size:15px;font-family:var(--font-display);}
+table.pos-table tr{background:transparent;border-bottom:1px solid var(--border);}
+table.pos-table tr:last-child{border-bottom:none;}
+.team-cell{display:flex;align-items:center;gap:8px;}
+.team-cell .badge{width:32px;height:32px;}
+.club-cell{display:flex;align-items:center;gap:8px;}
+.club-cell .badge{width:28px;height:28px;}
+
+.rank-badge{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:22px;height:22px;border-radius:6px;font-weight:700;color:var(--text-muted);
+  background:transparent;
+}
+.rank-badge.playoff{background:var(--teal);color:#04241A;}
+.rank-badge.ascenso{background:var(--gold);color:var(--gold-text);}
+.rank-badge.descenso{background:var(--danger);color:#fff;}
+
+.legend{display:flex;align-items:center;gap:8px;padding:8px 16px 14px;font-size:12px;color:var(--text-muted);font-weight:600;background:var(--panel);}
+.legend .rank-badge{width:20px;height:20px;}
+
+.section-label{padding:9px 16px;font-weight:600;font-size:13px;background:var(--header);color:var(--gold);letter-spacing:.05em;text-transform:uppercase;font-family:var(--font-display);}
+.section-note{padding:6px 16px 10px;font-size:11px;color:var(--text-dim);font-style:italic;background:var(--bg-alt);}
+
+.anual-block{
+  margin:14px 10px 4px;border:1px solid rgba(242,169,59,.5);border-radius:10px;overflow:hidden;
+  background:rgba(242,169,59,.05);
+}
+.anual-block .section-label{background:rgba(242,169,59,.16);border-bottom:1px solid rgba(242,169,59,.3);}
+.anual-cat-header{
+  display:flex;align-items:center;gap:8px;padding:8px 16px;font-weight:700;font-size:13px;color:#fff;
+}
+.anual-cat-header .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.anual-cat-header .dot.dot-A{background:var(--blue);}
+.anual-cat-header .dot.dot-B{background:var(--brand-red-bright);}
+
+/* Side cards (used in dashboard columns) */
+.side-card{padding:14px;border-radius:var(--radius);background:var(--panel);margin:10px;}
+.side-card h3{margin:0 0 10px;font-size:13px;text-transform:uppercase;letter-spacing:.04em;color:var(--gold);font-family:var(--font-display);}
+.side-card .item{padding:8px 0;border-bottom:1px solid var(--border);}
+.side-card .item:last-child{border-bottom:none;}
+.side-card .item .titulo{font-weight:600;font-size:13px;color:#fff;}
+.side-card .item .meta{font-size:11px;color:var(--text-muted);margin-top:2px;}
+.side-card .item .cuerpo{font-size:12px;color:var(--text-muted);margin-top:4px;}
+
+#fixture-card{background:rgba(242,169,59,.08);border-left:4px solid var(--gold);}
+#plantel-card{background:rgba(51,206,155,.08);border-left:4px solid var(--teal);}
+#campeones-card{background:rgba(229,80,47,.08);border-left:4px solid var(--brand-red-bright);}
+
+.palmares-row{display:flex;align-items:center;gap:10px;}
+.palmares-row .palmares-rank{width:16px;font-weight:700;color:var(--gold);font-family:var(--font-display);}
+.palmares-row .titulo{flex:1;}
+.palmares-row .palmares-count{font-size:11px;color:var(--text-muted);white-space:nowrap;}
+
+.campeones-stars{
+  display:none;color:var(--gold);font-size:11px;letter-spacing:1px;line-height:1.6;
+  padding-left:44px;word-break:break-all;
+}
+#campeones-card .palmares-count{font-weight:800;color:var(--gold);font-family:var(--font-display);}
+
+/* Valla menos vencida (vista principal) */
+.valla-list{padding:6px 16px 12px;}
+.valla-list .palmares-row{padding:8px 0;border-bottom:1px solid var(--border);}
+.valla-list .palmares-row:last-child{border-bottom:none;}
+.valla-list .titulo{font-weight:600;font-size:13.5px;color:#fff;}
+.valla-list .palmares-count{font-size:12px;color:var(--text-muted);white-space:nowrap;}
+.valla-list .palmares-row:first-child .palmares-rank,
+.valla-list .palmares-row:first-child .palmares-count{color:var(--gold);}
+
+.fixture-cat-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.03em;color:var(--text-muted);margin:10px 0 4px;}
+.fixture-cat-label:first-child{margin-top:0;}
+.fixture-cat-label.cat-A{color:var(--blue);}
+.fixture-cat-label.cat-B{color:var(--brand-red-bright);}
+.fixture-row{display:flex;align-items:center;gap:6px;padding:5px 0;border-bottom:1px solid var(--border);font-size:12.5px;}
+.fixture-row:last-child{border-bottom:none;}
+.fixture-row .team{flex:1;}
+.fixture-row .team.away{text-align:right;}
+.fixture-row .vs{color:var(--text-dim);font-size:11px;padding:0 2px;}
+
+.cumpleanos-card{
+  margin:10px;padding:14px 16px;border-radius:var(--radius);
+  background:var(--panel);text-align:center;
+}
+.cumple-fecha{font-family:var(--font-display);font-weight:600;font-size:13px;letter-spacing:.04em;color:#fff;text-transform:uppercase;}
+.cumpleanos-card .eyebrow{font-size:14px;font-weight:700;color:var(--gold);margin-top:6px;}
+.cumple-note{font-size:10.5px;color:var(--text-dim);font-style:italic;margin-top:2px;margin-bottom:8px;}
+.cumple-list{text-align:left;border-top:1px solid var(--border);}
+.cumple-row{padding:8px 4px;border-bottom:1px solid var(--border);font-size:13px;color:var(--text-muted);}
+.cumple-row:last-child{border-bottom:none;}
+.cumple-nombre{font-weight:700;color:#fff;}
+
+.campeones-nota{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:11px;line-height:1.5;}
+.ver-mas-btn{
+  width:100%;margin-top:8px;padding:8px;border-radius:8px;border:1px solid var(--border);
+  background:var(--bg-alt);color:var(--gold);font-weight:700;font-size:12px;
+  cursor:pointer;font-family:inherit;
+}
+
+/* Planteles: crest grid */
+.plantel-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.plantel-crest-btn{
+  display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;
+  border-radius:8px;border:1px solid var(--border);background:var(--bg-alt);
+  cursor:pointer;font-family:inherit;color:var(--text-muted);font-size:10px;text-align:center;
+}
+.plantel-crest-btn.active{border-color:var(--gold);background:rgba(242,169,59,.12);color:#fff;}
+.plantel-crest-btn .badge{width:34px;height:34px;}
+.plantel-result{margin-top:14px;}
+.plantel-result .empty-state{padding:16px 0;}
+.plantel-result h4{margin:0 0 8px;font-family:var(--font-display);font-size:14px;color:#fff;text-transform:uppercase;}
+
+.sponsor-card{
+  display:flex;align-items:center;justify-content:center;position:relative;
+  background:var(--sponsor-bg);border-radius:10px;
+  overflow:hidden;aspect-ratio:1/1;
+}
+.sponsor-card::after{
+  content:'';position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--gold);
+}
+.sponsor-card img{width:68%;height:68%;object-fit:contain;display:block;}
+
+/* Mobile: sponsors en una sola fila, se achican para que entren todos (hoy 6) */
+.sponsors-mobile{
+  display:flex;flex-wrap:nowrap;justify-content:center;align-items:center;
+  gap:5px;padding:18px 6px 8px;
+}
+.sponsors-mobile .sponsor-card{flex:1 1 0;min-width:0;max-width:78px;}
+
+/* Desktop: sponsors debajo del Fixture, en grilla de 2 columnas cuadradas */
+.sponsors-desktop{display:none;}
+
+.site-footer{
+  padding:14px 16px;border-top:1px solid var(--border);
+  color:var(--text-dim);font-size:11px;text-align:center;
+}
+
+/* ===== Desktop: two-column fallback (medium width) ===== */
+@media (min-width:860px){
+  body{background:#1A0908;}
+  .site-header .brand-badge{height:56px;}
+  .site-header .brand-name{font-size:24px;letter-spacing:.01em;white-space:normal;}
+  .torneo-credit{padding:16px;font-size:15px;}
+  .torneo-credit img{height:64px;}
+  .campeones-stars{display:block;font-size:22px;line-height:1.5;letter-spacing:2px;}
+  .campeones-bar-wrap{display:none;}
+  #campeones-card .palmares-count{font-size:16px !important;}
+  .mobile-dropdown{display:none !important;}
+  .col-fixture,.col-plantel,.col-campeones{display:block;}
+  .layout{
+    max-width:1180px;
+    display:grid;
+    grid-template-columns:220px 1fr;
+    grid-template-areas:
+      "fd torneo"
+      "fd club";
+    gap:20px;
+    align-items:start;
+    padding-top:16px;
+  }
+  .col-fd{grid-area:fd;}
+  .torneo-group{grid-area:torneo;margin:0;}
+  .club-group{grid-area:club;margin:0;}
+
+  .torneo-group{
+    display:grid;
+    grid-template-columns:1fr 320px;
+    grid-template-areas:
+      "label label"
+      "main fixture";
+  }
+  .main-col{grid-area:main;border-radius:0;overflow:hidden;}
+  .col-fixture{grid-area:fixture;}
+  .torneo-group-label{grid-area:label;font-size:20px;padding:18px 16px 20px;letter-spacing:.04em;}
+  .club-group-label{font-size:20px;padding:18px 16px 20px;letter-spacing:.04em;}
+
+  .club-group{display:block;}
+
+  /* Sponsors: mobile row oculto, en desktop van bajo Fotodeportiva en grilla 2x2 (cajas cuadradas) */
+  .sponsors-mobile{display:none;}
+  .sponsors-desktop{
+    display:grid;grid-template-columns:1fr 1fr;gap:8px;
+    padding:14px 8px 4px;margin-top:6px;
+  }
+
+  .extra-panel{display:block !important;border-bottom:none;overflow:hidden;}
+  .fd-strip{display:none;}
+  .fd-side-card{
+    display:flex;flex-direction:column;align-items:center;gap:10px;
+    padding:22px 14px;text-align:center;font-size:13px;color:var(--text-muted);
+  }
+  .fd-side-card img{height:56px;width:auto;filter:brightness(0) invert(1);opacity:.92;}
+  .fd-credito{padding:0 16px 16px;font-size:11px;display:block;}
+  .fd-credito.fd-credito-mobile{display:none;}
+  .sponsors-label{display:block;margin-top:22px;padding-top:14px;}
+  .sponsors-label.sponsors-label-mobile{display:none;}
+  .menu-btn{display:none;}
+
+  .match-row .team{font-size:15px;}
+  .match-row .score{font-size:16px;}
+  .badge{width:44px;height:44px;}
+  .team-cell .badge{width:34px;height:34px;}
+  table.pos-table td{font-size:13px;padding:9px 6px;}
+  table.pos-table td.col-equipo{font-size:14.5px;}
+  table.pos-table td.col-pts{font-size:16px;}
+  .match-row{padding:13px 18px;}
+  .playoff-leg{padding:13px 18px;}
+  .scorers{padding-left:50px;font-size:12px;}
+}
+
+/* ===== Desktop: wide dashboard ===== */
+@media (min-width:1150px){
+  .layout{
+    max-width:1320px;
+    grid-template-columns:240px 1fr;
+  }
+  .torneo-group{grid-template-columns:1fr 340px;}
+  .col-plantel .plantel-grid{grid-template-columns:repeat(6,1fr);}
+}
