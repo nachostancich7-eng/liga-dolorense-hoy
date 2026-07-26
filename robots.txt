@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /carga.html
+Allow: /
+
+Sitemap: https://ligadolorensehoy.com.ar/sitemap.xml
