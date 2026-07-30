@@ -203,6 +203,9 @@ function renderCampeonesCard() {
   if (DATA.campeonesNota) {
     root.appendChild(el('div', { class: 'meta campeones-nota', text: DATA.campeonesNota }));
   }
+  if (DATA.campeonesCredito) {
+    root.appendChild(el('div', { class: 'meta campeones-credito', text: DATA.campeonesCredito }));
+  }
 }
 
 function renderPlantelCard() {

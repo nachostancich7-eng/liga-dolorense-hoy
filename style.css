@@ -307,6 +307,7 @@ table.pos-table tr:last-child{border-bottom:none;}
 .cumple-nombre{font-weight:700;color:#fff;}
 
 .campeones-nota{margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:11px;line-height:1.5;}
+.campeones-credito{margin-top:6px;font-size:10.5px;line-height:1.5;color:var(--text-dim);font-style:italic;}
 .ver-mas-btn{
   width:100%;margin-top:8px;padding:8px;border-radius:8px;border:1px solid var(--border);
   background:var(--bg-alt);color:var(--gold);font-weight:700;font-size:12px;
@@ -350,6 +351,9 @@ table.pos-table tr:last-child{border-bottom:none;}
   padding:14px 16px;border-top:1px solid var(--border);
   color:var(--text-dim);font-size:11px;text-align:center;
 }
+.footer-credito{margin-top:4px;font-size:10.5px;}
+.footer-credito a{color:var(--text-muted);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.2);}
+.footer-credito a:hover{color:var(--gold);border-color:var(--gold);}
 
 /* ===== Desktop: two-column fallback (medium width) ===== */
 @media (min-width:860px){

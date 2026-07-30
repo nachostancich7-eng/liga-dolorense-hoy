@@ -2336,5 +2336,6 @@ window.SITE_DATA = {
     "goles": 2
    }
   ]
- }
+ },
+ "campeonesCredito": "Datos históricos de campeones: gentileza de Guillermo \"Cachi\" Sappia, periodista de la zona."
 };
