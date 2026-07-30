@@ -157,6 +157,10 @@ body{
 }
 .fecha-arrow:disabled{opacity:.3;cursor:not-allowed;}
 
+.fixture-fecha-switcher{gap:10px;padding:8px;margin:0 0 4px;}
+.fixture-fecha-switcher .fecha-label{min-width:56px;font-size:12px;}
+.fixture-fecha-switcher .fecha-arrow{width:24px;height:24px;font-size:14px;}
+
 /* Category section header */
 .cat-header{
   display:flex;align-items:center;justify-content:space-between;

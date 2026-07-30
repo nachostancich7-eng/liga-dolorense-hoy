@@ -140,19 +140,48 @@ function renderVallaView() {
   });
 }
 
+let currentFixtureFecha = null;
+
+function availableFixtureFechas() {
+  const a = (DATA.fixture && DATA.fixture.A) ? Object.keys(DATA.fixture.A).map(Number) : [];
+  const b = (DATA.fixture && DATA.fixture.B) ? Object.keys(DATA.fixture.B).map(Number) : [];
+  const set = new Set([...a, ...b]);
+  return [...set].sort((x, y) => x - y);
+}
+
+function renderFixtureSwitcher(fechas) {
+  if (currentFixtureFecha === null || !fechas.includes(currentFixtureFecha)) currentFixtureFecha = fechas[0];
+  const idx = fechas.indexOf(currentFixtureFecha);
+
+  const prevBtn = el('button', { class: 'fecha-arrow', text: '‹' });
+  const nextBtn = el('button', { class: 'fecha-arrow', text: '›' });
+  prevBtn.disabled = idx <= 0;
+  nextBtn.disabled = idx >= fechas.length - 1;
+  prevBtn.addEventListener('click', () => { currentFixtureFecha = fechas[idx - 1]; renderFixtureCard(); });
+  nextBtn.addEventListener('click', () => { currentFixtureFecha = fechas[idx + 1]; renderFixtureCard(); });
+
+  return el('div', { class: 'fecha-switcher fixture-fecha-switcher' }, [
+    prevBtn,
+    el('span', { class: 'fecha-label', text: `FECHA ${currentFixtureFecha}` }),
+    nextBtn,
+  ]);
+}
+
 function renderFixtureCard() {
   const root = document.getElementById('fixture-card');
   root.innerHTML = '';
   root.appendChild(el('h3', { text: 'Fixture' }));
-  const hayFixture = (DATA.fixtureDemo && ((DATA.fixtureDemo.A || []).length || (DATA.fixtureDemo.B || []).length));
-  if (!hayFixture) {
+  const fechas = availableFixtureFechas();
+  if (fechas.length === 0) {
     root.appendChild(el('div', { class: 'empty-state', text: 'El fixture todavía no está confirmado. Lo publicamos en los próximos días.' }));
     return;
   }
-  root.appendChild(el('div', { class: 'meta', text: DATA.fixtureNota || 'Próxima fecha' }));
+  root.appendChild(renderFixtureSwitcher(fechas));
   ['A', 'B'].forEach(cat => {
+    const partidos = (DATA.fixture[cat] && DATA.fixture[cat][currentFixtureFecha]) || [];
+    if (!partidos.length) return;
     root.appendChild(el('div', { class: `fixture-cat-label cat-${cat}`, text: `Primera ${cat}` }));
-    (DATA.fixtureDemo[cat] || []).forEach(p => {
+    partidos.forEach(p => {
       root.appendChild(el('div', { class: 'fixture-row' }, [
         logoImg(p.local, 24),
         el('span', { class: 'team', text: p.local }),
