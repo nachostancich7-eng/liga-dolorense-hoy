@@ -2337,5 +2337,408 @@ window.SITE_DATA = {
    }
   ]
  },
- "campeonesCredito": "Datos históricos de campeones: gentileza de Guillermo \"Cachi\" Sappia, periodista de la zona."
+ "campeonesCredito": "Datos históricos de campeones: gentileza de Guillermo \"Cachi\" Sappia, periodista de la zona.",
+ "fixture": {
+  "A": {
+   "1": [
+    {
+     "local": "B.A.P",
+     "visitante": "San Brochero"
+    },
+    {
+     "local": "San Martín de S.P",
+     "visitante": "Defensores"
+    },
+    {
+     "local": "Sarmiento",
+     "visitante": "Las Rosas"
+    },
+    {
+     "local": "San Vicente",
+     "visitante": "Atlanta"
+    },
+    {
+     "local": "Comercio",
+     "visitante": "A.F.I"
+    }
+   ],
+   "2": [
+    {
+     "local": "San Brochero",
+     "visitante": "San Martín de S.P"
+    },
+    {
+     "local": "Defensores",
+     "visitante": "Comercio"
+    },
+    {
+     "local": "A.F.I",
+     "visitante": "San Vicente"
+    },
+    {
+     "local": "Sarmiento",
+     "visitante": "Atlanta"
+    },
+    {
+     "local": "Las Rosas",
+     "visitante": "B.A.P"
+    }
+   ],
+   "3": [
+    {
+     "local": "Atlanta",
+     "visitante": "A.F.I"
+    },
+    {
+     "local": "San Vicente",
+     "visitante": "Defensores"
+    },
+    {
+     "local": "Sarmiento",
+     "visitante": "B.A.P"
+    },
+    {
+     "local": "San Martín de S.P",
+     "visitante": "Las Rosas"
+    },
+    {
+     "local": "Comercio",
+     "visitante": "San Brochero"
+    }
+   ],
+   "4": [
+    {
+     "local": "A.F.I",
+     "visitante": "Sarmiento"
+    },
+    {
+     "local": "Atlanta",
+     "visitante": "Defensores"
+    },
+    {
+     "local": "San Brochero",
+     "visitante": "San Vicente"
+    },
+    {
+     "local": "Las Rosas",
+     "visitante": "Comercio"
+    },
+    {
+     "local": "B.A.P",
+     "visitante": "San Martín de S.P"
+    }
+   ],
+   "5": [
+    {
+     "local": "Defensores",
+     "visitante": "A.F.I"
+    },
+    {
+     "local": "San Brochero",
+     "visitante": "Atlanta"
+    },
+    {
+     "local": "Comercio",
+     "visitante": "B.A.P"
+    },
+    {
+     "local": "San Martín de S.P",
+     "visitante": "Sarmiento"
+    },
+    {
+     "local": "San Vicente",
+     "visitante": "Las Rosas"
+    }
+   ],
+   "6": [
+    {
+     "local": "San Martín de S.P",
+     "visitante": "Comercio"
+    },
+    {
+     "local": "Sarmiento",
+     "visitante": "Defensores"
+    },
+    {
+     "local": "A.F.I",
+     "visitante": "San Brochero"
+    },
+    {
+     "local": "B.A.P",
+     "visitante": "San Vicente"
+    },
+    {
+     "local": "Las Rosas",
+     "visitante": "Atlanta"
+    }
+   ],
+   "7": [
+    {
+     "local": "Atlanta",
+     "visitante": "B.A.P"
+    },
+    {
+     "local": "A.F.I",
+     "visitante": "Las Rosas"
+    },
+    {
+     "local": "San Vicente",
+     "visitante": "San Martín de S.P"
+    },
+    {
+     "local": "Defensores",
+     "visitante": "San Brochero"
+    },
+    {
+     "local": "Sarmiento",
+     "visitante": "Comercio"
+    }
+   ],
+   "8": [
+    {
+     "local": "San Martín de S.P",
+     "visitante": "Atlanta"
+    },
+    {
+     "local": "B.A.P",
+     "visitante": "A.F.I"
+    },
+    {
+     "local": "San Brochero",
+     "visitante": "Sarmiento"
+    },
+    {
+     "local": "Comercio",
+     "visitante": "San Vicente"
+    },
+    {
+     "local": "Las Rosas",
+     "visitante": "Defensores"
+    }
+   ],
+   "9": [
+    {
+     "local": "Defensores",
+     "visitante": "B.A.P"
+    },
+    {
+     "local": "San Vicente",
+     "visitante": "Sarmiento"
+    },
+    {
+     "local": "A.F.I",
+     "visitante": "San Martín de S.P"
+    },
+    {
+     "local": "San Brochero",
+     "visitante": "Las Rosas"
+    },
+    {
+     "local": "Atlanta",
+     "visitante": "Comercio"
+    }
+   ]
+  },
+  "B": {
+   "1": [
+    {
+     "local": "Independiente",
+     "visitante": "Luyaba"
+    },
+    {
+     "local": "Fátima",
+     "visitante": "Travesía"
+    },
+    {
+     "local": "Huracán",
+     "visitante": "Sargento Cabral"
+    },
+    {
+     "local": "Ardiles",
+     "visitante": "Las Tapias"
+    },
+    {
+     "local": "San José",
+     "visitante": "Juventud Unida"
+    }
+   ],
+   "2": [
+    {
+     "local": "Travesía",
+     "visitante": "Luyaba"
+    },
+    {
+     "local": "Independiente",
+     "visitante": "San José"
+    },
+    {
+     "local": "Juventud Unida",
+     "visitante": "Ardiles"
+    },
+    {
+     "local": "Las Tapias",
+     "visitante": "Huracán"
+    },
+    {
+     "local": "Sargento Cabral",
+     "visitante": "Fátima"
+    }
+   ],
+   "3": [
+    {
+     "local": "Huracán",
+     "visitante": "Juventud Unida"
+    },
+    {
+     "local": "Ardiles",
+     "visitante": "San José"
+    },
+    {
+     "local": "Travesía",
+     "visitante": "Independiente"
+    },
+    {
+     "local": "Luyaba",
+     "visitante": "Sargento Cabral"
+    },
+    {
+     "local": "Fátima",
+     "visitante": "Las Tapias"
+    }
+   ],
+   "4": [
+    {
+     "local": "Juventud Unida",
+     "visitante": "Fátima"
+    },
+    {
+     "local": "Luyaba",
+     "visitante": "Las Tapias"
+    },
+    {
+     "local": "Sargento Cabral",
+     "visitante": "Travesía"
+    },
+    {
+     "local": "Ardiles",
+     "visitante": "Independiente"
+    },
+    {
+     "local": "San José",
+     "visitante": "Huracán"
+    }
+   ],
+   "5": [
+    {
+     "local": "Las Tapias",
+     "visitante": "Travesía"
+    },
+    {
+     "local": "Juventud Unida",
+     "visitante": "Luyaba"
+    },
+    {
+     "local": "Fátima",
+     "visitante": "San José"
+    },
+    {
+     "local": "Huracán",
+     "visitante": "Ardiles"
+    },
+    {
+     "local": "Independiente",
+     "visitante": "Sargento Cabral"
+    }
+   ],
+   "6": [
+    {
+     "local": "Huracán",
+     "visitante": "Independiente"
+    },
+    {
+     "local": "Ardiles",
+     "visitante": "Fátima"
+    },
+    {
+     "local": "Luyaba",
+     "visitante": "San José"
+    },
+    {
+     "local": "Travesía",
+     "visitante": "Juventud Unida"
+    },
+    {
+     "local": "Las Tapias",
+     "visitante": "Sargento Cabral"
+    }
+   ],
+   "7": [
+    {
+     "local": "Independiente",
+     "visitante": "Las Tapias"
+    },
+    {
+     "local": "Sargento Cabral",
+     "visitante": "Juventud Unida"
+    },
+    {
+     "local": "San José",
+     "visitante": "Travesía"
+    },
+    {
+     "local": "Luyaba",
+     "visitante": "Ardiles"
+    },
+    {
+     "local": "Fátima",
+     "visitante": "Huracán"
+    }
+   ],
+   "8": [
+    {
+     "local": "Juventud Unida",
+     "visitante": "Las Tapias"
+    },
+    {
+     "local": "Fátima",
+     "visitante": "Independiente"
+    },
+    {
+     "local": "Huracán",
+     "visitante": "Luyaba"
+    },
+    {
+     "local": "Ardiles",
+     "visitante": "Travesía"
+    },
+    {
+     "local": "San José",
+     "visitante": "Sargento Cabral"
+    }
+   ],
+   "9": [
+    {
+     "local": "Travesía",
+     "visitante": "Huracán"
+    },
+    {
+     "local": "Luyaba",
+     "visitante": "Fátima"
+    },
+    {
+     "local": "Independiente",
+     "visitante": "Juventud Unida"
+    },
+    {
+     "local": "Las Tapias",
+     "visitante": "San José"
+    },
+    {
+     "local": "Sargento Cabral",
+     "visitante": "Ardiles"
+    }
+   ]
+  }
+ },
+ "fixtureLabel": "Torneo Clausura 2026"
 };

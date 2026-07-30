@@ -171,6 +171,9 @@ function renderFixtureCard() {
   const root = document.getElementById('fixture-card');
   root.innerHTML = '';
   root.appendChild(el('h3', { text: 'Fixture' }));
+  if (DATA.fixtureLabel) {
+    root.appendChild(el('div', { class: 'meta fixture-label', text: DATA.fixtureLabel }));
+  }
   const fechas = availableFixtureFechas();
   if (fechas.length === 0) {
     root.appendChild(el('div', { class: 'empty-state', text: 'El fixture todavía no está confirmado. Lo publicamos en los próximos días.' }));
