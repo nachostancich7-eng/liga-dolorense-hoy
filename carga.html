@@ -437,29 +437,48 @@ const FIXTURE_CLAUSURA = {
   },
 };
 
+// Igual que computeStandings en app.js: tabla de un torneo/división a partir de los partidos.
+function computeStandingsLocal(categoria, division){
+  const teams = DATA.teams[categoria];
+  const table = {};
+  teams.forEach(t => table[t] = { equipo: t, pts: 0 });
+  DATA.matches
+    .filter(m => m.categoria===categoria && m.division===division && (m.fase||'liga')==='liga')
+    .forEach(m=>{
+      const L=table[m.local], V=table[m.visitante];
+      if(!L||!V) return;
+      if(m.golesLocal>m.golesVisitante) L.pts+=3;
+      else if(m.golesLocal<m.golesVisitante) V.pts+=3;
+      else { L.pts++; V.pts++; }
+    });
+  return Object.values(table);
+}
+
 function nuevoTorneo(){
   if(!DATA) return;
   const nombre = document.getElementById('in-torneo-nuevo').value.trim();
   if(!nombre){ alert('Escribí el nombre del torneo nuevo.'); return; }
-  if(!confirm(`Se van a borrar los partidos y goleadores del torneo actual.\n\nLa tabla del torneo que termina pasa al acumulado anual.\nSe conservan: tabla anual, campeones históricos, planteles, escudos y auspiciantes.\n\n¿Arrancar "${nombre}"?`)) return;
+  if(!confirm(`Se van a borrar los partidos y goleadores del torneo actual.\n\nLos puntos de Primera, 3ra y 4ta del torneo que termina pasan a sumarse en la Sumatoria General.\nSe conservan: sumatoria general, campeones históricos, planteles, escudos y auspiciantes.\n\n¿Arrancar "${nombre}"?`)) return;
 
-  // La tabla del torneo que cierra pasa a sumar en el acumulado anual
-  if(DATA.posicionesFinales){
-    const previo = DATA.anualPrevio || { A:[], B:[] };
+  // Los puntos del torneo que cierra (Primera+3ra+4ta) pasan a sumarse en sumatoriaBase,
+  // pero solo si todavía no estaban reflejados ahí (evita duplicar si ya se habían cargado a mano).
+  if(DATA.torneo !== DATA.sumatoriaBaseTorneo){
+    DATA.sumatoriaBase = DATA.sumatoriaBase || { A:{}, B:{} };
     ['A','B'].forEach(cat=>{
-      const acc = {};
-      [...(previo[cat]||[]), ...(DATA.posicionesFinales[cat]||[])].forEach(f=>{
-        if(!acc[f.equipo]) acc[f.equipo]={equipo:f.equipo,pj:0,pg:0,pe:0,pp:0,gf:0,gc:0,pts:0};
-        ['pj','pg','pe','pp','gf','gc','pts'].forEach(c=>acc[f.equipo][c]+=(f[c]||0));
+      DATA.sumatoriaBase[cat] = DATA.sumatoriaBase[cat] || {};
+      [['Primera','pts1ra'], ['3ra','pts3ra'], ['4ta','pts4ta']].forEach(([division,campo])=>{
+        computeStandingsLocal(cat, division).forEach(fila=>{
+          if(!DATA.sumatoriaBase[cat][fila.equipo]) DATA.sumatoriaBase[cat][fila.equipo] = {pts1ra:0,pts3ra:0,pts4ta:0};
+          DATA.sumatoriaBase[cat][fila.equipo][campo] += fila.pts;
+        });
       });
-      previo[cat] = Object.values(acc).sort((a,b)=>b.pts-a.pts||((b.gf-b.gc)-(a.gf-a.gc)));
     });
-    DATA.anualPrevio = previo;
-    delete DATA.posicionesFinales;
+    DATA.sumatoriaBaseTorneo = DATA.torneo;
   }
 
   DATA.torneo = nombre;
   DATA.matches = [];
+  delete DATA.posicionesFinales;
   // Si el nombre del torneo menciona "Clausura", ya tenemos el fixture completo (9 fechas) confirmado
   if(/clausura/i.test(nombre)){
     DATA.fixture = JSON.parse(JSON.stringify(FIXTURE_CLAUSURA));

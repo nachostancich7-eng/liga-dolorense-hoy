@@ -2740,5 +2740,112 @@ window.SITE_DATA = {
    ]
   }
  },
- "fixtureLabel": "Torneo Clausura 2026"
+ "fixtureLabel": "Torneo Clausura 2026",
+ "sumatoriaBase": {
+  "A": {
+   "Comercio": {
+    "pts1ra": 17,
+    "pts3ra": 20,
+    "pts4ta": 24
+   },
+   "Defensores": {
+    "pts1ra": 22,
+    "pts3ra": 19,
+    "pts4ta": 17
+   },
+   "San Martín de S.P": {
+    "pts1ra": 13,
+    "pts3ra": 16,
+    "pts4ta": 22
+   },
+   "San Brochero": {
+    "pts1ra": 12,
+    "pts3ra": 18,
+    "pts4ta": 16
+   },
+   "Atlanta": {
+    "pts1ra": 12,
+    "pts3ra": 15,
+    "pts4ta": 13
+   },
+   "Sarmiento": {
+    "pts1ra": 17,
+    "pts3ra": 10,
+    "pts4ta": 5
+   },
+   "B.A.P": {
+    "pts1ra": 6,
+    "pts3ra": 8,
+    "pts4ta": 17
+   },
+   "Las Rosas": {
+    "pts1ra": 7,
+    "pts3ra": 12,
+    "pts4ta": 10
+   },
+   "A.F.I": {
+    "pts1ra": 11,
+    "pts3ra": 4,
+    "pts4ta": 4
+   },
+   "San Vicente": {
+    "pts1ra": 5,
+    "pts3ra": 4,
+    "pts4ta": 1
+   }
+  },
+  "B": {
+   "Juventud Unida": {
+    "pts1ra": 20,
+    "pts3ra": 18,
+    "pts4ta": 15
+   },
+   "Luyaba": {
+    "pts1ra": 11,
+    "pts3ra": 19,
+    "pts4ta": 20
+   },
+   "Sargento Cabral": {
+    "pts1ra": 14,
+    "pts3ra": 17,
+    "pts4ta": 17
+   },
+   "San José": {
+    "pts1ra": 7,
+    "pts3ra": 22,
+    "pts4ta": 20
+   },
+   "Independiente": {
+    "pts1ra": 8,
+    "pts3ra": 21,
+    "pts4ta": 16
+   },
+   "Travesía": {
+    "pts1ra": 27,
+    "pts3ra": 10,
+    "pts4ta": 0
+   },
+   "Las Tapias": {
+    "pts1ra": 13,
+    "pts3ra": 8,
+    "pts4ta": 12
+   },
+   "Huracán": {
+    "pts1ra": 8,
+    "pts3ra": 7,
+    "pts4ta": 10
+   },
+   "Ardiles": {
+    "pts1ra": 2,
+    "pts3ra": 4,
+    "pts4ta": 9
+   },
+   "Fátima": {
+    "pts1ra": 7,
+    "pts3ra": 0,
+    "pts4ta": 1
+   }
+  }
+ },
+ "sumatoriaBaseTorneo": "Torneo Apertura 2026"
 };

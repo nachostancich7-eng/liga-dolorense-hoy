@@ -575,21 +575,64 @@ function tablaTorneoActual(categoria, division) {
   return computeStandings(categoria, division);
 }
 
-// Tabla anual = lo acumulado de torneos ya cerrados (anualPrevio)
-// + lo que va del torneo en curso (calculado desde los partidos).
-function computeAnual(categoria, division) {
-  const previo = (DATA.anualPrevio && DATA.anualPrevio[categoria]) || [];
-  const actual = tablaTorneoActual(categoria, division);
+// Sumatoria general = puntos de Primera + 3ra + 4ta de cada club.
+// Arranca de una base confirmada a mano (DATA.sumatoriaBase, tal como la
+// publica Fotodeportiva) y le suma lo que se juegue del torneo en curso,
+// partido a partido, en esas tres divisiones.
+function computeSumatoria(categoria) {
+  const base = (DATA.sumatoriaBase && DATA.sumatoriaBase[categoria]) || {};
   const acc = {};
-  const sumar = fila => {
-    const k = fila.equipo;
-    if (!acc[k]) acc[k] = { equipo: k, pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0 };
-    ['pj', 'pg', 'pe', 'pp', 'gf', 'gc', 'pts'].forEach(c => acc[k][c] += (fila[c] || 0));
-  };
-  previo.forEach(sumar);
-  actual.forEach(sumar);
-  return Object.values(acc).sort((a, b) =>
-    (b.pts - a.pts) || ((b.gf - b.gc) - (a.gf - a.gc)) || (b.gf - a.gf));
+  Object.keys(base).forEach(equipo => {
+    acc[equipo] = {
+      equipo,
+      pts1ra: base[equipo].pts1ra || 0,
+      pts3ra: base[equipo].pts3ra || 0,
+      pts4ta: base[equipo].pts4ta || 0,
+    };
+  });
+  // Si el torneo actual ya está reflejado en la base (recién archivado), no sumar de nuevo.
+  if (DATA.torneo !== DATA.sumatoriaBaseTorneo) {
+    const sumarDivision = (division, campo) => {
+      tablaTorneoActual(categoria, division).forEach(fila => {
+        if (!acc[fila.equipo]) acc[fila.equipo] = { equipo: fila.equipo, pts1ra: 0, pts3ra: 0, pts4ta: 0 };
+        acc[fila.equipo][campo] += (fila.pts || 0);
+      });
+    };
+    sumarDivision('Primera', 'pts1ra');
+    sumarDivision('3ra', 'pts3ra');
+    sumarDivision('4ta', 'pts4ta');
+  }
+  return Object.values(acc)
+    .map(f => ({ ...f, pts: f.pts1ra + f.pts3ra + f.pts4ta }))
+    .sort((a, b) => b.pts - a.pts);
+}
+
+function sumatoriaTable(rows, kind) {
+  const wrap = el('div', { class: 'table-scroll' });
+  const table = el('table', { class: 'pos-table sumatoria-table' });
+  table.appendChild(el('tr', {}, [
+    el('th', { text: '#' }),
+    el('th', { class: 'col-equipo', text: 'Equipo' }),
+    el('th', { text: 'PTS' }),
+    el('th', { text: '1RA' }),
+    el('th', { text: '3RA' }),
+    el('th', { text: '4TA' }),
+  ]));
+  rows.forEach((r, i) => {
+    const cls = rankBadgeClass(i, rows.length, kind);
+    table.appendChild(el('tr', {}, [
+      el('td', {}, [el('span', { class: `rank-badge ${cls}`, text: String(i + 1) })]),
+      el('td', { class: 'col-equipo' }, [
+        el('div', { class: 'team-cell' }, [logoImg(r.equipo), el('span', { text: r.equipo })])
+      ]),
+      el('td', { class: 'col-pts', text: String(r.pts) }),
+      el('td', { text: String(r.pts1ra) }),
+      el('td', { text: String(r.pts3ra) }),
+      el('td', { text: String(r.pts4ta) }),
+    ]));
+  });
+  wrap.appendChild(table);
+  return wrap;
 }
 
 function renderPosicionesView(division) {
@@ -611,29 +654,29 @@ function renderPosicionesView(division) {
     root.appendChild(block);
   });
 
-  const anualA = computeAnual('A', division);
-  const anualB = computeAnual('B', division);
+  const sumatoriaA = computeSumatoria('A');
+  const sumatoriaB = computeSumatoria('B');
 
   const anual = el('div', { class: 'anual-block' }, [
-    el('div', { class: 'section-label', text: `TABLA ANUAL ${DATA.temporada || ''} · ACUMULADO PARCIAL`.replace('  ', ' ') }),
-    el('div', { class: 'section-note', text: 'Suma los torneos ya jugados más lo que va del torneo actual, solo Primera.' }),
+    el('div', { class: 'section-label', text: `SUMATORIA GENERAL DE PUNTOS ${DATA.temporada || ''}`.trim() }),
+    el('div', { class: 'section-note', text: 'Suma los puntos de Primera, 3ra y 4ta de cada club en los torneos del año.' }),
 
     el('div', { class: 'anual-cat-header' }, [
-      el('span', { class: 'dot dot-A' }), el('span', { text: 'Categoría A' }),
+      el('span', { class: 'dot dot-A' }), el('span', { text: 'Primera A' }),
     ]),
-    posTable(anualA, 'descenso'),
+    sumatoriaTable(sumatoriaA, 'descenso'),
     el('div', { class: 'legend' }, [
       el('span', { class: 'rank-badge descenso' }),
-      el('span', { text: 'Descenso a categoría B' }),
+      el('span', { text: 'Descenso a Primera B' }),
     ]),
 
     el('div', { class: 'anual-cat-header' }, [
-      el('span', { class: 'dot dot-B' }), el('span', { text: 'Categoría B' }),
+      el('span', { class: 'dot dot-B' }), el('span', { text: 'Primera B' }),
     ]),
-    posTable(anualB, 'ascenso'),
+    sumatoriaTable(sumatoriaB, 'ascenso'),
     el('div', { class: 'legend' }, [
       el('span', { class: 'rank-badge ascenso' }),
-      el('span', { text: 'Asciende por tabla anual' }),
+      el('span', { text: 'Ascenso por sumatoria general' }),
     ]),
   ]);
   root.appendChild(anual);
@@ -684,7 +727,7 @@ function renderGoleadoresView(division) {
       : computeGoleadores(cat, division);
     const inner = [
       el('div', { class: `cat-header cat-${cat}` }, [
-        el('span', { text: `Goleadores · Categoría ${cat}` }),
+        el('span', { text: `Goleadores · Primera ${cat}` }),
         el('span', { class: 'sub', text: division.toUpperCase() }),
       ]),
     ];
