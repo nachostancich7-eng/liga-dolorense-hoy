@@ -122,11 +122,12 @@ function el(tag, attrs = {}, children = []) {
   return e;
 }
 
-function renderVallaView() {
+function renderVallaView(division) {
   const root = document.getElementById('view-root');
   root.innerHTML = '';
+  const etiquetaDivision = division === 'Primera' ? 'Primera' : division;
   ['A', 'B'].forEach(cat => {
-    const rows = tablaTorneoActual(cat, 'Primera').slice()
+    const rows = tablaTorneoActual(cat, division).slice()
       .sort((a, b) => a.gc - b.gc);
     const list = el('div', { class: 'valla-list' });
     rows.forEach((r, i) => {
@@ -139,7 +140,7 @@ function renderVallaView() {
     });
     root.appendChild(el('div', { class: `cat-block cat-block-${cat}` }, [
       el('div', { class: `cat-header cat-${cat}` }, [
-        el('span', { text: `Valla menos vencida · Primera ${cat}` }),
+        el('span', { text: `Valla menos vencida · ${etiquetaDivision} ${cat}` }),
       ]),
       list,
     ]));
@@ -671,7 +672,7 @@ function renderPosicionesView(division) {
       posTable(rows, 'playoff'),
       el('div', { class: 'legend' }, [
         el('span', { class: 'rank-badge playoff' }),
-        el('span', { text: 'Clasificó a playoff' }),
+        el('span', { text: 'Clasifica a play off' }),
       ]),
     ]);
     root.appendChild(block);
@@ -781,11 +782,9 @@ function renderGoleadoresView(division) {
 }
 
 function render() {
-  const chips = document.getElementById('division-chips');
-  if (chips) chips.style.display = currentView === 'valla' ? 'none' : '';
   if (currentView === 'resultados') renderResultadosView(currentDivision);
   else if (currentView === 'posiciones') renderPosicionesView(currentDivision);
-  else if (currentView === 'valla') renderVallaView();
+  else if (currentView === 'valla') renderVallaView(currentDivision);
   else renderGoleadoresView(currentDivision);
 }
 
