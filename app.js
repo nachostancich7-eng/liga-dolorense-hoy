@@ -9,6 +9,12 @@ const FASE_ORDER = { 'SEMIFINALES': 1000, 'FINAL': 1001 };
 
 function availableFechas(division) {
   const fechas = new Set(DATA.matches.filter(m => m.division === division).map(m => m.fecha));
+  if (fechas.size === 0 && DATA.fixture) {
+    // Todavía no hay resultados cargados para esta división: mostramos las fechas
+    // del fixture ya confirmado (todas vacías) en vez de no mostrar nada.
+    [...(Object.keys(DATA.fixture.A || {})), ...(Object.keys(DATA.fixture.B || {}))]
+      .forEach(f => fechas.add(Number(f)));
+  }
   return Array.from(fechas).sort((a, b) => {
     const av = typeof a === 'number' ? a : FASE_ORDER[a];
     const bv = typeof b === 'number' ? b : FASE_ORDER[b];
@@ -89,7 +95,7 @@ function computeStandings(categoria, division) {
   teams.forEach(t => table[t] = { equipo: t, pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, pts: 0 });
 
   DATA.matches
-    .filter(m => m.categoria === categoria && m.division === division && (m.fase || 'liga') === 'liga')
+    .filter(m => m.categoria === categoria && m.division === division && (m.fase || 'liga') === 'liga' && m.estado !== 'suspendido')
     .forEach(m => {
       const L = table[m.local], V = table[m.visitante];
       if (!L || !V) return;
@@ -387,6 +393,19 @@ function renderMatches(categoria, division, fecha) {
     return el('div', { class: 'empty-state', text: 'No hay partidos cargados para esta fecha.' });
   }
   fechaMatches.forEach(m => {
+    if (m.estado === 'suspendido') {
+      const row = el('div', { class: 'match-row' }, [
+        logoImg(m.local),
+        el('span', { class: 'team home', text: m.local }),
+        el('span', { class: 'score score-suspendido', text: 'SUSPENDIDO' }),
+        el('span', { class: 'team away', text: m.visitante }),
+        logoImg(m.visitante),
+      ]);
+      const matchEl = el('div', { class: 'match match-suspendido' }, [row]);
+      if (m.nota) matchEl.appendChild(el('div', { class: 'match-nota', text: m.nota }));
+      wrap.appendChild(matchEl);
+      return;
+    }
     const row = el('div', { class: 'match-row' }, [
       logoImg(m.local),
       el('span', { class: 'team home', text: m.local }),
@@ -403,6 +422,7 @@ function renderMatches(categoria, division, fecha) {
         el('span', { class: 'away-scorers', text: visGoals }),
       ]));
     }
+    if (m.nota) matchEl.appendChild(el('div', { class: 'match-nota', text: m.nota }));
     wrap.appendChild(matchEl);
   });
   return wrap;
@@ -417,7 +437,10 @@ function summarizeScorers(list) {
 function renderFechaSwitcher(division) {
   const fechas = availableFechas(division);
   if (fechas.length === 0) return el('div');
-  if (currentFecha === null || !fechas.includes(currentFecha)) currentFecha = fechas[fechas.length - 1];
+  const hayPartidosJugados = DATA.matches.some(m => m.division === division);
+  if (currentFecha === null || !fechas.includes(currentFecha)) {
+    currentFecha = hayPartidosJugados ? fechas[fechas.length - 1] : fechas[0];
+  }
   const idx = fechas.indexOf(currentFecha);
 
   const prevBtn = el('button', { class: 'fecha-arrow', text: '‹' });
@@ -694,7 +717,7 @@ function normalizarNombre(s) {
 function computeGoleadores(categoria, division) {
   const acc = {};
   DATA.matches
-    .filter(m => m.categoria === categoria && m.division === division)
+    .filter(m => m.categoria === categoria && m.division === division && m.estado !== 'suspendido')
     .forEach(m => {
       const agregar = (nombre, club) => {
         const key = normalizarNombre(nombre) + '|' + club;
@@ -781,7 +804,7 @@ function setupChips() {
   const chipsRoot = document.getElementById('division-chips');
   chipsRoot.innerHTML = '';
   DIVISIONS.forEach(div => {
-    const has = availableDivisions.has(div) || div === 'Primera';
+    const has = availableDivisions.has(div) || !!DATA.fixture;
     const chip = el('span', {
       class: `chip ${div === currentDivision ? 'active' : ''} ${has ? '' : 'disabled'}`,
       text: div === 'Primera' ? '1ra' : div,

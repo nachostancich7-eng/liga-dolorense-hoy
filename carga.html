@@ -37,6 +37,10 @@ details summary{cursor:pointer;font-size:13px;color:var(--muted);padding:4px 0;}
 .aviso.ok{background:rgba(51,206,155,.12);border:1px solid rgba(51,206,155,.35);color:#B6EFD8;}
 
 .partido{background:var(--bg-alt);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:10px;}
+.partido.suspendido{border-color:rgba(242,169,59,.5);background:rgba(242,169,59,.06);}
+.btn-suspender{width:100%;margin:8px 0 4px;padding:9px;border-radius:8px;border:1px dashed var(--muted);background:none;color:var(--muted);font-size:12.5px;}
+.btn-suspender.activo{border:1px solid var(--gold);background:rgba(242,169,59,.14);color:var(--gold);font-weight:600;}
+.borrador-aviso{position:sticky;top:56px;z-index:15;margin:-4px -4px 10px;padding:8px 12px;border-radius:8px;background:rgba(79,168,224,.14);border:1px solid rgba(79,168,224,.4);color:#A9D8F5;font-size:12.5px;text-align:center;}
 .partido .cab{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;}
 .partido .cab .meta{font-size:11px;color:var(--gold);text-transform:uppercase;letter-spacing:.04em;}
 .partido .borrar{background:none;border:none;color:var(--dim);font-size:20px;padding:0 6px;line-height:1;}
@@ -84,6 +88,12 @@ details summary{cursor:pointer;font-size:13px;color:var(--muted);padding:4px 0;}
   </section>
 
   <!-- ============ PEGAR MENSAJE ============ -->
+  <!-- ============ SUSPENDIDOS PENDIENTES ============ -->
+  <section id="sec-suspendidos" class="oculto">
+    <h2>🚩 Suspendidos esperando resolución de la Liga</h2>
+    <div id="lista-suspendidos"></div>
+  </section>
+
   <section id="sec-pegar">
     <h2>1 · Pegar el mensaje</h2>
     <div class="row">
@@ -110,6 +120,7 @@ details summary{cursor:pointer;font-size:13px;color:var(--muted);padding:4px 0;}
   <!-- ============ REVISIÓN ============ -->
   <section id="sec-revision" class="oculto">
     <h2>2 · Revisar antes de guardar</h2>
+    <div id="borrador-contador"></div>
     <div id="lista-partidos"></div>
     <div id="revision-avisos"></div>
     <button onclick="agregarVacio()" style="width:100%;margin-top:6px">+ Agregar otro partido</button>
@@ -277,6 +288,7 @@ function parsearLinea(linea, divisionActual){
     golesLocal: parseInt(m[2],10), golesVisitante: parseInt(m[5],10),
     goleadoresLocal: partirGoleadores(m[3]),
     goleadoresVisitante: partirGoleadores(m[6]),
+    nota: '',
   };
   return { division: div, partido: p };
 }
@@ -316,7 +328,7 @@ function agregarVacio(){
   if(!DATA) return;
   PENDIENTES.push({ division: document.getElementById('in-division').value,
     local:null, visitante:null, golesLocal:0, golesVisitante:0,
-    goleadoresLocal:[], goleadoresVisitante:[] });
+    goleadoresLocal:[], goleadoresVisitante:[], nota:'' });
   pintar();
 }
 function optsEquipos(sel){
@@ -330,17 +342,45 @@ function chipsDe(nombres, club){
     const et = r.estado==='nuevo' ? ' · nuevo' : '';
     return `<span class="chip ${r.estado}">${t}${et}</span>`; }).join('');
 }
+function pintarSuspendidos(){
+  const sec = document.getElementById('sec-suspendidos');
+  const cont = document.getElementById('lista-suspendidos');
+  if(!DATA){ sec.classList.add('oculto'); return; }
+  const pendientes = (DATA.matches||[]).filter(m=>m.estado==='suspendido');
+  sec.classList.toggle('oculto', pendientes.length===0);
+  cont.innerHTML = pendientes.map((m,idx)=>`
+    <div class="partido suspendido">
+      <div class="cab">
+        <span class="meta">${esc(m.division)} · Fecha ${m.fecha} · Categoría ${esc(m.categoria)}</span>
+      </div>
+      <div style="font-weight:600;font-size:14px;margin:4px 0">${esc(m.local)} vs ${esc(m.visitante)}</div>
+      ${m.nota ? `<div class="hint" style="margin:0 0 8px">${esc(m.nota)}</div>` : ''}
+      <button class="gold" style="width:100%" onclick="resolverSuspendido(${m.fecha}, '${esc(m.division)}', '${esc(m.local)}', '${esc(m.visitante)}')">
+        Ya lo resolvió la Liga — cargar resultado
+      </button>
+    </div>`).join('');
+}
+function resolverSuspendido(fecha, division, local, visitante){
+  document.getElementById('in-fecha').value = fecha;
+  document.getElementById('in-division').value = division;
+  PENDIENTES.push({ division, local, visitante, golesLocal:0, golesVisitante:0,
+    goleadoresLocal:[], goleadoresVisitante:[], nota:'', suspendido:false });
+  pintar();
+  document.getElementById('sec-revision').scrollIntoView({behavior:'smooth'});
+}
+
 function pintar(){
   const cont = document.getElementById('lista-partidos');
   document.getElementById('sec-revision').classList.toggle('oculto', PENDIENTES.length===0);
+  const contador = document.getElementById('borrador-contador');
+  if(contador){
+    contador.innerHTML = PENDIENTES.length
+      ? `<div class="borrador-aviso">📋 ${PENDIENTES.length} partido(s) guardados como borrador en este dispositivo · todavía NO están publicados en la web</div>`
+      : '';
+  }
   cont.innerHTML = PENDIENTES.map((p,i)=>{
     const cat = p.local ? categoriaDe(p.local) : (p.visitante ? categoriaDe(p.visitante) : '—');
-    return `
-    <div class="partido">
-      <div class="cab">
-        <span class="meta">${esc(p.division)} · Categoría ${cat||'?'}</span>
-        <button class="borrar" onclick="quitar(${i})">×</button>
-      </div>
+    const camposResultado = p.suspendido ? '' : `
       <div class="lado">
         <select onchange="setCampo(${i},'local',this.value)">${optsEquipos(p.local)}</select>
         <input type="number" min="0" inputmode="numeric" value="${p.golesLocal}" onchange="setCampo(${i},'golesLocal',this.value)">
@@ -354,11 +394,45 @@ function pintar(){
       </div>
       <input placeholder="Goleadores del visitante (separados por coma)" value="${esc(p.goleadoresVisitante.join(', '))}"
              onchange="setGoleadores(${i},'goleadoresVisitante',this.value)">
-      <div class="chips">${chipsDe(p.goleadoresVisitante,p.visitante)}</div>
+      <div class="chips">${chipsDe(p.goleadoresVisitante,p.visitante)}</div>`;
+    const clubesSuspendido = p.suspendido ? `
+      <div class="lado">
+        <select onchange="setCampo(${i},'local',this.value)">${optsEquipos(p.local)}</select>
+        <span></span>
+      </div>
+      <div class="lado">
+        <select onchange="setCampo(${i},'visitante',this.value)">${optsEquipos(p.visitante)}</select>
+        <span></span>
+      </div>` : '';
+    return `
+    <div class="partido ${p.suspendido?'suspendido':''}">
+      <div class="cab">
+        <span class="meta">${esc(p.division)} · Categoría ${cat||'?'}</span>
+        <button class="borrar" onclick="quitar(${i})">×</button>
+      </div>
+      ${clubesSuspendido}
+      ${camposResultado}
+      <button class="btn-suspender ${p.suspendido?'activo':''}" onclick="toggleSuspendido(${i})">
+        ${p.suspendido ? '🚩 Marcado como suspendido/reprogramado — tocá para deshacer' : 'Marcar como suspendido / reprogramado'}
+      </button>
+      <input placeholder="Nota para mostrar junto al resultado (opcional) — ej: Partido inconcluso por disturbios"
+             value="${esc(p.nota||'')}" onchange="setNota(${i},this.value)">
       ${avisosDe(p)}
     </div>`;
   }).join('');
   document.getElementById('btn-guardar').disabled = PENDIENTES.length===0 || !cfg().token;
+  guardarBorrador();
+}
+function setNota(i, val){ PENDIENTES[i].nota = val; guardarBorrador(); }
+function toggleSuspendido(i){
+  PENDIENTES[i].suspendido = !PENDIENTES[i].suspendido;
+  if(PENDIENTES[i].suspendido){
+    PENDIENTES[i].golesLocal = null; PENDIENTES[i].golesVisitante = null;
+    PENDIENTES[i].goleadoresLocal = []; PENDIENTES[i].goleadoresVisitante = [];
+  } else {
+    PENDIENTES[i].golesLocal = 0; PENDIENTES[i].golesVisitante = 0;
+  }
+  pintar();
 }
 function avisosDe(p){
   const a=[];
@@ -369,6 +443,10 @@ function avisosDe(p){
     const dup = (DATA.matches||[]).some(m=>m.division===p.division && m.fecha===fecha &&
       ((m.local===p.local&&m.visitante===p.visitante)||(m.local===p.visitante&&m.visitante===p.local)));
     if(dup) a.push(['warn','Este partido ya estaba cargado en esta fecha. Se va a reemplazar.']);
+  }
+  if(p.suspendido){
+    a.push(['warn','No suma a la tabla de posiciones ni a goleadores hasta que cargues el resultado real.']);
+    return a.map(([t,m])=>`<div class="aviso ${t}">${m}</div>`).join('');
   }
   const fl=p.golesLocal-p.goleadoresLocal.length, fv=p.golesVisitante-p.goleadoresVisitante.length;
   if(fl>0||fv>0) a.push(['warn',`Faltan autores: ${fl>0?fl+' gol(es) del local':''}${fl>0&&fv>0?' y ':''}${fv>0?fv+' del visitante':''}. Se guarda igual.`]);
@@ -387,6 +465,31 @@ function setGoleadores(i,campo,val){ PENDIENTES[i][campo]=partirGoleadores(val);
 function quitar(i){ PENDIENTES.splice(i,1); pintar(); }
 
 /* ============================================================
+   BORRADOR LOCAL: para no perder nada si cerrás la página
+   a mitad del domingo. No publica nada, solo guarda en ESTE
+   dispositivo hasta que toques "Guardar y publicar".
+   ============================================================ */
+function guardarBorrador(){
+  try{
+    localStorage.setItem('ldh_borrador', JSON.stringify({
+      pendientes: PENDIENTES,
+      fecha: document.getElementById('in-fecha') ? document.getElementById('in-fecha').value : '1',
+      division: document.getElementById('in-division') ? document.getElementById('in-division').value : 'Primera',
+    }));
+  }catch(e){ /* si falla, no es grave: solo no persiste */ }
+}
+function restaurarBorrador(){
+  let guardado = null;
+  try{ guardado = JSON.parse(localStorage.getItem('ldh_borrador')||'null'); }catch(e){}
+  if(!guardado || !Array.isArray(guardado.pendientes) || !guardado.pendientes.length) return;
+  PENDIENTES = guardado.pendientes;
+  if(guardado.fecha && document.getElementById('in-fecha')) document.getElementById('in-fecha').value = guardado.fecha;
+  if(guardado.division && document.getElementById('in-division')) document.getElementById('in-division').value = guardado.division;
+  avisar('revision-avisos','warn',`📋 Recuperé un borrador de este dispositivo con ${guardado.pendientes.length} partido(s) sin publicar todavía.`);
+}
+function borrarBorrador(){ localStorage.removeItem('ldh_borrador'); }
+
+/* ============================================================
    APLICAR A DATA
    ============================================================ */
 function aplicarPendientes(){
@@ -396,16 +499,29 @@ function aplicarPendientes(){
     // sacar duplicado previo
     DATA.matches = DATA.matches.filter(m=>!(m.division===p.division && m.fecha===fecha &&
       ((m.local===p.local&&m.visitante===p.visitante)||(m.local===p.visitante&&m.visitante===p.local))));
-    DATA.matches.push({
-      fecha, categoria: cat, division: p.division,
-      local: p.local, visitante: p.visitante,
-      golesLocal: p.golesLocal, golesVisitante: p.golesVisitante,
-      goleadoresLocal: p.goleadoresLocal.map(n=>resolverJugador(n,p.local).nombre),
-      goleadoresVisitante: p.goleadoresVisitante.map(n=>resolverJugador(n,p.visitante).nombre),
-      fase:'liga'
-    });
+    if(p.suspendido){
+      DATA.matches.push({
+        fecha, categoria: cat, division: p.division,
+        local: p.local, visitante: p.visitante,
+        golesLocal: null, golesVisitante: null,
+        goleadoresLocal: [], goleadoresVisitante: [],
+        fase:'liga', estado:'suspendido',
+        ...(p.nota && p.nota.trim() ? {nota: p.nota.trim()} : {})
+      });
+    } else {
+      DATA.matches.push({
+        fecha, categoria: cat, division: p.division,
+        local: p.local, visitante: p.visitante,
+        golesLocal: p.golesLocal, golesVisitante: p.golesVisitante,
+        goleadoresLocal: p.goleadoresLocal.map(n=>resolverJugador(n,p.local).nombre),
+        goleadoresVisitante: p.goleadoresVisitante.map(n=>resolverJugador(n,p.visitante).nombre),
+        fase:'liga',
+        ...(p.nota && p.nota.trim() ? {nota: p.nota.trim()} : {})
+      });
+    }
   });
   PENDIENTES=[];
+  guardarBorrador();
 }
 function serializar(){ return 'window.SITE_DATA = ' + JSON.stringify(DATA,null,1) + ';'; }
 
@@ -525,6 +641,8 @@ async function recargarDesdeRepo(){
       setEstado('conectado · '+(DATA.torneo||''));
       avisar('cfg-aviso','ok','Datos cargados desde GitHub.');
       document.getElementById('det-config').open=false;
+      restaurarBorrador();
+      pintarSuspendidos();
       pintar(); return;
     }catch(e){
       avisar('cfg-aviso','err','No pude leer el archivo en GitHub ('+e.message+'). Revisá usuario, repo, rama, ruta y token.');
@@ -538,6 +656,8 @@ async function recargarDesdeRepo(){
     SHA = null;
     setEstado('solo lectura');
     avisar('cfg-aviso','warn','Cargué los datos del sitio, pero sin GitHub configurado solo vas a poder descargar el archivo.');
+    restaurarBorrador();
+    pintarSuspendidos();
     pintar();
   }catch(e){ setEstado('sin datos'); }
 }
@@ -548,10 +668,15 @@ async function guardarEnGitHub(){
   if(malos.length){ alert('Hay partidos con clubes sin elegir o de categorías distintas. Corregilos primero.'); return; }
   const btn=document.getElementById('btn-guardar');
   btn.disabled=true; btn.textContent='Guardando…';
+  // Armamos el resultado sobre una COPIA de DATA. Si falla el guardado en GitHub,
+  // los pendientes y el borrador quedan intactos, no se pierde nada.
+  const dataOriginal = DATA;
+  const pendientesOriginales = PENDIENTES;
   try{
     const fecha=document.getElementById('in-fecha').value;
     const cant=PENDIENTES.length;
-    aplicarPendientes();
+    DATA = JSON.parse(JSON.stringify(dataOriginal));
+    aplicarPendientes();  // acá adentro ya vacía PENDIENTES y actualiza el borrador, pero solo en esta copia de trabajo
     const r = await api(`contents/${encodeURIComponent(c.path)}`,{
       method:'PUT',
       body: JSON.stringify({
@@ -563,10 +688,17 @@ async function guardarEnGitHub(){
     });
     if(!r.ok){ const t=await r.text(); throw new Error('HTTP '+r.status+' '+t.slice(0,120)); }
     const j=await r.json(); SHA=j.content.sha;
+    borrarBorrador();
     avisar('revision-avisos','ok','✅ Guardado. En un minuto queda publicado en la web.');
+    pintarSuspendidos();
     pintar();
   }catch(e){
-    avisar('revision-avisos','err','No se pudo guardar: '+e.message);
+    // Falló: restauramos todo como estaba, nada se pierde.
+    DATA = dataOriginal;
+    PENDIENTES = pendientesOriginales;
+    guardarBorrador();
+    avisar('revision-avisos','err','No se pudo guardar (nada se perdió, podés reintentar): '+e.message);
+    pintar();
   }finally{
     btn.textContent='Guardar y publicar'; btn.disabled=PENDIENTES.length===0 && !DATA;
   }
