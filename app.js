@@ -533,6 +533,7 @@ function renderPlayoffRound(categoria, division, fechaLabel) {
 function renderResultadosView(division) {
   const root = document.getElementById('view-root');
   root.innerHTML = '';
+  const etiquetaDivision = division === 'Primera' ? 'PRIMERA' : division.toUpperCase();
   root.appendChild(renderFechaSwitcher(division));
   ['A', 'B'].forEach((cat) => {
     const isPlayoff = currentFecha === 'SEMIFINALES' || currentFecha === 'FINAL';
@@ -541,7 +542,7 @@ function renderResultadosView(division) {
       : renderMatches(cat, division, currentFecha);
     const block = el('div', { class: `cat-block cat-block-${cat}` }, [
       el('div', { class: `cat-header cat-${cat}` }, [
-        el('span', { text: `PRIMERA ${cat}` }),
+        el('span', { text: `${etiquetaDivision} ${cat}` }),
       ]),
       content,
     ]);
@@ -662,12 +663,13 @@ function sumatoriaTable(rows, kind) {
 function renderPosicionesView(division) {
   const root = document.getElementById('view-root');
   root.innerHTML = '';
+  const etiquetaDivision = division === 'Primera' ? 'Primera' : division;
 
   ['A', 'B'].forEach(cat => {
     const rows = tablaTorneoActual(cat, division);
     const block = el('div', { class: `cat-block cat-block-${cat}` }, [
       el('div', { class: `cat-header cat-${cat}` }, [
-        el('span', { text: `Posiciones · Primera ${cat}` }),
+        el('span', { text: `Posiciones · ${etiquetaDivision} ${cat}` }),
       ]),
       posTable(rows, 'playoff'),
       el('div', { class: 'legend' }, [
@@ -743,6 +745,7 @@ function computeGoleadores(categoria, division) {
 function renderGoleadoresView(division) {
   const root = document.getElementById('view-root');
   root.innerHTML = '';
+  const etiquetaDivision = division === 'Primera' ? 'Primera' : division;
   ['A', 'B'].forEach(cat => {
     // Si hay una tabla oficial cargada a mano, se respeta. Si no, se calcula desde los partidos.
     const oficial = DATA.goleadores && DATA.goleadores[cat];
@@ -751,8 +754,7 @@ function renderGoleadoresView(division) {
       : computeGoleadores(cat, division);
     const inner = [
       el('div', { class: `cat-header cat-${cat}` }, [
-        el('span', { text: `Goleadores · Primera ${cat}` }),
-        el('span', { class: 'sub', text: division.toUpperCase() }),
+        el('span', { text: `Goleadores · ${etiquetaDivision} ${cat}` }),
       ]),
     ];
     if (list.length === 0) {
