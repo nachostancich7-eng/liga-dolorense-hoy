@@ -185,6 +185,18 @@ window.SITE_DATA = {
    ],
    "goleadoresVisitante": [],
    "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "A",
+   "division": "5ta",
+   "local": "Comercio",
+   "visitante": "A.F.I",
+   "golesLocal": 0,
+   "golesVisitante": 0,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [],
+   "fase": "liga"
   }
  ],
  "comunicados": [
