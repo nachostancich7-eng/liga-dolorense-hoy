@@ -92,6 +92,23 @@ window.SITE_DATA = {
    "goleadoresLocal": [],
    "goleadoresVisitante": [],
    "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "B",
+   "division": "6ta",
+   "local": "Ardiles",
+   "visitante": "Las Tapias",
+   "golesLocal": 4,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Benjamín Longo",
+    "Benjamín Longo",
+    "León Palacios",
+    "Alan Amaya"
+   ],
+   "goleadoresVisitante": [],
+   "fase": "liga"
   }
  ],
  "comunicados": [
