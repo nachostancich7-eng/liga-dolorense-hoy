@@ -156,6 +156,35 @@ window.SITE_DATA = {
     "Franco Puente"
    ],
    "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "B",
+   "division": "6ta",
+   "local": "Huracán",
+   "visitante": "Sargento Cabral",
+   "golesLocal": 1,
+   "golesVisitante": 2,
+   "goleadoresLocal": [
+    "Lucas Amaya"
+   ],
+   "goleadoresVisitante": [],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "A",
+   "division": "6ta",
+   "local": "Las Rosas",
+   "visitante": "Sarmiento",
+   "golesLocal": 2,
+   "golesVisitante": 2,
+   "goleadoresLocal": [
+    "Benicio Vallejo",
+    "Benicio Vallejo"
+   ],
+   "goleadoresVisitante": [],
+   "fase": "liga"
   }
  ],
  "comunicados": [
