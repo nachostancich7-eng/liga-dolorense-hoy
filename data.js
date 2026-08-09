@@ -160,21 +160,6 @@ window.SITE_DATA = {
   {
    "fecha": 1,
    "categoria": "A",
-   "division": "6ta",
-   "local": "Las Rosas",
-   "visitante": "Sarmiento",
-   "golesLocal": 2,
-   "golesVisitante": 2,
-   "goleadoresLocal": [
-    "Benicio Vallejo",
-    "Benicio Vallejo"
-   ],
-   "goleadoresVisitante": [],
-   "fase": "liga"
-  },
-  {
-   "fecha": 1,
-   "categoria": "A",
    "division": "5ta",
    "local": "Comercio",
    "visitante": "A.F.I",
@@ -196,23 +181,6 @@ window.SITE_DATA = {
     "Bautista Montoya"
    ],
    "goleadoresVisitante": [],
-   "fase": "liga"
-  },
-  {
-   "fecha": 1,
-   "categoria": "A",
-   "division": "5ta",
-   "local": "Sarmiento",
-   "visitante": "Las Rosas",
-   "golesLocal": 0,
-   "golesVisitante": 4,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [
-    "Jasiel Aguilera",
-    "Jasiel Aguilera",
-    "Vanucchi Sisay",
-    "Camilo Ruiz"
-   ],
    "fase": "liga"
   },
   {
@@ -260,20 +228,6 @@ window.SITE_DATA = {
   },
   {
    "fecha": 1,
-   "categoria": "A",
-   "division": "4ta",
-   "local": "San Martín de S.P",
-   "visitante": "Defensores",
-   "golesLocal": 1,
-   "golesVisitante": 1,
-   "goleadoresLocal": [
-    "Benjamin Pereyra"
-   ],
-   "goleadoresVisitante": [],
-   "fase": "liga"
-  },
-  {
-   "fecha": 1,
    "categoria": "B",
    "division": "4ta",
    "local": "Independiente",
@@ -286,72 +240,6 @@ window.SITE_DATA = {
     "Santiago Zurita"
    ],
    "goleadoresVisitante": [],
-   "fase": "liga"
-  },
-  {
-   "fecha": 1,
-   "categoria": "B",
-   "division": "6ta",
-   "local": "Huracán",
-   "visitante": "Sargento Cabral",
-   "golesLocal": 1,
-   "golesVisitante": 2,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [
-    "líam Caballero",
-    "Valentín Prado"
-   ],
-   "fase": "liga"
-  },
-  {
-   "fecha": 1,
-   "categoria": "B",
-   "division": "5ta",
-   "local": "Huracán",
-   "visitante": "Sargento Cabral",
-   "golesLocal": 1,
-   "golesVisitante": 1,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [
-    "Ian Leiva"
-   ],
-   "fase": "liga"
-  },
-  {
-   "fecha": 1,
-   "categoria": "B",
-   "division": "5ta",
-   "local": "San José",
-   "visitante": "Juventud Unida",
-   "golesLocal": 1,
-   "golesVisitante": 6,
-   "goleadoresLocal": [
-    "Lían Araya"
-   ],
-   "goleadoresVisitante": [
-    "Dilan de la Fuente",
-    "Alex Polijo",
-    "Alex Polijo",
-    "Enzo Moyano",
-    "Enzo Moyano",
-    "Uriel Algasbe"
-   ],
-   "fase": "liga"
-  },
-  {
-   "fecha": 1,
-   "categoria": "B",
-   "division": "4ta",
-   "local": "Huracán",
-   "visitante": "Sargento Cabral",
-   "golesLocal": 1,
-   "golesVisitante": 3,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [
-    "Nahir Salazar",
-    "Nahir Salazar",
-    "Dylan Barrios"
-   ],
    "fase": "liga"
   },
   {
@@ -407,23 +295,6 @@ window.SITE_DATA = {
   },
   {
    "fecha": 1,
-   "categoria": "B",
-   "division": "4ta",
-   "local": "San José",
-   "visitante": "Juventud Unida",
-   "golesLocal": 4,
-   "golesVisitante": 0,
-   "goleadoresLocal": [
-    "Tadeo Leal",
-    "Tadeo Leal",
-    "Dylan Luna",
-    "Alex Zárate"
-   ],
-   "goleadoresVisitante": [],
-   "fase": "liga"
-  },
-  {
-   "fecha": 1,
    "categoria": "A",
    "division": "3ra",
    "local": "B.A.P",
@@ -434,38 +305,6 @@ window.SITE_DATA = {
    "goleadoresVisitante": [
     "Benjamín Soria",
     "Patricio Repetto"
-   ],
-   "fase": "liga"
-  },
-  {
-   "fecha": 1,
-   "categoria": "A",
-   "division": "5ta",
-   "local": "San Martín de S.P",
-   "visitante": "Defensores",
-   "golesLocal": 2,
-   "golesVisitante": 2,
-   "goleadoresLocal": [
-    "Alejo Barreto",
-    "Leonel Calderon"
-   ],
-   "goleadoresVisitante": [
-    "Bautista Montenegro",
-    "Fran Oviedo"
-   ],
-   "fase": "liga"
-  },
-  {
-   "fecha": 1,
-   "categoria": "B",
-   "division": "5ta",
-   "local": "Ardiles",
-   "visitante": "Las Tapias",
-   "golesLocal": 0,
-   "golesVisitante": 1,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [
-    "Bautista Montoya"
    ],
    "fase": "liga"
   },
@@ -513,20 +352,6 @@ window.SITE_DATA = {
    "goleadoresLocal": [],
    "goleadoresVisitante": [
     "Valentino Oyola"
-   ],
-   "fase": "liga"
-  },
-  {
-   "fecha": 1,
-   "categoria": "A",
-   "division": "5ta",
-   "local": "San Vicente",
-   "visitante": "Atlanta",
-   "golesLocal": 0,
-   "golesVisitante": 1,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [
-    "David Vieira"
    ],
    "fase": "liga"
   },
@@ -629,15 +454,363 @@ window.SITE_DATA = {
   {
    "fecha": 1,
    "categoria": "B",
+   "division": "Primera",
+   "local": "Independiente",
+   "visitante": "Luyaba",
+   "golesLocal": 3,
+   "golesVisitante": 2,
+   "goleadoresLocal": [
+    "Santiago Bianchi",
+    "Santiago Bianchi",
+    "Junior Amaya"
+   ],
+   "goleadoresVisitante": [
+    "César Arregui",
+    "Guillermo Oviedo"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "A",
+   "division": "Primera",
+   "local": "A.F.I",
+   "visitante": "Comercio",
+   "golesLocal": 1,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Fabio Romero"
+   ],
+   "goleadoresVisitante": [],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "B",
+   "division": "Primera",
+   "local": "Huracán",
+   "visitante": "Sargento Cabral",
+   "golesLocal": 0,
+   "golesVisitante": 1,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [
+    "Rodrigo Quevedo"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "B",
+   "division": "Primera",
+   "local": "Ardiles",
+   "visitante": "Las Tapias",
+   "golesLocal": 1,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Éder Barcio"
+   ],
+   "goleadoresVisitante": [],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "B",
+   "division": "Primera",
+   "local": "San José",
+   "visitante": "Juventud Unida",
+   "golesLocal": 1,
+   "golesVisitante": 3,
+   "goleadoresLocal": [
+    "Facundo Domínguez"
+   ],
+   "goleadoresVisitante": [
+    "Julián Dominguez",
+    "Julián Dominguez",
+    "️Ignacio Pascal"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "A",
+   "division": "Primera",
+   "local": "Sarmiento",
+   "visitante": "Las Rosas",
+   "golesLocal": 4,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Agustin P. Merlo",
+    "Agustin P. Merlo",
+    "Luciano Salinas",
+    "Luca Correa"
+   ],
+   "goleadoresVisitante": [],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "A",
+   "division": "Primera",
+   "local": "San Martín de S.P",
+   "visitante": "Defensores",
+   "golesLocal": 1,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Luis Calderón"
+   ],
+   "goleadoresVisitante": [
+    "Alejandro Castro"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "A",
+   "division": "Primera",
+   "local": "San Vicente",
+   "visitante": "Atlanta",
+   "golesLocal": 0,
+   "golesVisitante": 1,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [
+    "Elías Bustos"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "B",
+   "division": "Primera",
+   "local": "Fátima",
+   "visitante": "Travesía",
+   "golesLocal": 0,
+   "golesVisitante": 1,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [
+    "Alexis Ortíz"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "A",
+   "division": "Primera",
+   "local": "B.A.P",
+   "visitante": "San Brochero",
+   "golesLocal": 2,
+   "golesVisitante": 2,
+   "goleadoresLocal": [
+    "César Aguilera",
+    "Alejandro Vera"
+   ],
+   "goleadoresVisitante": [
+    "David Aguilar",
+    "Facundo Gigena"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "A",
+   "division": "6ta",
+   "local": "Las Rosas",
+   "visitante": "Sarmiento",
+   "golesLocal": 2,
+   "golesVisitante": 2,
+   "goleadoresLocal": [
+    "Benicio Vallejo",
+    "Benicio Vallejo"
+   ],
+   "goleadoresVisitante": [
+    "Teo Molina",
+    "Thomas Morales"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "B",
+   "division": "6ta",
+   "local": "Huracán",
+   "visitante": "Sargento Cabral",
+   "golesLocal": 1,
+   "golesVisitante": 2,
+   "goleadoresLocal": [
+    "Lucas Amaya"
+   ],
+   "goleadoresVisitante": [
+    "líam Caballero",
+    "Valentín Prado"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "A",
+   "division": "5ta",
+   "local": "Sarmiento",
+   "visitante": "Las Rosas",
+   "golesLocal": 0,
+   "golesVisitante": 4,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [
+    "Jasiel Aguilera",
+    "Jasiel Aguilera",
+    "Sissay Vannucci",
+    "Camilo Ruiz"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "A",
+   "division": "5ta",
+   "local": "San Martín de S.P",
+   "visitante": "Defensores",
+   "golesLocal": 2,
+   "golesVisitante": 2,
+   "goleadoresLocal": [
+    "Alejo Barreto",
+    "Leonel Calderón"
+   ],
+   "goleadoresVisitante": [
+    "Bautista Montenegro",
+    "Francisco Oviedo"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "A",
+   "division": "5ta",
+   "local": "San Vicente",
+   "visitante": "Atlanta",
+   "golesLocal": 0,
+   "golesVisitante": 1,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [
+    "David Vieyra"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "B",
+   "division": "5ta",
+   "local": "Huracán",
+   "visitante": "Sargento Cabral",
+   "golesLocal": 1,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Gonzalo Guevara"
+   ],
+   "goleadoresVisitante": [
+    "Ian Leiva"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "B",
+   "division": "5ta",
+   "local": "San José",
+   "visitante": "Juventud Unida",
+   "golesLocal": 1,
+   "golesVisitante": 6,
+   "goleadoresLocal": [
+    "Liam Araya"
+   ],
+   "goleadoresVisitante": [
+    "Dilan de la Fuente",
+    "Alex Polijo",
+    "Alex Polijo",
+    "Enzo Moyano",
+    "Enzo Moyano",
+    "Uriel Algasbe"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "B",
+   "division": "5ta",
+   "local": "Ardiles",
+   "visitante": "Las Tapias",
+   "golesLocal": 0,
+   "golesVisitante": 1,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [
+    "Gael Tello"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "A",
+   "division": "4ta",
+   "local": "San Martín de S.P",
+   "visitante": "Defensores",
+   "golesLocal": 1,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Benjamin Pereyra"
+   ],
+   "goleadoresVisitante": [
+    "Constantino Gúzman"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "B",
+   "division": "4ta",
+   "local": "Huracán",
+   "visitante": "Sargento Cabral",
+   "golesLocal": 1,
+   "golesVisitante": 3,
+   "goleadoresLocal": [
+    "Santino Rojos"
+   ],
+   "goleadoresVisitante": [
+    "Nahir Salazar",
+    "Nahir Salazar",
+    "Dylan Barrios"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "B",
+   "division": "4ta",
+   "local": "San José",
+   "visitante": "Juventud Unida",
+   "golesLocal": 5,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Nacho Fernández",
+    "Tadeo Leal",
+    "Tadeo Leal",
+    "Dylan Luna",
+    "Alex Zárate"
+   ],
+   "goleadoresVisitante": [],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "B",
    "division": "3ra",
    "local": "San José",
    "visitante": "Juventud Unida",
    "golesLocal": 2,
    "golesVisitante": 1,
    "goleadoresLocal": [
+    "Tommy Moran",
     "Tommy Moran"
    ],
-   "goleadoresVisitante": [],
+   "goleadoresVisitante": [
+    "Geremías Domínguez"
+   ],
    "fase": "liga"
   }
  ],
