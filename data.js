@@ -109,6 +109,21 @@ window.SITE_DATA = {
    ],
    "goleadoresVisitante": [],
    "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "B",
+   "division": "6ta",
+   "local": "San José",
+   "visitante": "Juventud Unida",
+   "golesLocal": 2,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Yutiel Carranza",
+    "Yutiel Carranza"
+   ],
+   "goleadoresVisitante": [],
+   "fase": "liga"
   }
  ],
  "comunicados": [
