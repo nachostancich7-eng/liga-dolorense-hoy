@@ -80,6 +80,18 @@ window.SITE_DATA = {
     "Santino Agüero"
    ],
    "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "A",
+   "division": "6ta",
+   "local": "San Martín de S.P",
+   "visitante": "Defensores",
+   "golesLocal": 0,
+   "golesVisitante": 0,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [],
+   "fase": "liga"
   }
  ],
  "comunicados": [
