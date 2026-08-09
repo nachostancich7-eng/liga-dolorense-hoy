@@ -124,6 +124,21 @@ window.SITE_DATA = {
    ],
    "goleadoresVisitante": [],
    "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "B",
+   "division": "6ta",
+   "local": "Fátima",
+   "visitante": "Travesía",
+   "golesLocal": 0,
+   "golesVisitante": 2,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [
+    "Mikeas Flores",
+    "Mikeas Flores"
+   ],
+   "fase": "liga"
   }
  ],
  "comunicados": [
