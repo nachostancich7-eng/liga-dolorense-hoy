@@ -197,6 +197,20 @@ window.SITE_DATA = {
    "goleadoresLocal": [],
    "goleadoresVisitante": [],
    "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "B",
+   "division": "5ta",
+   "local": "Ardiles",
+   "visitante": "Las Tapias",
+   "golesLocal": 0,
+   "golesVisitante": 1,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [
+    "Gael Tello"
+   ],
+   "fase": "liga"
   }
  ],
  "comunicados": [
