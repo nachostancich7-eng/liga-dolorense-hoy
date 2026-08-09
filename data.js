@@ -66,6 +66,20 @@ window.SITE_DATA = {
    "goleadoresLocal": [],
    "goleadoresVisitante": [],
    "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "A",
+   "division": "6ta",
+   "local": "San Vicente",
+   "visitante": "Atlanta",
+   "golesLocal": 0,
+   "golesVisitante": 1,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [
+    "Santino Agüero"
+   ],
+   "fase": "liga"
   }
  ],
  "comunicados": [
