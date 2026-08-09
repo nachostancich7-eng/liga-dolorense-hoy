@@ -25,7 +25,49 @@ window.SITE_DATA = {
    "Travesía"
   ]
  },
- "matches": [],
+ "matches": [
+  {
+   "fecha": 1,
+   "categoria": "B",
+   "division": "6ta",
+   "local": "Independiente",
+   "visitante": "Luyaba",
+   "golesLocal": 4,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Bautista Palacios",
+    "Junior Pérez",
+    "Máximo Sosa",
+    "Theo Bringas"
+   ],
+   "goleadoresVisitante": [],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "A",
+   "division": "6ta",
+   "local": "Comercio",
+   "visitante": "A.F.I",
+   "golesLocal": 0,
+   "golesVisitante": 0,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [],
+   "fase": "liga"
+  },
+  {
+   "fecha": 1,
+   "categoria": "A",
+   "division": "6ta",
+   "local": "B.A.P",
+   "visitante": "San Brochero",
+   "golesLocal": 0,
+   "golesVisitante": 0,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [],
+   "fase": "liga"
+  }
+ ],
  "comunicados": [
   {
    "titulo": "[EJEMPLO] Cronograma de semifinales y final",
