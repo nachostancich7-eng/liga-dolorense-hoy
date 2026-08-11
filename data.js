@@ -155,7 +155,8 @@ window.SITE_DATA = {
     "Bautista Pedrino",
     "Franco Puente"
    ],
-   "fase": "liga"
+   "fase": "liga",
+   "nota": "El gol de B.A.P fue en contra: Bautista Oviedo (San Brochero)."
   },
   {
    "fecha": 1,
@@ -210,7 +211,8 @@ window.SITE_DATA = {
     "Simón Maciel"
    ],
    "goleadoresVisitante": [],
-   "fase": "liga"
+   "fase": "liga",
+   "nota": "Partido finalizado al término del primer tiempo por inferioridad numérica del conjunto de Travesía."
   },
   {
    "fecha": 1,
@@ -364,12 +366,12 @@ window.SITE_DATA = {
    "golesLocal": 1,
    "golesVisitante": 5,
    "goleadoresLocal": [
-    "Thiago Tello"
+    "Tiago Tello"
    ],
    "goleadoresVisitante": [
     "Valentín Pedernera",
     "Valentín Pedernera",
-    "Uriel barrios",
+    "Uriel Barrios",
     "Santiago Barreto",
     "Román López"
    ],
@@ -443,7 +445,7 @@ window.SITE_DATA = {
    "golesLocal": 1,
    "golesVisitante": 2,
    "goleadoresLocal": [
-    "Oscar Quintanilla"
+    "Valentín López"
    ],
    "goleadoresVisitante": [
     "Leonardo Moro",
@@ -474,14 +476,14 @@ window.SITE_DATA = {
    "fecha": 1,
    "categoria": "A",
    "division": "Primera",
-   "local": "A.F.I",
-   "visitante": "Comercio",
-   "golesLocal": 1,
-   "golesVisitante": 0,
-   "goleadoresLocal": [
+   "local": "Comercio",
+   "visitante": "A.F.I",
+   "golesLocal": 0,
+   "golesVisitante": 1,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [
     "Fabio Romero"
    ],
-   "goleadoresVisitante": [],
    "fase": "liga"
   },
   {
@@ -721,7 +723,7 @@ window.SITE_DATA = {
     "Liam Araya"
    ],
    "goleadoresVisitante": [
-    "Dilan de la Fuente",
+    "Dylan de la Fuente",
     "Alex Polijo",
     "Alex Polijo",
     "Enzo Moyano",
@@ -769,7 +771,7 @@ window.SITE_DATA = {
    "golesLocal": 1,
    "golesVisitante": 3,
    "goleadoresLocal": [
-    "Santino Rojos"
+    "Santino Rojas"
    ],
    "goleadoresVisitante": [
     "Nahir Salazar",
@@ -787,7 +789,7 @@ window.SITE_DATA = {
    "golesLocal": 5,
    "golesVisitante": 0,
    "goleadoresLocal": [
-    "Nacho Fernández",
+    "Ignacio Fernández",
     "Tadeo Leal",
     "Tadeo Leal",
     "Dylan Luna",
