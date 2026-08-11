@@ -148,15 +148,16 @@ window.SITE_DATA = {
    "visitante": "San Brochero",
    "golesLocal": 1,
    "golesVisitante": 4,
-   "goleadoresLocal": [],
+   "goleadoresLocal": [
+    "Bautista Oviedo e/c"
+   ],
    "goleadoresVisitante": [
     "Vito Villagran",
     "Vito Villagran",
     "Bautista Pedrino",
     "Franco Puente"
    ],
-   "fase": "liga",
-   "nota": "El gol de B.A.P fue en contra: Bautista Oviedo (San Brochero)."
+   "fase": "liga"
   },
   {
    "fecha": 1,

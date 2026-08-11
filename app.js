@@ -723,6 +723,7 @@ function computeGoleadores(categoria, division) {
     .filter(m => m.categoria === categoria && m.division === division && m.estado !== 'suspendido')
     .forEach(m => {
       const agregar = (nombre, club) => {
+        if (/\be\/c\b/i.test(nombre)) return; // gol en contra: no suma como goleador
         const key = normalizarNombre(nombre) + '|' + club;
         if (!key.startsWith('|')) {
           if (!acc[key]) acc[key] = { club, goles: 0, grafias: {} };
