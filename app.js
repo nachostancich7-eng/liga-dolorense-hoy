@@ -7,11 +7,25 @@ let currentFecha = null;
 
 const FASE_ORDER = { 'SEMIFINALES': 1000, 'FINAL': 1001 };
 
+// Qué fecha del torneo corresponde "hoy", según el calendario: arranca en 1 la semana
+// del lunes de DATA.fechaInicioClausura, y avanza una fecha por semana, desde cada lunes.
+// No depende de qué haya cargado — así el Fixture y Resultados pueden mostrar la fecha
+// en curso desde el lunes, aunque todavía no tenga resultados publicados.
+function fechaActualCalculada() {
+  if (!DATA.fechaInicioClausura) return null;
+  const inicio = new Date(DATA.fechaInicioClausura + 'T00:00:00');
+  const hoy = new Date();
+  const diffDias = Math.floor((hoy - inicio) / 86400000);
+  if (diffDias < 0) return 1;
+  const fecha = Math.floor(diffDias / 7) + 1;
+  return Math.max(1, Math.min(9, fecha));
+}
+
 function availableFechas(division) {
   const fechas = new Set(DATA.matches.filter(m => m.division === division).map(m => m.fecha));
-  if (fechas.size === 0 && DATA.fixture) {
-    // Todavía no hay resultados cargados para esta división: mostramos las fechas
-    // del fixture ya confirmado (todas vacías) en vez de no mostrar nada.
+  if (DATA.fixture) {
+    // Se suman siempre las fechas del fixture confirmado (aunque ya haya resultados
+    // cargados), para poder navegar a la fecha en curso antes de que tenga datos.
     [...(Object.keys(DATA.fixture.A || {})), ...(Object.keys(DATA.fixture.B || {}))]
       .forEach(f => fechas.add(Number(f)));
   }
@@ -157,7 +171,10 @@ function availableFixtureFechas() {
 }
 
 function renderFixtureSwitcher(fechas) {
-  if (currentFixtureFecha === null || !fechas.includes(currentFixtureFecha)) currentFixtureFecha = fechas[0];
+  if (currentFixtureFecha === null || !fechas.includes(currentFixtureFecha)) {
+    const calculada = fechaActualCalculada();
+    currentFixtureFecha = (calculada !== null && fechas.includes(calculada)) ? calculada : fechas[0];
+  }
   const idx = fechas.indexOf(currentFixtureFecha);
 
   const prevBtn = el('button', { class: 'fecha-arrow', text: '‹' });
@@ -438,9 +455,14 @@ function summarizeScorers(list) {
 function renderFechaSwitcher(division) {
   const fechas = availableFechas(division);
   if (fechas.length === 0) return el('div');
-  const hayPartidosJugados = DATA.matches.some(m => m.division === division);
   if (currentFecha === null || !fechas.includes(currentFecha)) {
-    currentFecha = hayPartidosJugados ? fechas[fechas.length - 1] : fechas[0];
+    const calculada = fechaActualCalculada();
+    if (calculada !== null && fechas.includes(calculada)) {
+      currentFecha = calculada;
+    } else {
+      const hayPartidosJugados = DATA.matches.some(m => m.division === division);
+      currentFecha = hayPartidosJugados ? fechas[fechas.length - 1] : fechas[0];
+    }
   }
   const idx = fechas.indexOf(currentFecha);
 

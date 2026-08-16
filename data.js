@@ -1520,9 +1520,9 @@ window.SITE_DATA = {
     "pts4ta": 9
    },
    "Fátima": {
-    "pts1ra": 7,
-    "pts3ra": 0,
-    "pts4ta": 1
+    "pts1ra": 8,
+    "pts3ra": 1,
+    "pts4ta": 4
    }
   }
  },

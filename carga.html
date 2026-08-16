@@ -628,6 +628,25 @@ function api(ruta,opts={}){
               'Content-Type':'application/json', ...(opts.headers||{}) }
   });
 }
+// Misma lógica que en app.js: qué fecha corresponde hoy, según el calendario.
+function fechaActualCalculada(){
+  if(!DATA || !DATA.fechaInicioClausura) return null;
+  const inicio = new Date(DATA.fechaInicioClausura + 'T00:00:00');
+  const hoy = new Date();
+  const diffDias = Math.floor((hoy - inicio) / 86400000);
+  if(diffDias < 0) return 1;
+  const fecha = Math.floor(diffDias / 7) + 1;
+  return Math.max(1, Math.min(9, fecha));
+}
+function precargarFechaDeHoy(){
+  const calculada = fechaActualCalculada();
+  const input = document.getElementById('in-fecha');
+  // Solo la pisa si sigue en el valor por defecto (no si ya la cambiaste vos a mano).
+  if(calculada !== null && input && input.value === '1' && calculada !== 1){
+    input.value = calculada;
+  }
+}
+
 async function recargarDesdeRepo(){
   const c=cfg();
   if(c.owner&&c.repo&&c.token){
@@ -642,6 +661,7 @@ async function recargarDesdeRepo(){
       avisar('cfg-aviso','ok','Datos cargados desde GitHub.');
       document.getElementById('det-config').open=false;
       restaurarBorrador();
+      precargarFechaDeHoy();
       pintarSuspendidos();
       pintar(); return;
     }catch(e){
@@ -657,6 +677,7 @@ async function recargarDesdeRepo(){
     setEstado('solo lectura');
     avisar('cfg-aviso','warn','Cargué los datos del sitio, pero sin GitHub configurado solo vas a poder descargar el archivo.');
     restaurarBorrador();
+    precargarFechaDeHoy();
     pintarSuspendidos();
     pintar();
   }catch(e){ setEstado('sin datos'); }
