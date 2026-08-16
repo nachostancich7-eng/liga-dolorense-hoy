@@ -53,6 +53,24 @@ details summary{cursor:pointer;font-size:13px;color:var(--muted);padding:4px 0;}
 .barra{position:fixed;left:0;right:0;bottom:0;background:var(--header);border-top:1px solid var(--border);padding:10px 14px;display:flex;gap:8px;z-index:30;}
 .barra button{flex:1;}
 .oculto{display:none !important;}
+.tablero-resumen{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;}
+.tablero-chip{flex:1;min-width:86px;text-align:center;padding:8px 6px;border-radius:8px;font-size:11px;background:var(--bg-alt);border:1px solid var(--border);}
+.tablero-chip b{display:block;font-size:19px;line-height:1.3;}
+.tablero-chip.ok b{color:var(--teal);}
+.tablero-chip.warn b{color:var(--gold);}
+.tablero-chip.off b{color:var(--dim);}
+.tablero-div{margin-bottom:6px;}
+.tablero-div summary{padding:8px 4px;font-size:13px;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
+.tablero-div summary .cnt{font-weight:400;color:var(--muted);font-size:12px;}
+.tablero-fila{display:flex;align-items:center;gap:8px;padding:7px 4px;border-top:1px solid var(--border);font-size:13px;}
+.tablero-fila .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+.dot-vacio{background:var(--danger);}
+.dot-incompleto{background:var(--gold);}
+.dot-completo{background:var(--teal);}
+.dot-suspendido{background:var(--muted);}
+.tablero-fila .equipos{flex:1;min-width:0;}
+.tablero-fila .cat-tag{font-size:10px;color:var(--dim);}
+.tablero-fila button{padding:5px 10px;font-size:11px;border-radius:6px;background:var(--bg-alt);border:1px solid var(--border);color:var(--text);white-space:nowrap;}
 </style>
 </head>
 <body>
@@ -63,6 +81,13 @@ details summary{cursor:pointer;font-size:13px;color:var(--muted);padding:4px 0;}
 </header>
 
 <main>
+
+  <!-- ============ TABLERO DE LA FECHA ============ -->
+  <section id="sec-tablero" class="oculto">
+    <h2>📋 Tablero de la fecha</h2>
+    <div id="tablero-resumen"></div>
+    <div id="tablero-divisiones"></div>
+  </section>
 
   <!-- ============ CONFIGURACIÓN ============ -->
   <section>
@@ -342,6 +367,95 @@ function chipsDe(nombres, club){
     const et = r.estado==='nuevo' ? ' · nuevo' : '';
     return `<span class="chip ${r.estado}">${t}${et}</span>`; }).join('');
 }
+/* ============================================================
+   TABLERO DE LA FECHA: de un vistazo, qué falta cargar.
+   No reemplaza nada del flujo existente — solo lo resume.
+   ============================================================ */
+const DIVISIONES_TABLERO = ['Primera','3ra','4ta','5ta','6ta'];
+
+// Busca este partido (misma fecha/división/equipos, en cualquier orden) primero
+// en lo que todavía no se publicó (PENDIENTES) y si no, en lo ya publicado (DATA.matches).
+function buscarPartido(fecha, division, local, visitante){
+  const enPendientes = PENDIENTES.find(p=>p.division===division &&
+    ((p.local===local&&p.visitante===visitante)||(p.local===visitante&&p.visitante===local)));
+  if(enPendientes) return { origen:'borrador', p: enPendientes };
+  const enPublicado = (DATA.matches||[]).find(m=>m.division===division && m.fecha===fecha &&
+    ((m.local===local&&m.visitante===visitante)||(m.local===visitante&&m.visitante===local)));
+  if(enPublicado) return { origen:'publicado', p: enPublicado };
+  return null;
+}
+function estadoDe(hallazgo){
+  if(!hallazgo) return 'vacio';
+  const p = hallazgo.p;
+  if(p.suspendido || p.estado==='suspendido') return 'suspendido';
+  const gl = p.golesLocal||0, gv = p.golesVisitante||0;
+  const al = (p.goleadoresLocal||[]).length, av = (p.goleadoresVisitante||[]).length;
+  if(al < gl || av < gv) return 'incompleto';
+  return 'completo';
+}
+
+function pintarTablero(){
+  const sec = document.getElementById('sec-tablero');
+  if(!DATA || !DATA.fixture){ sec.classList.add('oculto'); return; }
+  const fecha = parseInt(document.getElementById('in-fecha').value,10) || 1;
+  const conteo = { vacio:0, incompleto:0, completo:0, suspendido:0 };
+  const porDivision = {};
+
+  DIVISIONES_TABLERO.forEach(division=>{
+    const filas = [];
+    ['A','B'].forEach(cat=>{
+      const partidos = (DATA.fixture[cat] && DATA.fixture[cat][fecha]) || [];
+      partidos.forEach(fx=>{
+        const hallazgo = buscarPartido(fecha, division, fx.local, fx.visitante);
+        const estado = estadoDe(hallazgo);
+        conteo[estado]++;
+        filas.push({ cat, local:fx.local, visitante:fx.visitante, estado });
+      });
+    });
+    porDivision[division] = filas;
+  });
+
+  sec.classList.toggle('oculto', false);
+  document.getElementById('tablero-resumen').innerHTML = `
+    <div class="tablero-resumen">
+      <div class="tablero-chip ok"><b>${conteo.completo}</b>completos</div>
+      <div class="tablero-chip warn"><b>${conteo.incompleto}</b>sin autores</div>
+      <div class="tablero-chip off"><b>${conteo.vacio}</b>sin cargar</div>
+      ${conteo.suspendido ? `<div class="tablero-chip warn"><b>${conteo.suspendido}</b>suspendidos</div>` : ''}
+    </div>`;
+
+  document.getElementById('tablero-divisiones').innerHTML = DIVISIONES_TABLERO.map(division=>{
+    const filas = porDivision[division];
+    const faltan = filas.filter(f=>f.estado==='vacio'||f.estado==='incompleto').length;
+    const filasHtml = filas.map(f=>`
+      <div class="tablero-fila">
+        <span class="dot dot-${f.estado}"></span>
+        <span class="equipos">${esc(f.local)} vs ${esc(f.visitante)} <span class="cat-tag">(${f.cat})</span></span>
+        ${f.estado!=='completo' ? `<button onclick="cargarDesdeTablero(${fecha},'${esc(division)}','${esc(f.local)}','${esc(f.visitante)}')">${f.estado==='vacio'?'Cargar':'Completar'}</button>` : ''}
+      </div>`).join('');
+    return `
+    <details class="tablero-div" ${division==='Primera' ? 'open' : ''}>
+      <summary>${division==='Primera'?'1ra':division} <span class="cnt">${faltan>0?faltan+' pendiente(s)':'✓ completo'}</span></summary>
+      ${filasHtml}
+    </details>`;
+  }).join('');
+}
+
+// Deja todo listo para cargar este partido puntual: fecha/división precargadas,
+// y si no había nada empezado, agrega una fila vacía con los equipos ya elegidos.
+function cargarDesdeTablero(fecha, division, local, visitante){
+  document.getElementById('in-fecha').value = fecha;
+  document.getElementById('in-division').value = division;
+  const yaPendiente = PENDIENTES.some(p=>p.division===division &&
+    ((p.local===local&&p.visitante===visitante)||(p.local===visitante&&p.visitante===local)));
+  if(!yaPendiente){
+    PENDIENTES.push({ division, local, visitante, golesLocal:0, golesVisitante:0,
+      goleadoresLocal:[], goleadoresVisitante:[], nota:'', suspendido:false });
+  }
+  pintar();
+  document.getElementById('sec-revision').scrollIntoView({behavior:'smooth'});
+}
+
 function pintarSuspendidos(){
   const sec = document.getElementById('sec-suspendidos');
   const cont = document.getElementById('lista-suspendidos');
@@ -372,6 +486,7 @@ function resolverSuspendido(fecha, division, local, visitante){
 function pintar(){
   const cont = document.getElementById('lista-partidos');
   document.getElementById('sec-revision').classList.toggle('oculto', PENDIENTES.length===0);
+  pintarTablero();
   const contador = document.getElementById('borrador-contador');
   if(contador){
     contador.innerHTML = PENDIENTES.length
