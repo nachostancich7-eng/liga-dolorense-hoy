@@ -21,6 +21,20 @@ function fechaActualCalculada() {
   return Math.max(1, Math.min(9, fecha));
 }
 
+// Igual que fechaActualCalculada, pero para Resultados: se queda en la fecha recién
+// jugada durante toda la semana, y recién avanza el domingo que arranca la siguiente
+// (no el lunes anterior, que es cuando el Fixture ya empieza a mostrarla como "la próxima").
+function fechaResultadosCalculada() {
+  if (!DATA.fechaInicioClausura) return null;
+  const inicio = new Date(DATA.fechaInicioClausura + 'T00:00:00');
+  inicio.setDate(inicio.getDate() + 6); // corre el ancla al domingo de la fecha 1
+  const hoy = new Date();
+  const diffDias = Math.floor((hoy - inicio) / 86400000);
+  if (diffDias < 0) return 1;
+  const fecha = Math.floor(diffDias / 7) + 1;
+  return Math.max(1, Math.min(9, fecha));
+}
+
 function availableFechas(division) {
   const fechas = new Set(DATA.matches.filter(m => m.division === division).map(m => m.fecha));
   if (DATA.fixture) {
@@ -456,7 +470,7 @@ function renderFechaSwitcher(division) {
   const fechas = availableFechas(division);
   if (fechas.length === 0) return el('div');
   if (currentFecha === null || !fechas.includes(currentFecha)) {
-    const calculada = fechaActualCalculada();
+    const calculada = fechaResultadosCalculada();
     if (calculada !== null && fechas.includes(calculada)) {
       currentFecha = calculada;
     } else {

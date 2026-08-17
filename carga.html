@@ -62,7 +62,9 @@ details summary{cursor:pointer;font-size:13px;color:var(--muted);padding:4px 0;}
 .tablero-div{margin-bottom:6px;}
 .tablero-div summary{padding:8px 4px;font-size:13px;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center;}
 .tablero-div summary .cnt{font-weight:400;color:var(--muted);font-size:12px;}
-.tablero-fila{display:flex;align-items:center;gap:8px;padding:7px 4px;border-top:1px solid var(--border);font-size:13px;}
+.tablero-fila{display:flex;align-items:center;gap:8px;padding:9px 4px;border-top:1px solid var(--border);font-size:13px;cursor:pointer;-webkit-tap-highlight-color:rgba(242,169,59,.15);}
+.tablero-fila:active{background:rgba(242,169,59,.08);}
+.tablero-fila.activa{background:rgba(242,169,59,.1);cursor:pointer;}
 .tablero-fila .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
 .dot-vacio{background:var(--danger);}
 .dot-incompleto{background:var(--gold);}
@@ -70,7 +72,10 @@ details summary{cursor:pointer;font-size:13px;color:var(--muted);padding:4px 0;}
 .dot-suspendido{background:var(--muted);}
 .tablero-fila .equipos{flex:1;min-width:0;}
 .tablero-fila .cat-tag{font-size:10px;color:var(--dim);}
-.tablero-fila button{padding:5px 10px;font-size:11px;border-radius:6px;background:var(--bg-alt);border:1px solid var(--border);color:var(--text);white-space:nowrap;}
+.tablero-cta{font-size:11px;color:var(--muted);white-space:nowrap;}
+.tablero-cta.ok{color:var(--teal);font-size:14px;}
+.tablero-fila-abierta{border-top:1px solid var(--border);}
+.tablero-fila-abierta .partido{margin:8px 4px 10px;}
 </style>
 </head>
 <body>
@@ -155,6 +160,19 @@ details summary{cursor:pointer;font-size:13px;color:var(--muted);padding:4px 0;}
   <section>
     <details>
       <summary>🧰 Herramientas</summary>
+
+      <div class="hint" style="margin:10px 0">Corregir un nombre de jugador ya cargado — se corrige de una en <b>todos</b> los partidos donde aparece, sin importar la fecha.</div>
+      <label>Club</label>
+      <select id="cn-club" onchange="cargarNombresDelClub()"><option value="">— elegir club —</option></select>
+      <label>Nombre actual (el que está mal)</label>
+      <select id="cn-actual"><option value="">— elegí primero el club —</option></select>
+      <label>Nombre correcto</label>
+      <input id="cn-nuevo" placeholder="Ej: Facundo Recalde">
+      <button class="gold" style="width:100%;margin-top:10px" onclick="corregirNombre()">Corregir en todos los partidos y publicar</button>
+      <div id="cn-aviso"></div>
+
+      <hr style="border:none;border-top:1px solid var(--border);margin:16px 0">
+
       <div class="hint" style="margin:10px 0">Arrancar un torneo nuevo: borra partidos y goleadores, y <b>conserva</b> tabla anual, campeones históricos, planteles, escudos y auspiciantes.</div>
       <label>Nombre del torneo nuevo</label>
       <input id="in-torneo-nuevo" placeholder="Torneo Clausura 2026">
@@ -394,6 +412,13 @@ function estadoDe(hallazgo){
   return 'completo';
 }
 
+let tableroAbierto = null; // {division, local, visitante} del partido desplegado ahora, o null
+
+function esElMismoPartido(p, ref){
+  return p.division===ref.division &&
+    ((p.local===ref.local&&p.visitante===ref.visitante)||(p.local===ref.visitante&&p.visitante===ref.local));
+}
+
 function pintarTablero(){
   const sec = document.getElementById('sec-tablero');
   if(!DATA || !DATA.fixture){ sec.classList.add('oculto'); return; }
@@ -427,12 +452,29 @@ function pintarTablero(){
   document.getElementById('tablero-divisiones').innerHTML = DIVISIONES_TABLERO.map(division=>{
     const filas = porDivision[division];
     const faltan = filas.filter(f=>f.estado==='vacio'||f.estado==='incompleto').length;
-    const filasHtml = filas.map(f=>`
-      <div class="tablero-fila">
+    const filasHtml = filas.map(f=>{
+      const ref = { division, local:f.local, visitante:f.visitante };
+      const abierto = tableroAbierto && esElMismoPartido(ref, tableroAbierto);
+      if(abierto){
+        const idx = PENDIENTES.findIndex(p=>esElMismoPartido(p, ref));
+        const card = idx>=0 ? renderPartidoCard(PENDIENTES[idx], idx) : '';
+        return `
+        <div class="tablero-fila-abierta">
+          <div class="tablero-fila activa" onclick="cerrarTablero()">
+            <span class="dot dot-${f.estado}"></span>
+            <span class="equipos">${esc(f.local)} vs ${esc(f.visitante)} <span class="cat-tag">(${f.cat})</span></span>
+            <span class="tablero-cta">▲ Cerrar</span>
+          </div>
+          ${card}
+        </div>`;
+      }
+      return `
+      <div class="tablero-fila" onclick="cargarDesdeTablero(${fecha},'${esc(division)}','${esc(f.local)}','${esc(f.visitante)}')">
         <span class="dot dot-${f.estado}"></span>
         <span class="equipos">${esc(f.local)} vs ${esc(f.visitante)} <span class="cat-tag">(${f.cat})</span></span>
-        ${f.estado!=='completo' ? `<button onclick="cargarDesdeTablero(${fecha},'${esc(division)}','${esc(f.local)}','${esc(f.visitante)}')">${f.estado==='vacio'?'Cargar':'Completar'}</button>` : ''}
-      </div>`).join('');
+        <span class="tablero-cta ${f.estado==='completo'?'ok':''}">${f.estado==='completo' ? '✓' : (f.estado==='vacio'?'Cargar ›':'Completar ›')}</span>
+      </div>`;
+    }).join('');
     return `
     <details class="tablero-div" ${division==='Primera' ? 'open' : ''}>
       <summary>${division==='Primera'?'1ra':division} <span class="cnt">${faltan>0?faltan+' pendiente(s)':'✓ completo'}</span></summary>
@@ -441,8 +483,8 @@ function pintarTablero(){
   }).join('');
 }
 
-// Deja todo listo para cargar este partido puntual: fecha/división precargadas,
-// y si no había nada empezado, agrega una fila vacía con los equipos ya elegidos.
+// Abre (o cierra, si ya estaba abierto) el desplegable de este partido, ahí mismo en el tablero.
+// Si no había nada cargado todavía, arranca una fila vacía con los equipos ya elegidos.
 function cargarDesdeTablero(fecha, division, local, visitante){
   document.getElementById('in-fecha').value = fecha;
   document.getElementById('in-division').value = division;
@@ -452,8 +494,12 @@ function cargarDesdeTablero(fecha, division, local, visitante){
     PENDIENTES.push({ division, local, visitante, golesLocal:0, golesVisitante:0,
       goleadoresLocal:[], goleadoresVisitante:[], nota:'', suspendido:false });
   }
+  tableroAbierto = { division, local, visitante };
   pintar();
-  document.getElementById('sec-revision').scrollIntoView({behavior:'smooth'});
+}
+function cerrarTablero(){
+  tableroAbierto = null;
+  pintar();
 }
 
 function pintarSuspendidos(){
@@ -483,9 +529,61 @@ function resolverSuspendido(fecha, division, local, visitante){
   document.getElementById('sec-revision').scrollIntoView({behavior:'smooth'});
 }
 
+// Genera el HTML de la tarjeta de un partido (resultado, goleadores, suspendido, nota).
+// La usan tanto la lista de abajo (para lo que llega pegando el mensaje de Fran)
+// como el desplegable inline del tablero (para lo que cargás partido por partido).
+function renderPartidoCard(p, i){
+  const cat = p.local ? categoriaDe(p.local) : (p.visitante ? categoriaDe(p.visitante) : '—');
+  const camposResultado = p.suspendido ? '' : `
+    <div class="lado">
+      <select onchange="setCampo(${i},'local',this.value)">${optsEquipos(p.local)}</select>
+      <input type="number" min="0" inputmode="numeric" value="${p.golesLocal}" onchange="setCampo(${i},'golesLocal',this.value)">
+    </div>
+    <input placeholder="Goleadores del local (separados por coma)" value="${esc(p.goleadoresLocal.join(', '))}"
+           onchange="setGoleadores(${i},'goleadoresLocal',this.value)">
+    <div class="chips">${chipsDe(p.goleadoresLocal,p.local)}</div>
+    <div class="lado">
+      <select onchange="setCampo(${i},'visitante',this.value)">${optsEquipos(p.visitante)}</select>
+      <input type="number" min="0" inputmode="numeric" value="${p.golesVisitante}" onchange="setCampo(${i},'golesVisitante',this.value)">
+    </div>
+    <input placeholder="Goleadores del visitante (separados por coma)" value="${esc(p.goleadoresVisitante.join(', '))}"
+           onchange="setGoleadores(${i},'goleadoresVisitante',this.value)">
+    <div class="chips">${chipsDe(p.goleadoresVisitante,p.visitante)}</div>`;
+  const clubesSuspendido = p.suspendido ? `
+    <div class="lado">
+      <select onchange="setCampo(${i},'local',this.value)">${optsEquipos(p.local)}</select>
+      <span></span>
+    </div>
+    <div class="lado">
+      <select onchange="setCampo(${i},'visitante',this.value)">${optsEquipos(p.visitante)}</select>
+      <span></span>
+    </div>` : '';
+  return `
+  <div class="partido ${p.suspendido?'suspendido':''}">
+    <div class="cab">
+      <span class="meta">${esc(p.division)} · Categoría ${cat||'?'}</span>
+      <button class="borrar" onclick="quitar(${i})">×</button>
+    </div>
+    ${clubesSuspendido}
+    ${camposResultado}
+    <button class="btn-suspender ${p.suspendido?'activo':''}" onclick="toggleSuspendido(${i})">
+      ${p.suspendido ? '🚩 Marcado como suspendido/reprogramado — tocá para deshacer' : 'Marcar como suspendido / reprogramado'}
+    </button>
+    <input placeholder="Nota para mostrar junto al resultado (opcional) — ej: Partido inconcluso por disturbios"
+           value="${esc(p.nota||'')}" onchange="setNota(${i},this.value)">
+    ${avisosDe(p)}
+  </div>`;
+}
+
 function pintar(){
   const cont = document.getElementById('lista-partidos');
-  document.getElementById('sec-revision').classList.toggle('oculto', PENDIENTES.length===0);
+  // Lo que está abierto ahora mismo en el tablero no se repite acá abajo — ya se ve ahí.
+  const ocultos = new Set();
+  if(tableroAbierto){
+    PENDIENTES.forEach((p,i)=>{ if(esElMismoPartido(p, tableroAbierto)) ocultos.add(i); });
+  }
+  const visibles = PENDIENTES.map((p,i)=>({p,i})).filter(x=>!ocultos.has(x.i));
+  document.getElementById('sec-revision').classList.toggle('oculto', visibles.length===0);
   pintarTablero();
   const contador = document.getElementById('borrador-contador');
   if(contador){
@@ -493,48 +591,7 @@ function pintar(){
       ? `<div class="borrador-aviso">📋 ${PENDIENTES.length} partido(s) guardados como borrador en este dispositivo · todavía NO están publicados en la web</div>`
       : '';
   }
-  cont.innerHTML = PENDIENTES.map((p,i)=>{
-    const cat = p.local ? categoriaDe(p.local) : (p.visitante ? categoriaDe(p.visitante) : '—');
-    const camposResultado = p.suspendido ? '' : `
-      <div class="lado">
-        <select onchange="setCampo(${i},'local',this.value)">${optsEquipos(p.local)}</select>
-        <input type="number" min="0" inputmode="numeric" value="${p.golesLocal}" onchange="setCampo(${i},'golesLocal',this.value)">
-      </div>
-      <input placeholder="Goleadores del local (separados por coma)" value="${esc(p.goleadoresLocal.join(', '))}"
-             onchange="setGoleadores(${i},'goleadoresLocal',this.value)">
-      <div class="chips">${chipsDe(p.goleadoresLocal,p.local)}</div>
-      <div class="lado">
-        <select onchange="setCampo(${i},'visitante',this.value)">${optsEquipos(p.visitante)}</select>
-        <input type="number" min="0" inputmode="numeric" value="${p.golesVisitante}" onchange="setCampo(${i},'golesVisitante',this.value)">
-      </div>
-      <input placeholder="Goleadores del visitante (separados por coma)" value="${esc(p.goleadoresVisitante.join(', '))}"
-             onchange="setGoleadores(${i},'goleadoresVisitante',this.value)">
-      <div class="chips">${chipsDe(p.goleadoresVisitante,p.visitante)}</div>`;
-    const clubesSuspendido = p.suspendido ? `
-      <div class="lado">
-        <select onchange="setCampo(${i},'local',this.value)">${optsEquipos(p.local)}</select>
-        <span></span>
-      </div>
-      <div class="lado">
-        <select onchange="setCampo(${i},'visitante',this.value)">${optsEquipos(p.visitante)}</select>
-        <span></span>
-      </div>` : '';
-    return `
-    <div class="partido ${p.suspendido?'suspendido':''}">
-      <div class="cab">
-        <span class="meta">${esc(p.division)} · Categoría ${cat||'?'}</span>
-        <button class="borrar" onclick="quitar(${i})">×</button>
-      </div>
-      ${clubesSuspendido}
-      ${camposResultado}
-      <button class="btn-suspender ${p.suspendido?'activo':''}" onclick="toggleSuspendido(${i})">
-        ${p.suspendido ? '🚩 Marcado como suspendido/reprogramado — tocá para deshacer' : 'Marcar como suspendido / reprogramado'}
-      </button>
-      <input placeholder="Nota para mostrar junto al resultado (opcional) — ej: Partido inconcluso por disturbios"
-             value="${esc(p.nota||'')}" onchange="setNota(${i},this.value)">
-      ${avisosDe(p)}
-    </div>`;
-  }).join('');
+  cont.innerHTML = visibles.map(({p,i})=>renderPartidoCard(p,i)).join('');
   document.getElementById('btn-guardar').disabled = PENDIENTES.length===0 || !cfg().token;
   guardarBorrador();
 }
@@ -577,7 +634,12 @@ function setCampo(i,campo,val){
   pintar();
 }
 function setGoleadores(i,campo,val){ PENDIENTES[i][campo]=partirGoleadores(val); pintar(); }
-function quitar(i){ PENDIENTES.splice(i,1); pintar(); }
+function quitar(i){
+  const p = PENDIENTES[i];
+  if(p && tableroAbierto && esElMismoPartido(p, tableroAbierto)) tableroAbierto = null;
+  PENDIENTES.splice(i,1);
+  pintar();
+}
 
 /* ============================================================
    BORRADOR LOCAL: para no perder nada si cerrás la página
@@ -685,6 +747,53 @@ function computeStandingsLocal(categoria, division){
   return Object.values(table);
 }
 
+/* ============================================================
+   CORRECTOR DE NOMBRES: arregla un nombre en todos los partidos
+   donde aparece de una sola vez, para ese club.
+   ============================================================ */
+function poblarClubesCorrector(){
+  const sel = document.getElementById('cn-club');
+  if(!sel || !DATA) return;
+  sel.innerHTML = '<option value="">— elegir club —</option>' +
+    todosLosEquipos().sort((a,b)=>a.localeCompare(b))
+      .map(e=>`<option value="${esc(e)}">${esc(e)}</option>`).join('');
+}
+function cargarNombresDelClub(){
+  const club = document.getElementById('cn-club').value;
+  const sel = document.getElementById('cn-actual');
+  if(!club){ sel.innerHTML = '<option value="">— elegí primero el club —</option>'; return; }
+  const nombres = [...nombresConocidos(club).values()].sort((a,b)=>a.localeCompare(b));
+  sel.innerHTML = nombres.length
+    ? '<option value="">— elegir nombre —</option>' + nombres.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join('')
+    : '<option value="">Este club todavía no tiene goleadores cargados</option>';
+}
+function corregirNombre(){
+  const club = document.getElementById('cn-club').value;
+  const actual = document.getElementById('cn-actual').value;
+  const nuevo = document.getElementById('cn-nuevo').value.trim();
+  if(!club || !actual){ avisar('cn-aviso','err','Elegí el club y el nombre a corregir.'); return; }
+  if(!nuevo){ avisar('cn-aviso','err','Escribí el nombre correcto.'); return; }
+  if(actual === nuevo){ avisar('cn-aviso','warn','El nombre correcto es igual al que ya está — no hay nada que cambiar.'); return; }
+
+  let cambios = 0;
+  (DATA.matches||[]).forEach(m=>{
+    if(m.local === club && Array.isArray(m.goleadoresLocal)){
+      m.goleadoresLocal = m.goleadoresLocal.map(n=>{ if(n===actual){ cambios++; return nuevo; } return n; });
+    }
+    if(m.visitante === club && Array.isArray(m.goleadoresVisitante)){
+      m.goleadoresVisitante = m.goleadoresVisitante.map(n=>{ if(n===actual){ cambios++; return nuevo; } return n; });
+    }
+  });
+
+  if(cambios === 0){ avisar('cn-aviso','warn','No encontré ese nombre en ningún partido de ese club.'); return; }
+  if(!confirm(`Se va a corregir "${actual}" → "${nuevo}" en ${cambios} gol(es) de ${club}, en todas las fechas, y se publica ahora mismo.\n\n¿Confirmás?`)) return;
+
+  document.getElementById('cn-actual').value = '';
+  document.getElementById('cn-nuevo').value = '';
+  avisar('cn-aviso','ok', `Corrigiendo ${cambios} gol(es) y publicando…`);
+  guardarEnGitHub();
+}
+
 function nuevoTorneo(){
   if(!DATA) return;
   const nombre = document.getElementById('in-torneo-nuevo').value.trim();
@@ -753,8 +862,20 @@ function fechaActualCalculada(){
   const fecha = Math.floor(diffDias / 7) + 1;
   return Math.max(1, Math.min(9, fecha));
 }
+// Variante para carga de resultados: se queda en la fecha recién jugada toda la semana
+// (avanza el domingo, no el lunes) — acá se están terminando de cargar los datos de esa fecha.
+function fechaResultadosCalculada(){
+  if(!DATA || !DATA.fechaInicioClausura) return null;
+  const inicio = new Date(DATA.fechaInicioClausura + 'T00:00:00');
+  inicio.setDate(inicio.getDate() + 6);
+  const hoy = new Date();
+  const diffDias = Math.floor((hoy - inicio) / 86400000);
+  if(diffDias < 0) return 1;
+  const fecha = Math.floor(diffDias / 7) + 1;
+  return Math.max(1, Math.min(9, fecha));
+}
 function precargarFechaDeHoy(){
-  const calculada = fechaActualCalculada();
+  const calculada = fechaResultadosCalculada();
   const input = document.getElementById('in-fecha');
   // Solo la pisa si sigue en el valor por defecto (no si ya la cambiaste vos a mano).
   if(calculada !== null && input && input.value === '1' && calculada !== 1){
@@ -777,6 +898,7 @@ async function recargarDesdeRepo(){
       document.getElementById('det-config').open=false;
       restaurarBorrador();
       precargarFechaDeHoy();
+      poblarClubesCorrector();
       pintarSuspendidos();
       pintar(); return;
     }catch(e){
@@ -793,6 +915,7 @@ async function recargarDesdeRepo(){
     avisar('cfg-aviso','warn','Cargué los datos del sitio, pero sin GitHub configurado solo vas a poder descargar el archivo.');
     restaurarBorrador();
     precargarFechaDeHoy();
+      poblarClubesCorrector();
     pintarSuspendidos();
     pintar();
   }catch(e){ setEstado('sin datos'); }
