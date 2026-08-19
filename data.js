@@ -1211,7 +1211,7 @@ window.SITE_DATA = {
    ],
    "goleadoresVisitante": [
     "Junior Heredia",
-    "Pedro Ribabarola"
+    "Pedro Rivarola"
    ],
    "fase": "liga"
   },
