@@ -161,14 +161,15 @@ details summary{cursor:pointer;font-size:13px;color:var(--muted);padding:4px 0;}
     <details>
       <summary>🧰 Herramientas</summary>
 
-      <div class="hint" style="margin:10px 0">Corregir un nombre de jugador ya cargado — se corrige de una en <b>todos</b> los partidos donde aparece, sin importar la fecha.</div>
+      <div class="hint" style="margin:10px 0">Corregir un nombre de jugador ya cargado — se corrige de una en <b>todos</b> los partidos donde aparece, sin importar la fecha. Podés corregir varios nombres seguidos; se publican todos juntos con el botón de abajo de la página.</div>
+      <div id="cn-contador"></div>
       <label>Club</label>
       <select id="cn-club" onchange="cargarNombresDelClub()"><option value="">— elegir club —</option></select>
       <label>Nombre actual (el que está mal)</label>
       <select id="cn-actual"><option value="">— elegí primero el club —</option></select>
       <label>Nombre correcto</label>
       <input id="cn-nuevo" placeholder="Ej: Facundo Recalde">
-      <button class="gold" style="width:100%;margin-top:10px" onclick="corregirNombre()">Corregir en todos los partidos y publicar</button>
+      <button class="gold" style="width:100%;margin-top:10px" onclick="corregirNombre()">Corregir este nombre</button>
       <div id="cn-aviso"></div>
 
       <hr style="border:none;border-top:1px solid var(--border);margin:16px 0">
@@ -592,7 +593,7 @@ function pintar(){
       : '';
   }
   cont.innerHTML = visibles.map(({p,i})=>renderPartidoCard(p,i)).join('');
-  document.getElementById('btn-guardar').disabled = PENDIENTES.length===0 || !cfg().token;
+  actualizarBotonPublicar();
   guardarBorrador();
 }
 function setNota(i, val){ PENDIENTES[i].nota = val; guardarBorrador(); }
@@ -767,6 +768,8 @@ function cargarNombresDelClub(){
     ? '<option value="">— elegir nombre —</option>' + nombres.map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join('')
     : '<option value="">Este club todavía no tiene goleadores cargados</option>';
 }
+let correccionesPendientes = 0;
+
 function corregirNombre(){
   const club = document.getElementById('cn-club').value;
   const actual = document.getElementById('cn-actual').value;
@@ -786,12 +789,24 @@ function corregirNombre(){
   });
 
   if(cambios === 0){ avisar('cn-aviso','warn','No encontré ese nombre en ningún partido de ese club.'); return; }
-  if(!confirm(`Se va a corregir "${actual}" → "${nuevo}" en ${cambios} gol(es) de ${club}, en todas las fechas, y se publica ahora mismo.\n\n¿Confirmás?`)) return;
 
+  correccionesPendientes++;
   document.getElementById('cn-actual').value = '';
   document.getElementById('cn-nuevo').value = '';
-  avisar('cn-aviso','ok', `Corrigiendo ${cambios} gol(es) y publicando…`);
-  guardarEnGitHub();
+  cargarNombresDelClub(); // refresca la lista de nombres del club con el cambio ya aplicado
+  avisar('cn-aviso','ok',
+    `✅ "${esc(actual)}" → "${esc(nuevo)}" corregido en ${cambios} gol(es). Todavía NO está publicado — corregí lo que necesites y publicá una sola vez con el botón de abajo.`);
+  actualizarBotonPublicar();
+}
+
+function actualizarBotonPublicar(){
+  document.getElementById('btn-guardar').disabled = (PENDIENTES.length===0 && correccionesPendientes===0) || !cfg().token;
+  const cont = document.getElementById('cn-contador');
+  if(cont){
+    cont.innerHTML = correccionesPendientes
+      ? `<div class="borrador-aviso">✏️ ${correccionesPendientes} corrección(es) de nombre sin publicar todavía</div>`
+      : '';
+  }
 }
 
 function nuevoTorneo(){
@@ -831,7 +846,7 @@ function nuevoTorneo(){
   PENDIENTES = [];
   pintar();
   avisar('cfg-aviso','ok','Listo. Ahora tocá <b>Guardar y publicar</b> para que quede en la web.');
-  document.getElementById('btn-guardar').disabled = !cfg().token;
+  actualizarBotonPublicar();
 }
 function descargarData(){
   if(!DATA) return;
@@ -948,18 +963,20 @@ async function guardarEnGitHub(){
     if(!r.ok){ const t=await r.text(); throw new Error('HTTP '+r.status+' '+t.slice(0,120)); }
     const j=await r.json(); SHA=j.content.sha;
     borrarBorrador();
+    correccionesPendientes = 0;
     avisar('revision-avisos','ok','✅ Guardado. En un minuto queda publicado en la web.');
     pintarSuspendidos();
     pintar();
   }catch(e){
-    // Falló: restauramos todo como estaba, nada se pierde.
+    // Falló: restauramos todo como estaba, nada se pierde (incluidas las correcciones de nombre).
     DATA = dataOriginal;
     PENDIENTES = pendientesOriginales;
     guardarBorrador();
     avisar('revision-avisos','err','No se pudo guardar (nada se perdió, podés reintentar): '+e.message);
     pintar();
   }finally{
-    btn.textContent='Guardar y publicar'; btn.disabled=PENDIENTES.length===0 && !DATA;
+    btn.textContent='Guardar y publicar';
+    actualizarBotonPublicar();
   }
 }
 
