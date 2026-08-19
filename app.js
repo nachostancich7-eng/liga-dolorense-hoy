@@ -715,6 +715,11 @@ function renderPosicionesView(division) {
     ]);
     root.appendChild(block);
   });
+}
+
+function renderSumatoriaView() {
+  const root = document.getElementById('view-root');
+  root.innerHTML = '';
 
   const sumatoriaA = computeSumatoria('A');
   const sumatoriaB = computeSumatoria('B');
@@ -821,9 +826,12 @@ function renderGoleadoresView(division) {
 }
 
 function render() {
+  const chips = document.getElementById('division-chips');
+  if (chips) chips.style.display = currentView === 'sumatoria' ? 'none' : '';
   if (currentView === 'resultados') renderResultadosView(currentDivision);
   else if (currentView === 'posiciones') renderPosicionesView(currentDivision);
   else if (currentView === 'valla') renderVallaView(currentDivision);
+  else if (currentView === 'sumatoria') renderSumatoriaView();
   else renderGoleadoresView(currentDivision);
 }
 
