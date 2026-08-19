@@ -254,7 +254,7 @@ window.SITE_DATA = {
    "golesLocal": 2,
    "golesVisitante": 1,
    "goleadoresLocal": [
-    "Nelson Payero",
+    "Nelson Pallero",
     "Benjamín Tello"
    ],
    "goleadoresVisitante": [
@@ -322,7 +322,7 @@ window.SITE_DATA = {
    "goleadoresLocal": [
     "Santino Aguilera",
     "Santino Aguilera",
-    "Genaro Oviedo"
+    "Gennaro Oviedo"
    ],
    "goleadoresVisitante": [
     "Luciano Arregui"
@@ -820,22 +820,6 @@ window.SITE_DATA = {
    "fecha": 2,
    "categoria": "A",
    "division": "6ta",
-   "local": "Defensores",
-   "visitante": "Comercio",
-   "golesLocal": 1,
-   "golesVisitante": 6,
-   "goleadoresLocal": [
-    "Axel Salas Villarreal"
-   ],
-   "goleadoresVisitante": [
-    "Lorenzo Murua (3) Hormaeche Roman (2) Cano Misael"
-   ],
-   "fase": "liga"
-  },
-  {
-   "fecha": 2,
-   "categoria": "A",
-   "division": "6ta",
    "local": "Sarmiento",
    "visitante": "Atlanta",
    "golesLocal": 2,
@@ -906,7 +890,7 @@ window.SITE_DATA = {
     "Francisco Arregui",
     "Francisco Arregui",
     "Mikeas Flores",
-    "Tomas Muños"
+    "Tomás Muñoz"
    ],
    "goleadoresVisitante": [],
    "fase": "liga"
@@ -995,8 +979,8 @@ window.SITE_DATA = {
    "golesLocal": 2,
    "golesVisitante": 0,
    "goleadoresLocal": [
-    "Genaro Oviedo",
-    "Dilan Herner"
+    "Gennaro Oviedo",
+    "Dylan Herner"
    ],
    "goleadoresVisitante": [],
    "fase": "liga"
@@ -1048,7 +1032,7 @@ window.SITE_DATA = {
     "Haru Sola"
    ],
    "goleadoresVisitante": [
-    "Yoel Cornejo"
+    "Joel Cornejo"
    ],
    "fase": "liga"
   },
@@ -1112,7 +1096,7 @@ window.SITE_DATA = {
    "golesLocal": 2,
    "golesVisitante": 0,
    "goleadoresLocal": [
-    "Franco Dominguez",
+    "Franco Domínguez",
     "Pedro Ochoa"
    ],
    "goleadoresVisitante": [],
@@ -1133,7 +1117,7 @@ window.SITE_DATA = {
     "Raul Pacheco",
     "Raul Pacheco",
     "Danilo Horvath",
-    "Dilan Gonzales",
+    "Dylan Gonzales",
     "Benjamin Serra"
    ],
    "fase": "liga"
@@ -1188,7 +1172,7 @@ window.SITE_DATA = {
     "Nelson Payero e/c"
    ],
    "goleadoresVisitante": [
-    "Nelson Payero"
+    "Nelson Pallero"
    ],
    "fase": "liga"
   },
@@ -1221,7 +1205,7 @@ window.SITE_DATA = {
    "golesLocal": 3,
    "golesVisitante": 2,
    "goleadoresLocal": [
-    "Franceso Nardi",
+    "Francesco Nardi",
     "Camilo Fredes",
     "Bastian Arce"
    ],
@@ -1603,6 +1587,27 @@ window.SITE_DATA = {
    "goleadoresVisitante": [
     "César Arregui",
     "Lucas Gallardo"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 2,
+   "categoria": "A",
+   "division": "6ta",
+   "local": "Defensores",
+   "visitante": "Comercio",
+   "golesLocal": 1,
+   "golesVisitante": 6,
+   "goleadoresLocal": [
+    "Axel Salas Villarreal"
+   ],
+   "goleadoresVisitante": [
+    "Lorenzo Murúa",
+    "Lorenzo Murúa",
+    "Lorenzo Murúa",
+    "Román Hormaeche",
+    "Román Hormaeche",
+    "Cano Misael"
    ],
    "fase": "liga"
   }
