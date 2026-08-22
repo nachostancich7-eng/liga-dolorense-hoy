@@ -420,9 +420,23 @@ function esElMismoPartido(p, ref){
     ((p.local===ref.local&&p.visitante===ref.visitante)||(p.local===ref.visitante&&p.visitante===ref.local));
 }
 
+// Guarda qué categorías están desplegadas, para que un redibujado no las cierre.
+// Arranca vacío: todas cerradas hasta que las abras vos.
+let divisionesAbiertas = new Set();
+
+function capturarDivisionesAbiertas(){
+  const cont = document.getElementById('tablero-divisiones');
+  if(!cont || !cont.children.length) return; // primer render: respetamos lo que ya haya
+  divisionesAbiertas = new Set();
+  [...cont.querySelectorAll('.tablero-div')].forEach(d=>{
+    if(d.open && d.dataset.division) divisionesAbiertas.add(d.dataset.division);
+  });
+}
+
 function pintarTablero(){
   const sec = document.getElementById('sec-tablero');
   if(!DATA || !DATA.fixture){ sec.classList.add('oculto'); return; }
+  capturarDivisionesAbiertas();
   const fecha = parseInt(document.getElementById('in-fecha').value,10) || 1;
   const conteo = { vacio:0, incompleto:0, completo:0, suspendido:0 };
   const porDivision = {};
@@ -476,8 +490,11 @@ function pintarTablero(){
         <span class="tablero-cta ${f.estado==='completo'?'ok':''}">${f.estado==='completo' ? '✓' : (f.estado==='vacio'?'Cargar ›':'Completar ›')}</span>
       </div>`;
     }).join('');
+    // Queda abierta si vos la abriste, o si adentro está el partido que estás cargando ahora.
+    const tieneElAbierto = tableroAbierto && tableroAbierto.division === division;
+    const abierta = divisionesAbiertas.has(division) || tieneElAbierto;
     return `
-    <details class="tablero-div" ${division==='Primera' ? 'open' : ''}>
+    <details class="tablero-div" data-division="${esc(division)}" ${abierta ? 'open' : ''}>
       <summary>${division==='Primera'?'1ra':division} <span class="cnt">${faltan>0?faltan+' pendiente(s)':'✓ completo'}</span></summary>
       ${filasHtml}
     </details>`;
