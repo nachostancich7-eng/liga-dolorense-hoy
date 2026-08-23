@@ -1752,7 +1752,7 @@ window.SITE_DATA = {
    "golesVisitante": 0,
    "goleadoresLocal": [
     "Lisandro Díaz",
-    "Francisco Calderon"
+    "Francisco Calderón"
    ],
    "goleadoresVisitante": [],
    "fase": "liga"
@@ -2190,7 +2190,7 @@ window.SITE_DATA = {
    "goleadoresLocal": [
     "Thiago Lescano",
     "Thiago Lescano",
-    "Lautaro Gomez"
+    "Lautaro Gómez"
    ],
    "goleadoresVisitante": [],
    "fase": "liga"
@@ -2207,7 +2207,7 @@ window.SITE_DATA = {
     "Juan Bustos"
    ],
    "goleadoresVisitante": [
-    "Gabriel Leyba"
+    "Gabriel Leiva"
    ],
    "fase": "liga"
   },
@@ -2220,8 +2220,8 @@ window.SITE_DATA = {
    "golesLocal": 2,
    "golesVisitante": 0,
    "goleadoresLocal": [
-    "Cucas González",
-    "Cucas González"
+    "Lucas González",
+    "Lucas González"
    ],
    "goleadoresVisitante": [],
    "fase": "liga"
