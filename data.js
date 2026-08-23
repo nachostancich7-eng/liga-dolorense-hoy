@@ -2213,21 +2213,6 @@ window.SITE_DATA = {
   },
   {
    "fecha": 3,
-   "categoria": "A",
-   "division": "Primera",
-   "local": "San Vicente",
-   "visitante": "Defensores",
-   "golesLocal": 2,
-   "golesVisitante": 0,
-   "goleadoresLocal": [
-    "Lucas González",
-    "Lucas González"
-   ],
-   "goleadoresVisitante": [],
-   "fase": "liga"
-  },
-  {
-   "fecha": 3,
    "categoria": "B",
    "division": "3ra",
    "local": "Ardiles",
@@ -2377,6 +2362,21 @@ window.SITE_DATA = {
     "Diego Tello",
     "Diego Tello"
    ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 3,
+   "categoria": "A",
+   "division": "Primera",
+   "local": "San Vicente",
+   "visitante": "Defensores",
+   "golesLocal": 2,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Lucas González",
+    "Andres Prado e/c"
+   ],
+   "goleadoresVisitante": [],
    "fase": "liga"
   }
  ],
