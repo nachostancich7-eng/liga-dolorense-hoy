@@ -3023,26 +3023,6 @@ window.SITE_DATA = {
   {
    "fecha": 4,
    "categoria": "B",
-   "division": "Primera",
-   "local": "Ardiles",
-   "visitante": "Independiente",
-   "golesLocal": 1,
-   "golesVisitante": 5,
-   "goleadoresLocal": [
-    "Nahuel Mancillas"
-   ],
-   "goleadoresVisitante": [
-    "Junior Amaya",
-    "Junior Amaya",
-    "Juan Oviedo",
-    "Cristian Oviedo",
-    "Santiago Bianchi"
-   ],
-   "fase": "liga"
-  },
-  {
-   "fecha": 4,
-   "categoria": "B",
    "division": "5ta",
    "local": "Ardiles",
    "visitante": "Independiente",
@@ -3176,6 +3156,24 @@ window.SITE_DATA = {
     "Gabriel Oyola"
    ],
    "goleadoresVisitante": [],
+   "fase": "liga"
+  },
+  {
+   "fecha": 4,
+   "categoria": "B",
+   "division": "Primera",
+   "local": "Ardiles",
+   "visitante": "Independiente",
+   "golesLocal": 1,
+   "golesVisitante": 5,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [
+    "Junior Amaya",
+    "Junior Amaya",
+    "Juan Oviedo",
+    "Cristian Oviedo",
+    "Santiago Bianchi"
+   ],
    "fase": "liga"
   }
  ],
