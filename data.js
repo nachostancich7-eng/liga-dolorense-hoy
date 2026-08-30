@@ -1512,7 +1512,7 @@ window.SITE_DATA = {
     "Santiago Pereyra",
     "Santiago Oviedo",
     "Luciano Gatica",
-    "Nahuel Checa"
+    "Nahuel Sihuayro"
    ],
    "goleadoresVisitante": [],
    "fase": "liga"
@@ -3038,23 +3038,6 @@ window.SITE_DATA = {
     "Cristian Oviedo",
     "Santiago Bianchi"
    ],
-   "fase": "liga"
-  },
-  {
-   "fecha": 4,
-   "categoria": "B",
-   "division": "4ta",
-   "local": "Las Tapias",
-   "visitante": "Huracán",
-   "golesLocal": 4,
-   "golesVisitante": 0,
-   "goleadoresLocal": [
-    "Santiago Pereyra",
-    "Santiago Oviedo",
-    "Luciano Gatica",
-    "Nahuel Sihuayro"
-   ],
-   "goleadoresVisitante": [],
    "fase": "liga"
   },
   {
