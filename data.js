@@ -3166,12 +3166,14 @@ window.SITE_DATA = {
    "visitante": "Independiente",
    "golesLocal": 1,
    "golesVisitante": 5,
-   "goleadoresLocal": [],
+   "goleadoresLocal": [
+    "Nahuel Mancillas"
+   ],
    "goleadoresVisitante": [
     "Junior Amaya",
     "Junior Amaya",
     "Juan Oviedo",
-    "Cristian Oviedo",
+    "Cristian Moreno",
     "Santiago Bianchi"
    ],
    "fase": "liga"
