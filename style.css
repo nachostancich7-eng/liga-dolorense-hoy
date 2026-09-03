@@ -177,6 +177,7 @@ body{
 .match{background:var(--panel);border-radius:8px;overflow:hidden;border:1px solid var(--border);}
 .match.match-suspendido{border-color:rgba(242,169,59,.5);background:rgba(242,169,59,.05);}
 .score-suspendido{font-size:11px;font-weight:700;letter-spacing:.04em;color:var(--gold);white-space:nowrap;}
+.score-sin-resultado{font-weight:700;padding:0 6px;color:var(--gold);font-family:var(--font-display);font-size:18px;white-space:nowrap;}
 .match-nota{padding:6px 12px 8px;font-size:11px;font-style:italic;color:var(--gold);border-top:1px solid var(--border);}
 .match-row{display:flex;align-items:center;gap:10px;padding:10px 12px;}
 .match-row .team{flex:1;font-size:13.5px;}

@@ -3042,14 +3042,13 @@ window.SITE_DATA = {
    "division": "4ta",
    "local": "Atlanta",
    "visitante": "Defensores",
-   "golesLocal": 0,
-   "golesVisitante": 1,
+   "golesLocal": null,
+   "golesVisitante": null,
    "goleadoresLocal": [],
-   "goleadoresVisitante": [
-    "Constantino Gúzman"
-   ],
+   "goleadoresVisitante": [],
    "fase": "liga",
-   "nota": "Partido suspendido a los 22' del ST."
+   "nota": "Partido finalizado a los 27' del ST por agresiones verbales al árbitro. La Liga resolvió dar por perdido el encuentro a ambos equipos (1-0).",
+   "estado": "ambos_pierden"
   },
   {
    "fecha": 4,

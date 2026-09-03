@@ -127,6 +127,14 @@ function computeStandings(categoria, division) {
     .forEach(m => {
       const L = table[m.local], V = table[m.visitante];
       if (!L || !V) return;
+      // Resolución de la Liga: ambos equipos pierden el partido 1-0 (sin autores).
+      // En la tabla suma como derrota para los dos; en Resultados se muestra sin marcador.
+      if (m.estado === 'ambos_pierden') {
+        L.pj++; V.pj++;
+        L.pp++; V.pp++;
+        L.gc += 1; V.gc += 1;
+        return;
+      }
       L.pj++; V.pj++;
       L.gf += m.golesLocal; L.gc += m.golesVisitante;
       V.gf += m.golesVisitante; V.gc += m.golesLocal;
@@ -425,6 +433,19 @@ function renderMatches(categoria, division, fecha) {
     return el('div', { class: 'empty-state', text: 'No hay partidos cargados para esta fecha.' });
   }
   fechaMatches.forEach(m => {
+    if (m.estado === 'ambos_pierden') {
+      const row = el('div', { class: 'match-row' }, [
+        logoImg(m.local),
+        el('span', { class: 'team home', text: m.local }),
+        el('span', { class: 'score score-sin-resultado', text: '–' }),
+        el('span', { class: 'team away', text: m.visitante }),
+        logoImg(m.visitante),
+      ]);
+      const matchEl = el('div', { class: 'match match-suspendido' }, [row]);
+      if (m.nota) matchEl.appendChild(el('div', { class: 'match-nota', text: m.nota }));
+      wrap.appendChild(matchEl);
+      return;
+    }
     if (m.estado === 'suspendido') {
       const row = el('div', { class: 'match-row' }, [
         logoImg(m.local),
