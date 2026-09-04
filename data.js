@@ -2345,7 +2345,7 @@ window.SITE_DATA = {
    "goleadoresVisitante": [],
    "fase": "liga",
    "estado": "ambos_pierden",
-   "nota": "Partido finalizado a los 27' del ST por agresiones verbales al árbitro. La Liga resolvió dar por perdido el encuentro a ambos equipos (1-0)."
+   "nota": "Partido suspendido a los 27' del ST por disturbios generales. La Liga resolvió dar por perdido el encuentro a ambos equipos con un gol en contra."
   },
   {
    "fecha": 3,
@@ -3047,7 +3047,7 @@ window.SITE_DATA = {
     "Constantino Gúzman"
    ],
    "fase": "liga",
-   "nota": "Partido suspendido a los 22' del ST."
+   "nota": "Partido suspendido a los 22' del ST por agresiones verbales al árbitro."
   },
   {
    "fecha": 4,
