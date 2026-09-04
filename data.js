@@ -2339,15 +2339,13 @@ window.SITE_DATA = {
    "division": "Primera",
    "local": "Luyaba",
    "visitante": "Sargento Cabral",
-   "golesLocal": 1,
-   "golesVisitante": 1,
-   "goleadoresLocal": [
-    "Valentino Kubat"
-   ],
-   "goleadoresVisitante": [
-    "Gabriel Oyola"
-   ],
-   "fase": "liga"
+   "golesLocal": null,
+   "golesVisitante": null,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [],
+   "fase": "liga",
+   "estado": "ambos_pierden",
+   "nota": "Partido finalizado a los 27' del ST por agresiones verbales al árbitro. La Liga resolvió dar por perdido el encuentro a ambos equipos (1-0)."
   },
   {
    "fecha": 3,
@@ -3042,13 +3040,14 @@ window.SITE_DATA = {
    "division": "4ta",
    "local": "Atlanta",
    "visitante": "Defensores",
-   "golesLocal": null,
-   "golesVisitante": null,
+   "golesLocal": 0,
+   "golesVisitante": 1,
    "goleadoresLocal": [],
-   "goleadoresVisitante": [],
+   "goleadoresVisitante": [
+    "Constantino Gúzman"
+   ],
    "fase": "liga",
-   "nota": "Partido finalizado a los 27' del ST por agresiones verbales al árbitro. La Liga resolvió dar por perdido el encuentro a ambos equipos (1-0).",
-   "estado": "ambos_pierden"
+   "nota": "Partido suspendido a los 22' del ST."
   },
   {
    "fecha": 4,
