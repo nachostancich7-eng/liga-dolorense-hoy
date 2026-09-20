@@ -3385,22 +3385,6 @@ window.SITE_DATA = {
   {
    "fecha": 5,
    "categoria": "A",
-   "division": "5ta",
-   "local": "Comercio",
-   "visitante": "B.A.P",
-   "golesLocal": 3,
-   "golesVisitante": 0,
-   "goleadoresLocal": [
-    "Yair Caballero",
-    "Yair Caballero",
-    "Yair Caballero"
-   ],
-   "goleadoresVisitante": [],
-   "fase": "liga"
-  },
-  {
-   "fecha": 5,
-   "categoria": "A",
    "division": "6ta",
    "local": "Comercio",
    "visitante": "B.A.P",
@@ -3973,6 +3957,22 @@ window.SITE_DATA = {
     "Tadeo Leal",
     "Dylan Luna"
    ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 5,
+   "categoria": "A",
+   "division": "5ta",
+   "local": "Comercio",
+   "visitante": "B.A.P",
+   "golesLocal": 3,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Dylan Caballero",
+    "Dylan Caballero",
+    "Dylan Caballero"
+   ],
+   "goleadoresVisitante": [],
    "fase": "liga"
   }
  ],
