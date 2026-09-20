@@ -3887,5 +3887,5 @@ window.SITE_DATA = {
   }
  },
  "sumatoriaBaseTorneo": "Torneo Apertura 2026",
- "fechaInicioClausura": "2026-08-03"
+ "fechaInicioClausura": "2026-08-17"
 };
