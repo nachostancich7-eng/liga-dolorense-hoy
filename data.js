@@ -4715,10 +4715,15 @@ window.SITE_DATA = {
    "division": "3ra",
    "local": "Sarmiento",
    "visitante": "Defensores",
-   "golesLocal": 0,
-   "golesVisitante": 0,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
+   "golesLocal": 1,
+   "golesVisitante": 2,
+   "goleadoresLocal": [
+    "Tiago Rojas"
+   ],
+   "goleadoresVisitante": [
+    "Valentino Oyola",
+    "Luciano Vega"
+   ],
    "fase": "liga"
   }
  ],
