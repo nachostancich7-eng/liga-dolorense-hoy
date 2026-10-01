@@ -4252,24 +4252,6 @@ window.SITE_DATA = {
   },
   {
    "fecha": 6,
-   "categoria": "A",
-   "division": "5ta",
-   "local": "Las Rosas",
-   "visitante": "Atlanta",
-   "golesLocal": 3,
-   "golesVisitante": 1,
-   "goleadoresLocal": [
-    "Mateo García",
-    "Mateo García",
-    "Jasiel Aguilera"
-   ],
-   "goleadoresVisitante": [
-    "Nicolás Guevara"
-   ],
-   "fase": "liga"
-  },
-  {
-   "fecha": 6,
    "categoria": "B",
    "division": "5ta",
    "local": "Travesía",
@@ -4566,20 +4548,6 @@ window.SITE_DATA = {
    "fecha": 6,
    "categoria": "A",
    "division": "3ra",
-   "local": "Sarmiento",
-   "visitante": "Defensores",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
-   "fase": "liga",
-   "estado": "suspendido",
-   "nota": "Se juega el miércoles 30/09"
-  },
-  {
-   "fecha": 6,
-   "categoria": "A",
-   "division": "3ra",
    "local": "A.F.I",
    "visitante": "San Brochero",
    "golesLocal": 0,
@@ -4671,20 +4639,6 @@ window.SITE_DATA = {
    "fecha": 6,
    "categoria": "A",
    "division": "Primera",
-   "local": "Sarmiento",
-   "visitante": "Defensores",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
-   "fase": "liga",
-   "estado": "suspendido",
-   "nota": "Juegan el miércoles 30/09"
-  },
-  {
-   "fecha": 6,
-   "categoria": "A",
-   "division": "Primera",
    "local": "B.A.P",
    "visitante": "San Vicente",
    "golesLocal": 2,
@@ -4717,6 +4671,50 @@ window.SITE_DATA = {
    "division": "Primera",
    "local": "Travesía",
    "visitante": "Juventud Unida",
+   "golesLocal": 0,
+   "golesVisitante": 0,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [],
+   "fase": "liga"
+  },
+  {
+   "fecha": 6,
+   "categoria": "A",
+   "division": "Primera",
+   "local": "Sarmiento",
+   "visitante": "Defensores",
+   "golesLocal": 0,
+   "golesVisitante": 1,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [
+    "Alejandro Castro"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 6,
+   "categoria": "A",
+   "division": "5ta",
+   "local": "Las Rosas",
+   "visitante": "Atlanta",
+   "golesLocal": 3,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Mateo García",
+    "Mateo García",
+    "Jasiel Aguilera"
+   ],
+   "goleadoresVisitante": [
+    "Nicolás Guevara"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 6,
+   "categoria": "A",
+   "division": "3ra",
+   "local": "Sarmiento",
+   "visitante": "Defensores",
    "golesLocal": 0,
    "golesVisitante": 0,
    "goleadoresLocal": [],
