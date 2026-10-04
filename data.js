@@ -5479,7 +5479,7 @@ window.SITE_DATA = {
    "local": "Fátima",
    "visitante": "Huracán",
    "golesLocal": 0,
-   "golesVisitante": 0,
+   "golesVisitante": 1,
    "goleadoresLocal": [],
    "goleadoresVisitante": [
     "Máximo Miranda"
