@@ -5073,23 +5073,6 @@ window.SITE_DATA = {
    "fecha": 7,
    "categoria": "A",
    "division": "4ta",
-   "local": "San Vicente",
-   "visitante": "San Martín de S.P",
-   "golesLocal": 2,
-   "golesVisitante": 1,
-   "goleadoresLocal": [
-    "Isaías Balenzuela",
-    "Ian Cuello"
-   ],
-   "goleadoresVisitante": [
-    "Junior Heredia"
-   ],
-   "fase": "liga"
-  },
-  {
-   "fecha": 7,
-   "categoria": "A",
-   "division": "4ta",
    "local": "Defensores",
    "visitante": "San Brochero",
    "golesLocal": 1,
@@ -5483,6 +5466,23 @@ window.SITE_DATA = {
    "goleadoresLocal": [],
    "goleadoresVisitante": [
     "Máximo Miranda"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 7,
+   "categoria": "A",
+   "division": "4ta",
+   "local": "San Vicente",
+   "visitante": "San Martín de S.P",
+   "golesLocal": 1,
+   "golesVisitante": 2,
+   "goleadoresLocal": [
+    "Junior Heredia"
+   ],
+   "goleadoresVisitante": [
+    "Isaías Valenzuela",
+    "Isaías Valenzuela"
    ],
    "fase": "liga"
   }
