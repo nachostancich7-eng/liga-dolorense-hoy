@@ -4958,23 +4958,6 @@ window.SITE_DATA = {
    "fecha": 7,
    "categoria": "B",
    "division": "3ra",
-   "local": "Sargento Cabral",
-   "visitante": "Juventud Unida",
-   "golesLocal": 2,
-   "golesVisitante": 1,
-   "goleadoresLocal": [
-    "Uriel Pereyra",
-    "Uriel Pereyra"
-   ],
-   "goleadoresVisitante": [
-    "Alexis Montenegro"
-   ],
-   "fase": "liga"
-  },
-  {
-   "fecha": 7,
-   "categoria": "B",
-   "division": "3ra",
    "local": "San José",
    "visitante": "Travesía",
    "golesLocal": 3,
@@ -5483,6 +5466,22 @@ window.SITE_DATA = {
    "goleadoresVisitante": [
     "Isaías Valenzuela",
     "Isaías Valenzuela"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 7,
+   "categoria": "B",
+   "division": "3ra",
+   "local": "Sargento Cabral",
+   "visitante": "Juventud Unida",
+   "golesLocal": 2,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Uriel Barrios"
+   ],
+   "goleadoresVisitante": [
+    "Alexis Montenegro"
    ],
    "fase": "liga"
   }
