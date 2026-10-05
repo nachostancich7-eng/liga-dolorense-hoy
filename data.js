@@ -5478,6 +5478,7 @@ window.SITE_DATA = {
    "golesLocal": 2,
    "golesVisitante": 1,
    "goleadoresLocal": [
+    "Uriel Barrios",
     "Uriel Barrios"
    ],
    "goleadoresVisitante": [
