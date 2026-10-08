@@ -4771,13 +4771,18 @@ window.SITE_DATA = {
    "division": "Primera",
    "local": "Sarmiento",
    "visitante": "Comercio",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
-   "fase": "liga",
-   "estado": "suspendido",
-   "nota": "El partido se disputará el día miércoles 7/10 a las 21:00hs."
+   "golesLocal": 1,
+   "golesVisitante": 4,
+   "goleadoresLocal": [
+    "Luca Correa"
+   ],
+   "goleadoresVisitante": [
+    "Matías Funes",
+    "Lucas Gil",
+    "Leonardo Giorgetti",
+    "Jorge Díaz"
+   ],
+   "fase": "liga"
   },
   {
    "fecha": 7,
@@ -4918,13 +4923,17 @@ window.SITE_DATA = {
    "division": "3ra",
    "local": "Sarmiento",
    "visitante": "Comercio",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
-   "fase": "liga",
-   "estado": "suspendido",
-   "nota": "El partido se disputará el día miércoles 7/10 a las 19:00hs."
+   "golesLocal": 2,
+   "golesVisitante": 2,
+   "goleadoresLocal": [
+    "Máximo Olmedo",
+    "Felipe Cima"
+   ],
+   "goleadoresVisitante": [
+    "Agostinho Neiva",
+    "Caetano Alizzi"
+   ],
+   "fase": "liga"
   },
   {
    "fecha": 7,
@@ -5072,13 +5081,17 @@ window.SITE_DATA = {
    "division": "4ta",
    "local": "Independiente",
    "visitante": "Las Tapias",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
-   "fase": "liga",
-   "estado": "suspendido",
-   "nota": "El partido se disputará el día miércoles 7/10."
+   "golesLocal": 3,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Kevin Pedernera",
+    "Lisandro Giménez",
+    "Gastón Romero"
+   ],
+   "goleadoresVisitante": [
+    "Elias Sotelo"
+   ],
+   "fase": "liga"
   },
   {
    "fecha": 7,
@@ -5469,61 +5482,6 @@ window.SITE_DATA = {
    ],
    "goleadoresVisitante": [
     "Alexis Montenegro"
-   ],
-   "fase": "liga"
-  },
-  {
-   "fecha": 6,
-   "categoria": "A",
-   "division": "Primera",
-   "local": "Sarmiento",
-   "visitante": "Comercio",
-   "golesLocal": 1,
-   "golesVisitante": 4,
-   "goleadoresLocal": [
-    "Luca Correa"
-   ],
-   "goleadoresVisitante": [
-    "Matías Funes",
-    "Lucas Gil",
-    "Leonardo Giorgetti",
-    "Jorge Díaz"
-   ],
-   "fase": "liga"
-  },
-  {
-   "fecha": 6,
-   "categoria": "A",
-   "division": "3ra",
-   "local": "Sarmiento",
-   "visitante": "Comercio",
-   "golesLocal": 2,
-   "golesVisitante": 2,
-   "goleadoresLocal": [
-    "Máximo Olmedo",
-    "Felipe Cima"
-   ],
-   "goleadoresVisitante": [
-    "Agostinho Neiva",
-    "Caetano Alizzi"
-   ],
-   "fase": "liga"
-  },
-  {
-   "fecha": 6,
-   "categoria": "B",
-   "division": "4ta",
-   "local": "Independiente",
-   "visitante": "Las Tapias",
-   "golesLocal": 3,
-   "golesVisitante": 1,
-   "goleadoresLocal": [
-    "Kevin Pedernera",
-    "Lisandro Giménez",
-    "Gastón Romero"
-   ],
-   "goleadoresVisitante": [
-    "Elias Sotelo"
    ],
    "fase": "liga"
   },
