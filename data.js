@@ -2033,7 +2033,7 @@ window.SITE_DATA = {
    ],
    "goleadoresVisitante": [
     "Santino Pereyra",
-    "Valentín Salinas"
+    "Valentino Salinas"
    ],
    "fase": "liga"
   },
@@ -2327,7 +2327,7 @@ window.SITE_DATA = {
    "golesLocal": 2,
    "golesVisitante": 0,
    "goleadoresLocal": [
-    "Cristian Villareal",
+    "Cristian Villarreal",
     "Fabio Calderón"
    ],
    "goleadoresVisitante": [],
@@ -3013,8 +3013,8 @@ window.SITE_DATA = {
    "golesVisitante": 2,
    "goleadoresLocal": [],
    "goleadoresVisitante": [
-    "Cristian Villareal",
-    "Cristian Villareal"
+    "Cristian Villarreal",
+    "Cristian Villarreal"
    ],
    "fase": "liga"
   },
@@ -3866,7 +3866,7 @@ window.SITE_DATA = {
    "golesLocal": 2,
    "golesVisitante": 2,
    "goleadoresLocal": [
-    "Cristian Villareal",
+    "Cristian Villarreal",
     "Rodrigo Mercado"
    ],
    "goleadoresVisitante": [
@@ -4282,20 +4282,6 @@ window.SITE_DATA = {
   {
    "fecha": 6,
    "categoria": "B",
-   "division": "4ta",
-   "local": "Travesía",
-   "visitante": "Juventud Unida",
-   "golesLocal": 1,
-   "golesVisitante": 1,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [
-    "Samuel Domínguez"
-   ],
-   "fase": "liga"
-  },
-  {
-   "fecha": 6,
-   "categoria": "B",
    "division": "3ra",
    "local": "Travesía",
    "visitante": "Juventud Unida",
@@ -4628,7 +4614,7 @@ window.SITE_DATA = {
    "goleadoresLocal": [
     "Luis Calderón",
     "Luis Calderón",
-    "Cristian Villareal"
+    "Cristian Villarreal"
    ],
    "goleadoresVisitante": [
     "Javier Pérez"
@@ -4760,7 +4746,7 @@ window.SITE_DATA = {
    "golesVisitante": 1,
    "goleadoresLocal": [],
    "goleadoresVisitante": [
-    "Cristian Villareal"
+    "Cristian Villarreal"
    ],
    "fase": "liga"
   },
@@ -5061,7 +5047,7 @@ window.SITE_DATA = {
    "golesLocal": 1,
    "golesVisitante": 0,
    "goleadoresLocal": [
-    "Valentín Salinas"
+    "Valentino Salinas"
    ],
    "goleadoresVisitante": [],
    "fase": "liga"
@@ -5485,6 +5471,76 @@ window.SITE_DATA = {
     "Alexis Montenegro"
    ],
    "fase": "liga"
+  },
+  {
+   "fecha": 6,
+   "categoria": "A",
+   "division": "Primera",
+   "local": "Sarmiento",
+   "visitante": "Comercio",
+   "golesLocal": 1,
+   "golesVisitante": 4,
+   "goleadoresLocal": [
+    "Luca Correa"
+   ],
+   "goleadoresVisitante": [
+    "Matías Funes",
+    "Lucas Gil",
+    "Leonardo Giorgetti",
+    "Jorge Díaz"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 6,
+   "categoria": "A",
+   "division": "3ra",
+   "local": "Sarmiento",
+   "visitante": "Comercio",
+   "golesLocal": 2,
+   "golesVisitante": 2,
+   "goleadoresLocal": [
+    "Máximo Olmedo",
+    "Felipe Cima"
+   ],
+   "goleadoresVisitante": [
+    "Agostinho Neiva",
+    "Caetano Alizzi"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 6,
+   "categoria": "B",
+   "division": "4ta",
+   "local": "Independiente",
+   "visitante": "Las Tapias",
+   "golesLocal": 3,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Kevin Pedernera",
+    "Lisandro Giménez",
+    "Gastón Romero"
+   ],
+   "goleadoresVisitante": [
+    "Elias Sotelo"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 6,
+   "categoria": "B",
+   "division": "4ta",
+   "local": "Travesía",
+   "visitante": "Juventud Unida",
+   "golesLocal": 0,
+   "golesVisitante": 1,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [
+    "Samuel Domínguez"
+   ],
+   "fase": "liga",
+   "nota": "Partido suspendido por inferioridad numérica de Travesía, se otorga el triunfo a Juventud Unida."
   }
  ],
  "comunicados": [
