@@ -5063,20 +5063,6 @@ window.SITE_DATA = {
   },
   {
    "fecha": 7,
-   "categoria": "A",
-   "division": "4ta",
-   "local": "Sarmiento",
-   "visitante": "Comercio",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
-   "fase": "liga",
-   "estado": "suspendido",
-   "nota": "El partido se disputará en la semana."
-  },
-  {
-   "fecha": 7,
    "categoria": "B",
    "division": "4ta",
    "local": "Independiente",
@@ -5206,20 +5192,6 @@ window.SITE_DATA = {
     "Mateo Guzmán"
    ],
    "fase": "liga"
-  },
-  {
-   "fecha": 7,
-   "categoria": "A",
-   "division": "5ta",
-   "local": "Sarmiento",
-   "visitante": "Comercio",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
-   "fase": "liga",
-   "estado": "suspendido",
-   "nota": "El partido se disputará en la semana."
   },
   {
    "fecha": 7,
@@ -5357,20 +5329,6 @@ window.SITE_DATA = {
   },
   {
    "fecha": 7,
-   "categoria": "A",
-   "division": "6ta",
-   "local": "Sarmiento",
-   "visitante": "Comercio",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
-   "fase": "liga",
-   "estado": "suspendido",
-   "nota": "El partido se disputará en la semana."
-  },
-  {
-   "fecha": 7,
    "categoria": "B",
    "division": "6ta",
    "local": "Independiente",
@@ -5499,6 +5457,51 @@ window.SITE_DATA = {
    ],
    "fase": "liga",
    "nota": "Partido suspendido por inferioridad numérica de Travesía, se otorga el triunfo a Juventud Unida."
+  },
+  {
+   "fecha": 7,
+   "categoria": "A",
+   "division": "4ta",
+   "local": "Sarmiento",
+   "visitante": "Comercio",
+   "golesLocal": 0,
+   "golesVisitante": 3,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [
+    "Santino Ortega",
+    "Joel Juárez",
+    "Tomás Oviedo"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 7,
+   "categoria": "A",
+   "division": "5ta",
+   "local": "Sarmiento",
+   "visitante": "Comercio",
+   "golesLocal": 0,
+   "golesVisitante": 2,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [
+    "Dylan Caballero",
+    "Dylan Caballero"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 7,
+   "categoria": "A",
+   "division": "6ta",
+   "local": "Sarmiento",
+   "visitante": "Comercio",
+   "golesLocal": 0,
+   "golesVisitante": 1,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [
+    "Cano Misael"
+   ],
+   "fase": "liga"
   }
  ],
  "comunicados": [
