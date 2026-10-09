@@ -1607,7 +1607,7 @@ window.SITE_DATA = {
     "Lorenzo Murúa",
     "Román Hormaeche",
     "Román Hormaeche",
-    "Cano Misael"
+    "Misael Cano"
    ],
    "fase": "liga"
   },
@@ -5499,7 +5499,7 @@ window.SITE_DATA = {
    "golesVisitante": 1,
    "goleadoresLocal": [],
    "goleadoresVisitante": [
-    "Cano Misael"
+    "Misael Cano"
    ],
    "fase": "liga"
   }
