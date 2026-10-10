@@ -5477,21 +5477,6 @@ window.SITE_DATA = {
   {
    "fecha": 7,
    "categoria": "A",
-   "division": "5ta",
-   "local": "Sarmiento",
-   "visitante": "Comercio",
-   "golesLocal": 0,
-   "golesVisitante": 2,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [
-    "Dylan Caballero",
-    "Dylan Caballero"
-   ],
-   "fase": "liga"
-  },
-  {
-   "fecha": 7,
-   "categoria": "A",
    "division": "6ta",
    "local": "Sarmiento",
    "visitante": "Comercio",
@@ -5500,6 +5485,21 @@ window.SITE_DATA = {
    "goleadoresLocal": [],
    "goleadoresVisitante": [
     "Misael Cano"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 7,
+   "categoria": "A",
+   "division": "5ta",
+   "local": "Sarmiento",
+   "visitante": "Comercio",
+   "golesLocal": 0,
+   "golesVisitante": 2,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [
+    "Dylan Caballero",
+    "Lisandro Díaz"
    ],
    "fase": "liga"
   }
