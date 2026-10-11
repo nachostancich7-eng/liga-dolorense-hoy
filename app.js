@@ -614,7 +614,89 @@ function rankBadgeClass(i, len, kind) {
   return '';
 }
 
-function posTable(rows, kind) {
+/* ============================================================
+   CLASIFICADOS MATEMATICAMENTE A PLAY OFF
+   Simula TODOS los resultados posibles de los partidos que
+   faltan segun el fixture, en el peor escenario para cada
+   equipo: pierde todos los suyos (el rival se lleva los 3) y
+   cualquier empate en puntos se le resuelve en contra. Si aun
+   asi nunca queda fuera de los 4 primeros, esta clasificado
+   pase lo que pase, con cualquier criterio de desempate.
+   Solo se calcula cuando queda UNA fecha o menos por jugar.
+   ============================================================ */
+const CUPOS_PLAYOFF = 4;
+
+function clavePartido(fecha, a, b) {
+  return fecha + '|' + [a, b].sort().join('|');
+}
+
+function partidosPendientes(categoria, division) {
+  const fx = DATA.fixture && DATA.fixture[categoria];
+  if (!fx) return null;                     // sin fixture no se puede afirmar nada
+  const jugados = new Set();
+  DATA.matches
+    .filter(m => m.categoria === categoria && m.division === division && (m.fase || 'liga') === 'liga')
+    .forEach(m => {
+      const jugado = m.estado === 'ambos_pierden' ||
+        (m.golesLocal !== null && m.golesLocal !== undefined && m.estado !== 'suspendido');
+      if (jugado) jugados.add(clavePartido(m.fecha, m.local, m.visitante));
+    });
+  const resto = [];
+  Object.keys(fx).forEach(f => {
+    (fx[f] || []).forEach(p => {
+      if (!jugados.has(clavePartido(f, p.local, p.visitante))) resto.push([p.local, p.visitante]);
+    });
+  });
+  return resto;
+}
+
+function clasificadosPlayoff(categoria, division) {
+  const vacio = new Set();
+  const resto = partidosPendientes(categoria, division);
+  if (!resto) return vacio;
+  const equipos = DATA.teams[categoria] || [];
+  if (!equipos.length) return vacio;
+  // Una fecha = la mitad de los equipos. Mientras falte mas de una, no se muestra nada.
+  if (resto.length > Math.floor(equipos.length / 2)) return vacio;
+
+  const base = {};
+  equipos.forEach(e => { base[e] = 0; });
+  computeStandings(categoria, division).forEach(r => { base[r.equipo] = r.pts; });
+
+  const out = new Set();
+  equipos.forEach(X => {
+    const p0 = Object.assign({}, base);
+    const otros = [];
+    resto.forEach(par => {
+      if (par[0] === X) p0[par[1]] += 3;
+      else if (par[1] === X) p0[par[0]] += 3;
+      else otros.push(par);
+    });
+    const meta = p0[X];
+    const total = Math.pow(3, otros.length);
+    let seguro = true;
+    for (let s = 0; s < total && seguro; s++) {
+      const p = Object.assign({}, p0);
+      let n = s;
+      for (let k = 0; k < otros.length; k++) {
+        const a = otros[k][0], b = otros[k][1], o = n % 3;
+        n = (n / 3) | 0;
+        if (o === 0) p[a] += 3;
+        else if (o === 1) p[b] += 3;
+        else { p[a] += 1; p[b] += 1; }
+      }
+      let arriba = 0;
+      for (let q = 0; q < equipos.length; q++) {
+        if (equipos[q] !== X && p[equipos[q]] >= meta) arriba++;
+      }
+      if (arriba >= CUPOS_PLAYOFF) seguro = false;
+    }
+    if (seguro) out.add(X);
+  });
+  return out;
+}
+
+function posTable(rows, kind, clasificados) {
   const wrap = el('div', { class: 'table-scroll' });
   const table = el('table', { class: 'pos-table' });
   table.appendChild(el('tr', {}, [
@@ -634,7 +716,16 @@ function posTable(rows, kind) {
     table.appendChild(el('tr', {}, [
       el('td', {}, [el('span', { class: `rank-badge ${cls}`, text: String(i + 1) })]),
       el('td', { class: 'col-equipo' }, [
-        el('div', { class: 'team-cell' }, [logoImg(r.equipo), el('span', { text: r.equipo })])
+        (function () {
+          const celda = el('div', { class: 'team-cell' }, [logoImg(r.equipo), el('span', { text: r.equipo })]);
+          if (clasificados && clasificados.has(r.equipo)) {
+            celda.appendChild(el('span', {
+              class: 'clasif-badge', title: 'Clasificado a play off',
+              'aria-label': 'Clasificado a play off', text: '\u2713'
+            }));
+          }
+          return celda;
+        })()
       ]),
       el('td', { class: 'col-pts', text: (r.pts === null || r.pts === undefined) ? '-' : String(r.pts) }),
       el('td', { text: String(r.pj) }),
@@ -724,15 +815,25 @@ function renderPosicionesView(division) {
 
   ['A', 'B'].forEach(cat => {
     const rows = tablaTorneoActual(cat, division);
+    const clasif = clasificadosPlayoff(cat, division);
+    const leyenda = [
+      el('span', { class: 'legend-item' }, [
+        el('span', { class: 'rank-badge playoff' }),
+        el('span', { text: 'Puesto de clasificación' }),
+      ]),
+    ];
+    if (clasif.size) {
+      leyenda.push(el('span', { class: 'legend-item' }, [
+        el('span', { class: 'clasif-badge', text: '\u2713' }),
+        el('span', { text: 'Clasificado a play off' }),
+      ]));
+    }
     const block = el('div', { class: `cat-block cat-block-${cat}` }, [
       el('div', { class: `cat-header cat-${cat}` }, [
         el('span', { text: `Posiciones · ${etiquetaDivision} ${cat}` }),
       ]),
-      posTable(rows, 'playoff'),
-      el('div', { class: 'legend' }, [
-        el('span', { class: 'rank-badge playoff' }),
-        el('span', { text: 'Clasifica a play off' }),
-      ]),
+      posTable(rows, 'playoff', clasif),
+      el('div', { class: 'legend' }, leyenda),
     ]);
     root.appendChild(block);
   });
