@@ -7026,5 +7026,196 @@ window.SITE_DATA = {
   }
  },
  "sumatoriaBaseTorneo": "Torneo Apertura 2026",
- "fechaInicioClausura": "2026-08-17"
+ "fechaInicioClausura": "2026-08-17",
+ "anualBase": {
+  "A": {
+   "Defensores": {
+    "pts": 22,
+    "pj": 9,
+    "pg": 7,
+    "pe": 1,
+    "pp": 1,
+    "gf": 26,
+    "gc": 7
+   },
+   "Sarmiento": {
+    "pts": 17,
+    "pj": 9,
+    "pg": 5,
+    "pe": 2,
+    "pp": 2,
+    "gf": 17,
+    "gc": 8
+   },
+   "Comercio": {
+    "pts": 17,
+    "pj": 9,
+    "pg": 5,
+    "pe": 2,
+    "pp": 2,
+    "gf": 11,
+    "gc": 8
+   },
+   "San Martín de S.P": {
+    "pts": 13,
+    "pj": 9,
+    "pg": 2,
+    "pe": 7,
+    "pp": 0,
+    "gf": 15,
+    "gc": 7
+   },
+   "San Brochero": {
+    "pts": 12,
+    "pj": 9,
+    "pg": 3,
+    "pe": 3,
+    "pp": 3,
+    "gf": 15,
+    "gc": 17
+   },
+   "Atlanta": {
+    "pts": 12,
+    "pj": 9,
+    "pg": 3,
+    "pe": 3,
+    "pp": 3,
+    "gf": 10,
+    "gc": 12
+   },
+   "A.F.I": {
+    "pts": 11,
+    "pj": 9,
+    "pg": 3,
+    "pe": 2,
+    "pp": 4,
+    "gf": 14,
+    "gc": 16
+   },
+   "Las Rosas": {
+    "pts": 7,
+    "pj": 9,
+    "pg": 2,
+    "pe": 1,
+    "pp": 6,
+    "gf": 9,
+    "gc": 16
+   },
+   "B.A.P": {
+    "pts": 6,
+    "pj": 9,
+    "pg": 1,
+    "pe": 3,
+    "pp": 5,
+    "gf": 6,
+    "gc": 13
+   },
+   "San Vicente": {
+    "pts": 5,
+    "pj": 9,
+    "pg": 1,
+    "pe": 2,
+    "pp": 6,
+    "gf": 8,
+    "gc": 27
+   }
+  },
+  "B": {
+   "Travesía": {
+    "pts": 27,
+    "pj": 9,
+    "pg": 9,
+    "pe": 0,
+    "pp": 0,
+    "gf": 17,
+    "gc": 3
+   },
+   "Juventud Unida": {
+    "pts": 20,
+    "pj": 9,
+    "pg": 6,
+    "pe": 2,
+    "pp": 1,
+    "gf": 13,
+    "gc": 5
+   },
+   "Sargento Cabral": {
+    "pts": 14,
+    "pj": 9,
+    "pg": 4,
+    "pe": 2,
+    "pp": 3,
+    "gf": 17,
+    "gc": 14
+   },
+   "Las Tapias": {
+    "pts": 13,
+    "pj": 9,
+    "pg": 3,
+    "pe": 4,
+    "pp": 2,
+    "gf": 12,
+    "gc": 12
+   },
+   "Luyaba": {
+    "pts": 11,
+    "pj": 9,
+    "pg": 3,
+    "pe": 2,
+    "pp": 4,
+    "gf": 11,
+    "gc": 12
+   },
+   "Independiente": {
+    "pts": 8,
+    "pj": 9,
+    "pg": 2,
+    "pe": 2,
+    "pp": 5,
+    "gf": 12,
+    "gc": 15
+   },
+   "Huracán": {
+    "pts": 8,
+    "pj": 9,
+    "pg": 2,
+    "pe": 2,
+    "pp": 5,
+    "gf": 10,
+    "gc": 15
+   },
+   "Fátima": {
+    "pts": 8,
+    "pj": 9,
+    "pg": 4,
+    "pe": 2,
+    "pp": 3,
+    "gf": 17,
+    "gc": 16,
+    "quita": 6
+   },
+   "San José": {
+    "pts": 7,
+    "pj": 9,
+    "pg": 2,
+    "pe": 1,
+    "pp": 6,
+    "gf": 6,
+    "gc": 12
+   },
+   "Ardiles": {
+    "pts": 2,
+    "pj": 9,
+    "pg": 0,
+    "pe": 2,
+    "pp": 7,
+    "gf": 3,
+    "gc": 14
+   }
+  }
+ },
+ "anualBaseTorneo": "Torneo Apertura 2026",
+ "campeonApertura": {
+  "B": "Juventud Unida"
+ }
 };

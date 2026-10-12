@@ -696,6 +696,154 @@ function clasificadosPlayoff(categoria, division) {
   return out;
 }
 
+/* ============================================================
+   LLAVE DE SEMIFINALES
+   1° vs 4° y 2° vs 3°. Los escudos y nombres aparecen recien
+   cuando esa division jugo todas sus fechas.
+   ============================================================ */
+function llaveSemifinales(categoria, division) {
+  const resto = partidosPendientes(categoria, division);
+  if (resto === null) return null;                 // sin fixture no afirmamos nada
+  const confirmado = resto.length === 0;
+  const rows = tablaTorneoActual(categoria, division);
+
+  const caja = el('div', { class: 'llave' + (confirmado ? ' llave-ok' : '') }, [
+    el('div', { class: 'llave-titulo' }, [
+      el('span', { text: 'Semifinales' }),
+      el('span', { class: 'llave-estado', text: confirmado ? 'Confirmadas' : 'A confirmar' }),
+    ]),
+  ]);
+  const grilla = el('div', { class: 'llave-grilla' });
+  [[1, 4], [2, 3]].forEach((par, n) => {
+    const serie = el('div', { class: 'llave-serie' }, [
+      el('div', { class: 'llave-serie-label', text: 'Semifinal ' + (n + 1) }),
+    ]);
+    par.forEach((pos, k) => {
+      const club = (confirmado && rows[pos - 1]) ? rows[pos - 1].equipo : null;
+      serie.appendChild(el('div', { class: 'llave-slot' + (club ? '' : ' llave-slot-vacio') }, [
+        el('span', { class: 'llave-pos', text: pos + '°' }),
+        club ? logoImg(club) : el('span', { class: 'llave-escudo-vacio' }),
+        el('span', { class: 'llave-nombre', text: club || 'A confirmar' }),
+      ]));
+      if (k === 0) serie.appendChild(el('div', { class: 'llave-vs', text: 'vs' }));
+    });
+    grilla.appendChild(serie);
+  });
+  caja.appendChild(grilla);
+  caja.appendChild(el('div', { class: 'llave-nota', text: 'La localía de cada serie se define durante la semana.' }));
+  return caja;
+}
+
+/* ============================================================
+   TABLA ANUAL: puntos de PRIMERA DIVISION en los torneos del año.
+   Arranca de la tabla final del Apertura (DATA.anualBase, con goles
+   y quita de puntos como la publico la Liga) y le suma el torneo
+   en curso.
+   ============================================================ */
+function computeAnual(categoria) {
+  const base = (DATA.anualBase && DATA.anualBase[categoria]) || {};
+  const acc = {};
+  Object.keys(base).forEach(e => {
+    const b = base[e];
+    acc[e] = {
+      equipo: e, pts: b.pts || 0, pj: b.pj || 0, pg: b.pg || 0, pe: b.pe || 0,
+      pp: b.pp || 0, gf: b.gf || 0, gc: b.gc || 0, quita: b.quita || 0,
+    };
+  });
+  if (DATA.torneo !== DATA.anualBaseTorneo) {
+    tablaTorneoActual(categoria, 'Primera').forEach(f => {
+      if (!acc[f.equipo]) {
+        acc[f.equipo] = { equipo: f.equipo, pts: 0, pj: 0, pg: 0, pe: 0, pp: 0, gf: 0, gc: 0, quita: 0 };
+      }
+      const a = acc[f.equipo];
+      a.pts += f.pts || 0; a.pj += f.pj || 0; a.pg += f.pg || 0;
+      a.pe += f.pe || 0; a.pp += f.pp || 0; a.gf += f.gf || 0; a.gc += f.gc || 0;
+    });
+  }
+  return Object.values(acc).sort((a, b) =>
+    (b.pts - a.pts) || ((b.gf - b.gc) - (a.gf - a.gc)) || (b.gf - a.gf));
+}
+
+/* Reglamento: desciende el ultimo de la Tabla Anual (solo Primera) y el ultimo
+   de la Tabla General (1ra + 3ra + 4ta). Si los dos son el mismo club, el
+   segundo descenso pasa al anteultimo de la Tabla General. */
+function computeDescensos(categoria) {
+  const anual = computeAnual(categoria);
+  const general = computeSumatoria(categoria);
+  if (!anual.length || !general.length) return { porAnual: null, porGeneral: null, reglaAplicada: false };
+  const porAnual = anual[anual.length - 1].equipo;
+  let porGeneral = general[general.length - 1].equipo;
+  let reglaAplicada = false;
+  if (porGeneral === porAnual && general.length > 1) {
+    porGeneral = general[general.length - 2].equipo;
+    reglaAplicada = true;
+  }
+  return { porAnual, porGeneral, reglaAplicada };
+}
+
+function anualTable(rows, clubDesciende) {
+  const wrap = el('div', { class: 'table-scroll' });
+  const table = el('table', { class: 'pos-table' });
+  table.appendChild(el('tr', {}, [
+    el('th', { text: '#' }), el('th', { class: 'col-equipo', text: 'Equipo' }),
+    el('th', { text: 'PTS' }), el('th', { text: 'J' }), el('th', { text: 'G' }),
+    el('th', { text: 'E' }), el('th', { text: 'P' }), el('th', { text: 'Gol' }), el('th', { text: '+/-' }),
+  ]));
+  rows.forEach((r, i) => {
+    const dg = r.gf - r.gc;
+    const celda = el('div', { class: 'team-cell' }, [logoImg(r.equipo), el('span', { text: r.equipo })]);
+    if (r.quita) {
+      celda.appendChild(el('span', {
+        class: 'quita-badge', title: 'Quita de ' + r.quita + ' puntos', text: '−' + r.quita,
+      }));
+    }
+    table.appendChild(el('tr', {}, [
+      el('td', {}, [el('span', { class: 'rank-badge ' + (r.equipo === clubDesciende ? 'descenso' : ''), text: String(i + 1) })]),
+      el('td', { class: 'col-equipo' }, [celda]),
+      el('td', { class: 'col-pts', text: String(r.pts) }),
+      el('td', { text: String(r.pj) }), el('td', { text: String(r.pg) }),
+      el('td', { text: String(r.pe) }), el('td', { text: String(r.pp) }),
+      el('td', { text: r.gf + ':' + r.gc }),
+      el('td', { text: dg > 0 ? '+' + dg : String(dg) }),
+    ]));
+  });
+  wrap.appendChild(table);
+  return wrap;
+}
+
+function renderAnualView() {
+  const root = document.getElementById('view-root');
+  root.innerHTML = '';
+  const bloque = el('div', { class: 'anual-block' }, [
+    el('div', { class: 'section-label', text: `TABLA ANUAL ${DATA.temporada || ''} · PRIMERA DIVISIÓN`.trim() }),
+    el('div', { class: 'section-note', text: 'Suma los puntos de Primera División en los torneos del año.' }),
+  ]);
+  ['A', 'B'].forEach(cat => {
+    const desc = cat === 'A' ? computeDescensos('A') : null;
+    bloque.appendChild(el('div', { class: 'anual-cat-header' }, [
+      el('span', { class: 'dot dot-' + cat }), el('span', { text: 'Primera ' + cat }),
+    ]));
+    bloque.appendChild(anualTable(computeAnual(cat), desc ? desc.porAnual : null));
+    if (desc && desc.porAnual) {
+      bloque.appendChild(el('div', { class: 'legend' }, [
+        el('span', { class: 'legend-item' }, [
+          el('span', { class: 'rank-badge descenso' }),
+          el('span', { text: 'Desciende por tabla anual' }),
+        ]),
+      ]));
+    }
+  });
+  root.appendChild(bloque);
+}
+
+// Corta la tabla de goleadores en los primeros N PUESTOS, no en N filas:
+// si varios empatan en el ultimo puesto que entra, aparecen todos.
+function topGoleadores(list, puestos) {
+  if (list.length <= puestos) return list.slice();
+  const corte = list[puestos - 1].goles;
+  return list.filter(g => g.goles >= corte);
+}
+
 function posTable(rows, kind, clasificados) {
   const wrap = el('div', { class: 'table-scroll' });
   const table = el('table', { class: 'pos-table' });
@@ -780,7 +928,7 @@ function computeSumatoria(categoria) {
     .sort((a, b) => b.pts - a.pts);
 }
 
-function sumatoriaTable(rows, kind) {
+function sumatoriaTable(rows, kind, equipoMarcado) {
   const wrap = el('div', { class: 'table-scroll' });
   const table = el('table', { class: 'pos-table sumatoria-table' });
   table.appendChild(el('tr', {}, [
@@ -792,7 +940,9 @@ function sumatoriaTable(rows, kind) {
     el('th', { text: '4TA' }),
   ]));
   rows.forEach((r, i) => {
-    const cls = rankBadgeClass(i, rows.length, kind);
+    const cls = equipoMarcado === undefined
+      ? rankBadgeClass(i, rows.length, kind)
+      : (r.equipo === equipoMarcado ? kind : '');
     table.appendChild(el('tr', {}, [
       el('td', {}, [el('span', { class: `rank-badge ${cls}`, text: String(i + 1) })]),
       el('td', { class: 'col-equipo' }, [
@@ -835,8 +985,21 @@ function renderPosicionesView(division) {
       posTable(rows, 'playoff', clasif),
       el('div', { class: 'legend' }, leyenda),
     ]);
+    const llave = llaveSemifinales(cat, division);
+    if (llave) block.insertBefore(llave, block.children[1]);
     root.appendChild(block);
   });
+}
+
+// El reglamento da dos ascensos: la finalisima entre los campeones de los dos
+// torneos, y el primero de esta tabla. Si el que sube por la finalisima es
+// ademas el primero de la sumatoria, el cupo pasa al segundo.
+function notaAscenso() {
+  const camp = (DATA.campeonApertura && DATA.campeonApertura.B) || null;
+  const base = camp
+    ? `El otro ascenso se define en la finalísima entre ${camp} (campeón del Apertura) y el campeón del Clausura.`
+    : 'El otro ascenso se define en la finalísima entre los campeones del Apertura y del Clausura.';
+  return base + ' Si el que asciende por esa vía es además el primero de esta tabla, el cupo por sumatoria pasa al segundo.';
 }
 
 function renderSumatoriaView() {
@@ -845,6 +1008,7 @@ function renderSumatoriaView() {
 
   const sumatoriaA = computeSumatoria('A');
   const sumatoriaB = computeSumatoria('B');
+  const descA = computeDescensos('A');
 
   const anual = el('div', { class: 'anual-block' }, [
     el('div', { class: 'section-label', text: `SUMATORIA GENERAL DE PUNTOS ${DATA.temporada || ''}`.trim() }),
@@ -853,20 +1017,28 @@ function renderSumatoriaView() {
     el('div', { class: 'anual-cat-header' }, [
       el('span', { class: 'dot dot-A' }), el('span', { text: 'Primera A' }),
     ]),
-    sumatoriaTable(sumatoriaA, 'descenso'),
+    sumatoriaTable(sumatoriaA, 'descenso', descA.porGeneral),
     el('div', { class: 'legend' }, [
-      el('span', { class: 'rank-badge descenso' }),
-      el('span', { text: 'Descenso a Primera B' }),
+      el('span', { class: 'legend-item' }, [
+        el('span', { class: 'rank-badge descenso' }),
+        el('span', { text: 'Desciende por tabla general' }),
+      ]),
     ]),
+    descA.reglaAplicada
+      ? el('div', { class: 'section-note', text: `${descA.porAnual} ya desciende por la tabla anual, así que el segundo descenso pasa al anteúltimo de esta tabla.` })
+      : null,
 
     el('div', { class: 'anual-cat-header' }, [
       el('span', { class: 'dot dot-B' }), el('span', { text: 'Primera B' }),
     ]),
-    sumatoriaTable(sumatoriaB, 'ascenso'),
+    sumatoriaTable(sumatoriaB, 'ascenso', sumatoriaB.length ? sumatoriaB[0].equipo : null),
     el('div', { class: 'legend' }, [
-      el('span', { class: 'rank-badge ascenso' }),
-      el('span', { text: 'Ascenso por sumatoria general' }),
+      el('span', { class: 'legend-item' }, [
+        el('span', { class: 'rank-badge ascenso' }),
+        el('span', { text: 'Asciende por sumatoria general' }),
+      ]),
     ]),
+    el('div', { class: 'section-note', text: notaAscenso() }),
   ]);
   root.appendChild(anual);
 }
@@ -906,6 +1078,8 @@ function computeGoleadores(categoria, division) {
     .sort((a, b) => b.goles - a.goles || a.jugador.localeCompare(b.jugador));
 }
 
+const GOLEADORES_PUESTOS = 5;
+
 function renderGoleadoresView(division) {
   const root = document.getElementById('view-root');
   root.innerHTML = '';
@@ -931,9 +1105,12 @@ function renderGoleadoresView(division) {
         el('th', { class: 'col-equipo', text: 'Club' }),
         el('th', { text: 'Goles' }),
       ]));
+      const corte = topGoleadores(list, GOLEADORES_PUESTOS).length;
       list.forEach((g, i) => {
-        table.appendChild(el('tr', {}, [
-          el('td', { text: String(i + 1) }),
+        // El numero es el puesto real: los empatados comparten posicion.
+        const puesto = 1 + list.filter(o => o.goles > g.goles).length;
+        table.appendChild(el('tr', { class: i < corte ? '' : 'gol-oculto' }, [
+          el('td', { text: String(puesto) }),
           el('td', { class: 'col-equipo', text: g.jugador }),
           el('td', { class: 'col-equipo' }, [
             el('div', { class: 'club-cell' }, [logoImg(g.club), el('span', { text: g.club })])
@@ -942,6 +1119,19 @@ function renderGoleadoresView(division) {
         ]));
       });
       inner.push(el('div', { class: 'table-scroll' }, [table]));
+      if (list.length > corte) {
+        const btn = el('button', {
+          class: 'ver-todos',
+          text: `Ver tabla completa (${list.length} goleadores)`,
+          onclick: () => {
+            const abierto = table.classList.toggle('mostrar-todos');
+            btn.textContent = abierto
+              ? 'Ver solo los primeros'
+              : `Ver tabla completa (${list.length} goleadores)`;
+          },
+        });
+        inner.push(btn);
+      }
     }
     root.appendChild(el('div', { class: `cat-block cat-block-${cat}` }, inner));
   });
@@ -949,11 +1139,13 @@ function renderGoleadoresView(division) {
 
 function render() {
   const chips = document.getElementById('division-chips');
-  if (chips) chips.style.display = currentView === 'sumatoria' ? 'none' : '';
+  const sinChips = currentView === 'sumatoria' || currentView === 'anual';
+  if (chips) chips.style.display = sinChips ? 'none' : '';
   if (currentView === 'resultados') renderResultadosView(currentDivision);
   else if (currentView === 'posiciones') renderPosicionesView(currentDivision);
   else if (currentView === 'valla') renderVallaView(currentDivision);
   else if (currentView === 'sumatoria') renderSumatoriaView();
+  else if (currentView === 'anual') renderAnualView();
   else renderGoleadoresView(currentDivision);
 }
 
