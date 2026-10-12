@@ -696,6 +696,61 @@ function clasificadosPlayoff(categoria, division) {
   return out;
 }
 
+/* Puestos que ya NO pueden cambiar: recorre todos los resultados posibles de
+   los partidos que faltan y se queda con los equipos cuyo puesto es el mismo
+   en TODOS los escenarios. Los empates en puntos cuentan en contra (el rival
+   empatado puede quedar arriba o abajo), asi que un puesto solo se da por
+   definido si lo esta con cualquier criterio de desempate. */
+function posicionesDefinidas(categoria, division) {
+  const definidas = {};
+  const resto = partidosPendientes(categoria, division);
+  if (resto === null) return definidas;
+  const rows = tablaTorneoActual(categoria, division);
+  if (resto.length === 0) {                      // ya se jugo todo: manda la tabla real
+    rows.forEach((r, i) => { if (i < CUPOS_PLAYOFF) definidas[i + 1] = r.equipo; });
+    return definidas;
+  }
+  const equipos = DATA.teams[categoria] || [];
+  if (!equipos.length || resto.length > Math.floor(equipos.length / 2)) return definidas;
+
+  const base = {};
+  equipos.forEach(e => { base[e] = 0; });
+  computeStandings(categoria, division).forEach(r => { base[r.equipo] = r.pts; });
+
+  const rango = {};
+  equipos.forEach(e => { rango[e] = { min: Infinity, max: 0 }; });
+  const total = Math.pow(3, resto.length);
+  for (let s = 0; s < total; s++) {
+    const p = Object.assign({}, base);
+    let n = s;
+    for (let k = 0; k < resto.length; k++) {
+      const a = resto[k][0], b = resto[k][1], o = n % 3;
+      n = (n / 3) | 0;
+      if (o === 0) p[a] += 3;
+      else if (o === 1) p[b] += 3;
+      else { p[a] += 1; p[b] += 1; }
+    }
+    for (let i = 0; i < equipos.length; i++) {
+      const X = equipos[i];
+      let mejores = 0, igualesOMejores = 0;
+      for (let j = 0; j < equipos.length; j++) {
+        const e = equipos[j];
+        if (e === X) continue;
+        if (p[e] > p[X]) { mejores++; igualesOMejores++; }
+        else if (p[e] === p[X]) igualesOMejores++;
+      }
+      const r = rango[X];
+      if (mejores + 1 < r.min) r.min = mejores + 1;
+      if (igualesOMejores + 1 > r.max) r.max = igualesOMejores + 1;
+    }
+  }
+  equipos.forEach(X => {
+    const r = rango[X];
+    if (r.min === r.max && r.min <= CUPOS_PLAYOFF) definidas[r.min] = X;
+  });
+  return definidas;
+}
+
 /* ============================================================
    LLAVE DE SEMIFINALES
    1° vs 4° y 2° vs 3°. Los escudos y nombres aparecen recien
@@ -704,13 +759,19 @@ function clasificadosPlayoff(categoria, division) {
 function llaveSemifinales(categoria, division) {
   const resto = partidosPendientes(categoria, division);
   if (resto === null) return null;                 // sin fixture no afirmamos nada
-  const confirmado = resto.length === 0;
-  const rows = tablaTorneoActual(categoria, division);
+  const definidas = posicionesDefinidas(categoria, division);
+  const cuantas = Object.keys(definidas).length;
+  const confirmado = cuantas >= CUPOS_PLAYOFF;
+
+  let estado;
+  if (confirmado) estado = 'Confirmadas';
+  else if (cuantas > 0) estado = cuantas + ' de ' + CUPOS_PLAYOFF + ' definidos';
+  else estado = 'A confirmar';
 
   const caja = el('div', { class: 'llave' + (confirmado ? ' llave-ok' : '') }, [
     el('div', { class: 'llave-titulo' }, [
       el('span', { text: 'Semifinales' }),
-      el('span', { class: 'llave-estado', text: confirmado ? 'Confirmadas' : 'A confirmar' }),
+      el('span', { class: 'llave-estado', text: estado }),
     ]),
   ]);
   const grilla = el('div', { class: 'llave-grilla' });
@@ -719,7 +780,7 @@ function llaveSemifinales(categoria, division) {
       el('div', { class: 'llave-serie-label', text: 'Semifinal ' + (n + 1) }),
     ]);
     par.forEach((pos, k) => {
-      const club = (confirmado && rows[pos - 1]) ? rows[pos - 1].equipo : null;
+      const club = definidas[pos] || null;
       serie.appendChild(el('div', { class: 'llave-slot' + (club ? '' : ' llave-slot-vacio') }, [
         el('span', { class: 'llave-pos', text: pos + '°' }),
         club ? logoImg(club) : el('span', { class: 'llave-escudo-vacio' }),
@@ -764,18 +825,19 @@ function computeAnual(categoria) {
     (b.pts - a.pts) || ((b.gf - b.gc) - (a.gf - a.gc)) || (b.gf - a.gf));
 }
 
-/* Reglamento: desciende el ultimo de la Tabla Anual (solo Primera) y el ultimo
-   de la Tabla General (1ra + 3ra + 4ta). Si los dos son el mismo club, el
-   segundo descenso pasa al anteultimo de la Tabla General. */
+/* Reglamento: hay UN descenso por cada tabla. El ultimo de la Tabla General
+   (1ra + 3ra + 4ta) baja por esa via. El descenso por la Tabla Anual (solo
+   Primera) recae en su ultimo, salvo que ese club ya este descendido por la
+   General: en ese caso pasa al anteultimo de la Anual. */
 function computeDescensos(categoria) {
   const anual = computeAnual(categoria);
   const general = computeSumatoria(categoria);
   if (!anual.length || !general.length) return { porAnual: null, porGeneral: null, reglaAplicada: false };
-  const porAnual = anual[anual.length - 1].equipo;
-  let porGeneral = general[general.length - 1].equipo;
+  const porGeneral = general[general.length - 1].equipo;
+  let porAnual = anual[anual.length - 1].equipo;
   let reglaAplicada = false;
-  if (porGeneral === porAnual && general.length > 1) {
-    porGeneral = general[general.length - 2].equipo;
+  if (porAnual === porGeneral && anual.length > 1) {
+    porAnual = anual[anual.length - 2].equipo;
     reglaAplicada = true;
   }
   return { porAnual, porGeneral, reglaAplicada };
@@ -831,6 +893,9 @@ function renderAnualView() {
           el('span', { text: 'Desciende por tabla anual' }),
         ]),
       ]));
+      if (desc.reglaAplicada) {
+        bloque.appendChild(el('div', { class: 'section-note', text: `${desc.porGeneral} ya desciende por la tabla general, así que el descenso por esta tabla pasa al anteúltimo.` }));
+      }
     }
   });
   root.appendChild(bloque);
@@ -1024,9 +1089,6 @@ function renderSumatoriaView() {
         el('span', { text: 'Desciende por tabla general' }),
       ]),
     ]),
-    descA.reglaAplicada
-      ? el('div', { class: 'section-note', text: `${descA.porAnual} ya desciende por la tabla anual, así que el segundo descenso pasa al anteúltimo de esta tabla.` })
-      : null,
 
     el('div', { class: 'anual-cat-header' }, [
       el('span', { class: 'dot dot-B' }), el('span', { text: 'Primera B' }),

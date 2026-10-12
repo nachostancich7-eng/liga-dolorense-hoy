@@ -450,30 +450,34 @@ table.pos-table tr:last-child{border-bottom:none;}
 
 
 /* ===== Llave de semifinales (vista Posiciones) ===== */
-.llave{margin:10px 12px 14px;padding:12px 12px 10px;border-radius:12px;
-  background:rgba(233,218,198,.94);border:1px solid rgba(58,34,5,.18);}
+.llave{margin:10px 12px 14px;padding:0 0 10px;border-radius:12px;overflow:hidden;
+  background:var(--panel-alt);border:1px solid var(--border);
+  border-top:3px solid rgba(242,169,59,.45);}
+.llave-ok{border-top-color:var(--gold);}
 .llave-titulo{display:flex;align-items:center;justify-content:space-between;gap:8px;
-  margin-bottom:10px;font-family:var(--font-display);font-size:14px;font-weight:700;
-  letter-spacing:.04em;text-transform:uppercase;color:#3A2205;}
-.llave-estado{font-family:var(--font-body,inherit);font-size:10.5px;font-weight:700;
-  letter-spacing:.03em;text-transform:uppercase;padding:3px 8px;border-radius:999px;
-  background:rgba(58,34,5,.12);color:#6B4A1C;}
-.llave-ok .llave-estado{background:var(--gold);color:var(--gold-text);}
-.llave-grilla{display:grid;grid-template-columns:1fr;gap:10px;}
-.llave-serie{padding:8px 10px;border-radius:9px;background:rgba(255,255,255,.55);
-  border:1px solid rgba(58,34,5,.12);}
-.llave-serie-label{font-size:10.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
-  color:#8A6A3A;margin-bottom:6px;}
-.llave-slot{display:flex;align-items:center;gap:8px;min-height:30px;}
+  padding:9px 14px;background:rgba(0,0,0,.22);border-bottom:1px solid var(--border);
+  font-family:var(--font-display);font-size:14px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--gold);}
+.llave-estado{font-family:var(--font);font-size:10px;font-weight:700;
+  letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:999px;
+  background:rgba(255,255,255,.07);color:var(--text-dim);border:1px solid var(--border);}
+.llave-ok .llave-estado{background:var(--gold);color:var(--gold-text);border-color:var(--gold);}
+.llave-grilla{display:grid;grid-template-columns:1fr;gap:10px;padding:12px 12px 2px;}
+.llave-serie{padding:9px 11px;border-radius:9px;background:rgba(0,0,0,.18);
+  border:1px solid var(--border);}
+.llave-serie-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--text-dim);margin-bottom:7px;}
+.llave-slot{display:flex;align-items:center;gap:9px;min-height:30px;}
 .llave-slot .badge{width:26px;height:26px;flex:0 0 26px;}
-.llave-pos{flex:0 0 22px;font-family:var(--font-display);font-size:13px;font-weight:700;color:#8A6A3A;}
-.llave-nombre{font-size:13.5px;font-weight:600;color:#2E1A06;}
-.llave-slot-vacio .llave-nombre{color:#9C8468;font-style:italic;font-weight:500;}
+.llave-pos{flex:0 0 22px;font-family:var(--font-display);font-size:13px;font-weight:600;color:var(--gold);}
+.llave-nombre{font-size:13.5px;font-weight:600;color:var(--text);}
+.llave-slot-vacio .llave-pos{color:var(--text-dim);}
+.llave-slot-vacio .llave-nombre{color:var(--text-dim);font-style:italic;font-weight:500;}
 .llave-escudo-vacio{width:26px;height:26px;flex:0 0 26px;border-radius:50%;
-  border:1.5px dashed rgba(58,34,5,.3);}
-.llave-vs{margin:2px 0 2px 30px;font-size:10.5px;font-weight:800;letter-spacing:.08em;
-  text-transform:uppercase;color:#A98C63;}
-.llave-nota{margin-top:9px;font-size:11px;font-style:italic;color:#7A5E38;}
+  border:1.5px dashed rgba(255,255,255,.22);}
+.llave-vs{margin:3px 0 3px 31px;font-size:10px;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--text-dim);opacity:.75;}
+.llave-nota{padding:2px 14px 0;font-size:11px;font-style:italic;color:var(--text-dim);}
 @media (min-width:720px){ .llave-grilla{grid-template-columns:1fr 1fr;gap:12px;} }
 
 /* ===== Quita de puntos en la Tabla Anual ===== */
