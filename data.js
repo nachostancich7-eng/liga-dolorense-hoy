@@ -6043,23 +6043,6 @@ window.SITE_DATA = {
   },
   {
    "fecha": 8,
-   "categoria": "A",
-   "division": "Primera",
-   "local": "Las Rosas",
-   "visitante": "Defensores",
-   "golesLocal": 1,
-   "golesVisitante": 2,
-   "goleadoresLocal": [
-    "Matías Miranda"
-   ],
-   "goleadoresVisitante": [
-    "Carlos Martínez",
-    "Leandro González"
-   ],
-   "fase": "liga"
-  },
-  {
-   "fecha": 8,
    "categoria": "B",
    "division": "Primera",
    "local": "Fátima",
@@ -6312,6 +6295,23 @@ window.SITE_DATA = {
    "goleadoresVisitante": [
     "Gustavo Villarreal",
     "Rodrigo Quevedo"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 8,
+   "categoria": "A",
+   "division": "Primera",
+   "local": "Las Rosas",
+   "visitante": "Defensores",
+   "golesLocal": 1,
+   "golesVisitante": 2,
+   "goleadoresLocal": [
+    "Andres Prado e/c"
+   ],
+   "goleadoresVisitante": [
+    "Carlos Martínez",
+    "Leandro González"
    ],
    "fase": "liga"
   }
