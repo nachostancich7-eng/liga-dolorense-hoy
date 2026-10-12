@@ -825,25 +825,40 @@ function computeAnual(categoria) {
     (b.pts - a.pts) || ((b.gf - b.gc) - (a.gf - a.gc)) || (b.gf - a.gf));
 }
 
-/* Reglamento: hay UN descenso por cada tabla. El ultimo de la Tabla General
-   (1ra + 3ra + 4ta) baja por esa via. El descenso por la Tabla Anual (solo
-   Primera) recae en su ultimo, salvo que ese club ya este descendido por la
-   General: en ese caso pasa al anteultimo de la Anual. */
+/* Reglamento: hay UN descenso por cada tabla. El ultimo de la Tabla Anual
+   (solo Primera) baja por esa via y el ultimo de la Tabla General (1ra + 3ra
+   + 4ta) por la suya. Cuando es el mismo club, ocupa el cupo de la tabla que
+   manda y el otro descenso pasa al anteultimo de SU tabla.
+
+   >>> Si la Liga cambia cual manda, se cambia SOLO esta linea: 'anual' o 'general'. */
+const DESCENSO_PRIORIDAD = 'anual';
+
 function computeDescensos(categoria) {
   const anual = computeAnual(categoria);
   const general = computeSumatoria(categoria);
-  if (!anual.length || !general.length) return { porAnual: null, porGeneral: null, reglaAplicada: false };
-  const porGeneral = general[general.length - 1].equipo;
-  let porAnual = anual[anual.length - 1].equipo;
-  let reglaAplicada = false;
-  if (porAnual === porGeneral && anual.length > 1) {
-    porAnual = anual[anual.length - 2].equipo;
-    reglaAplicada = true;
+  if (!anual.length || !general.length) {
+    return { porAnual: null, porGeneral: null, reglaAplicada: false, desplazada: null };
   }
-  return { porAnual, porGeneral, reglaAplicada };
+  let porAnual = anual[anual.length - 1].equipo;
+  let porGeneral = general[general.length - 1].equipo;
+  let reglaAplicada = false, desplazada = null;
+  if (porAnual === porGeneral) {
+    if (DESCENSO_PRIORIDAD === 'anual' && general.length > 1) {
+      porGeneral = general[general.length - 2].equipo;
+      reglaAplicada = true; desplazada = 'general';
+    } else if (DESCENSO_PRIORIDAD === 'general' && anual.length > 1) {
+      porAnual = anual[anual.length - 2].equipo;
+      reglaAplicada = true; desplazada = 'anual';
+    }
+  }
+  // Cada tabla marca en rojo a su propio ultimo y al club que se lleva su cupo.
+  // Si son el mismo, queda una sola fila marcada.
+  const marcasAnual = new Set([anual[anual.length - 1].equipo, porAnual]);
+  const marcasGeneral = new Set([general[general.length - 1].equipo, porGeneral]);
+  return { porAnual, porGeneral, reglaAplicada, desplazada, marcasAnual, marcasGeneral };
 }
 
-function anualTable(rows, clubDesciende) {
+function anualTable(rows, marcados) {
   const wrap = el('div', { class: 'table-scroll' });
   const table = el('table', { class: 'pos-table' });
   table.appendChild(el('tr', {}, [
@@ -860,7 +875,7 @@ function anualTable(rows, clubDesciende) {
       }));
     }
     table.appendChild(el('tr', {}, [
-      el('td', {}, [el('span', { class: 'rank-badge ' + (r.equipo === clubDesciende ? 'descenso' : ''), text: String(i + 1) })]),
+      el('td', {}, [el('span', { class: 'rank-badge ' + ((marcados && marcados.has(r.equipo)) ? 'descenso' : ''), text: String(i + 1) })]),
       el('td', { class: 'col-equipo' }, [celda]),
       el('td', { class: 'col-pts', text: String(r.pts) }),
       el('td', { text: String(r.pj) }), el('td', { text: String(r.pg) }),
@@ -885,7 +900,7 @@ function renderAnualView() {
     bloque.appendChild(el('div', { class: 'anual-cat-header' }, [
       el('span', { class: 'dot dot-' + cat }), el('span', { text: 'Primera ' + cat }),
     ]));
-    bloque.appendChild(anualTable(computeAnual(cat), desc ? desc.porAnual : null));
+    bloque.appendChild(anualTable(computeAnual(cat), desc ? desc.marcasAnual : null));
     if (desc && desc.porAnual) {
       bloque.appendChild(el('div', { class: 'legend' }, [
         el('span', { class: 'legend-item' }, [
@@ -893,9 +908,7 @@ function renderAnualView() {
           el('span', { text: 'Desciende por tabla anual' }),
         ]),
       ]));
-      if (desc.reglaAplicada) {
-        bloque.appendChild(el('div', { class: 'section-note', text: `${desc.porGeneral} ya desciende por la tabla general, así que el descenso por esta tabla pasa al anteúltimo.` }));
-      }
+
     }
   });
   root.appendChild(bloque);
@@ -1005,9 +1018,10 @@ function sumatoriaTable(rows, kind, equipoMarcado) {
     el('th', { text: '4TA' }),
   ]));
   rows.forEach((r, i) => {
-    const cls = equipoMarcado === undefined
-      ? rankBadgeClass(i, rows.length, kind)
-      : (r.equipo === equipoMarcado ? kind : '');
+    const marcado = equipoMarcado instanceof Set
+      ? equipoMarcado.has(r.equipo)
+      : r.equipo === equipoMarcado;
+    const cls = equipoMarcado === undefined ? rankBadgeClass(i, rows.length, kind) : (marcado ? kind : '');
     table.appendChild(el('tr', {}, [
       el('td', {}, [el('span', { class: `rank-badge ${cls}`, text: String(i + 1) })]),
       el('td', { class: 'col-equipo' }, [
@@ -1082,13 +1096,14 @@ function renderSumatoriaView() {
     el('div', { class: 'anual-cat-header' }, [
       el('span', { class: 'dot dot-A' }), el('span', { text: 'Primera A' }),
     ]),
-    sumatoriaTable(sumatoriaA, 'descenso', descA.porGeneral),
+    sumatoriaTable(sumatoriaA, 'descenso', descA.marcasGeneral),
     el('div', { class: 'legend' }, [
       el('span', { class: 'legend-item' }, [
         el('span', { class: 'rank-badge descenso' }),
         el('span', { text: 'Desciende por tabla general' }),
       ]),
     ]),
+
 
     el('div', { class: 'anual-cat-header' }, [
       el('span', { class: 'dot dot-B' }), el('span', { text: 'Primera B' }),
