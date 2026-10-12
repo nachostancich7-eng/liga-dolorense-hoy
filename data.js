@@ -6306,13 +6306,13 @@ window.SITE_DATA = {
    "division": "5ta",
    "local": "Ardiles",
    "visitante": "Travesía",
-   "golesLocal": 0,
-   "golesVisitante": 2,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [
+   "golesLocal": 2,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
     "Simón Salguero",
     "David Acevedo"
    ],
+   "goleadoresVisitante": [],
    "fase": "liga"
   }
  ],
