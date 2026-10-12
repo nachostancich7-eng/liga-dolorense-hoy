@@ -6204,21 +6204,6 @@ window.SITE_DATA = {
   {
    "fecha": 8,
    "categoria": "B",
-   "division": "5ta",
-   "local": "Ardiles",
-   "visitante": "Travesía",
-   "golesLocal": 2,
-   "golesVisitante": 0,
-   "goleadoresLocal": [
-    "Simón Salguero",
-    "Davíd Escudero"
-   ],
-   "goleadoresVisitante": [],
-   "fase": "liga"
-  },
-  {
-   "fecha": 8,
-   "categoria": "B",
    "division": "4ta",
    "local": "Ardiles",
    "visitante": "Travesía",
@@ -6312,6 +6297,21 @@ window.SITE_DATA = {
    "goleadoresVisitante": [
     "Carlos Martínez",
     "Leandro González"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 8,
+   "categoria": "B",
+   "division": "5ta",
+   "local": "Ardiles",
+   "visitante": "Travesía",
+   "golesLocal": 0,
+   "golesVisitante": 2,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [
+    "Simón Salguero",
+    "David Acevedo"
    ],
    "fase": "liga"
   }
