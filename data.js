@@ -6956,6 +6956,174 @@ window.SITE_DATA = {
    ],
    "goleadoresVisitante": [],
    "fase": "liga"
+  },
+  {
+   "fecha": 9,
+   "categoria": "A",
+   "division": "Primera",
+   "local": "Defensores",
+   "visitante": "B.A.P",
+   "golesLocal": 1,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Nahuel Olmedo"
+   ],
+   "goleadoresVisitante": [
+    "Matías Alaníz"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 9,
+   "categoria": "A",
+   "division": "Primera",
+   "local": "San Vicente",
+   "visitante": "Sarmiento",
+   "golesLocal": 1,
+   "golesVisitante": 3,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [
+    "Agustín P. Merlo",
+    "Camilo Díaz",
+    "Agustín Ferreyra"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 9,
+   "categoria": "A",
+   "division": "Primera",
+   "local": "A.F.I",
+   "visitante": "San Martín de S.P",
+   "golesLocal": 1,
+   "golesVisitante": 3,
+   "goleadoresLocal": [
+    "Franco Palacios"
+   ],
+   "goleadoresVisitante": [
+    "Rodrigo Mercado",
+    "Martín Calderon",
+    "Joaquín Amar"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 9,
+   "categoria": "A",
+   "division": "Primera",
+   "local": "Atlanta",
+   "visitante": "Comercio",
+   "golesLocal": 2,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Ignacio Núñez",
+    "Matías Aguilera"
+   ],
+   "goleadoresVisitante": [
+    "Matías Funes"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 9,
+   "categoria": "A",
+   "division": "Primera",
+   "local": "San Brochero",
+   "visitante": "Las Rosas",
+   "golesLocal": 1,
+   "golesVisitante": 3,
+   "goleadoresLocal": [
+    "Jonás Pereyra"
+   ],
+   "goleadoresVisitante": [
+    "Guido Ramilo",
+    "Brian Argüello",
+    "Brian Argüello"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 9,
+   "categoria": "B",
+   "division": "Primera",
+   "local": "Travesía",
+   "visitante": "Huracán",
+   "golesLocal": 2,
+   "golesVisitante": 3,
+   "goleadoresLocal": [
+    "Facundo Novillo",
+    "Marcelo Fernandez"
+   ],
+   "goleadoresVisitante": [
+    "Gabriel Mercado",
+    "Gabriel Mercado",
+    "Facundo Zapata"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 9,
+   "categoria": "B",
+   "division": "Primera",
+   "local": "Luyaba",
+   "visitante": "Fátima",
+   "golesLocal": 3,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Lautaro Oviedo",
+    "Lautaro Oviedo",
+    "Lautaro Oviedo"
+   ],
+   "goleadoresVisitante": [],
+   "fase": "liga"
+  },
+  {
+   "fecha": 9,
+   "categoria": "B",
+   "division": "Primera",
+   "local": "Independiente",
+   "visitante": "Juventud Unida",
+   "golesLocal": 0,
+   "golesVisitante": 0,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [],
+   "fase": "liga"
+  },
+  {
+   "fecha": 9,
+   "categoria": "B",
+   "division": "Primera",
+   "local": "Las Tapias",
+   "visitante": "San José",
+   "golesLocal": 4,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Enzo Dewar",
+    "Enzo Dewar",
+    "Diego Tello",
+    "Thomas Rojo"
+   ],
+   "goleadoresVisitante": [],
+   "fase": "liga"
+  },
+  {
+   "fecha": 9,
+   "categoria": "B",
+   "division": "Primera",
+   "local": "Sargento Cabral",
+   "visitante": "Ardiles",
+   "golesLocal": 3,
+   "golesVisitante": 2,
+   "goleadoresLocal": [
+    "Flavio Gómez",
+    "Juan Montes",
+    "Cristian Gómez"
+   ],
+   "goleadoresVisitante": [
+    "Éder Barcio",
+    "Eric Barcio"
+   ],
+   "fase": "liga"
   }
  ],
  "comunicados": [
