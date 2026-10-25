@@ -6786,6 +6786,176 @@ window.SITE_DATA = {
     "Bautista Montoya"
    ],
    "fase": "liga"
+  },
+  {
+   "fecha": 9,
+   "categoria": "B",
+   "division": "3ra",
+   "local": "Las Tapias",
+   "visitante": "San José",
+   "golesLocal": 0,
+   "golesVisitante": 0,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [],
+   "fase": "liga"
+  },
+  {
+   "fecha": 9,
+   "categoria": "B",
+   "division": "3ra",
+   "local": "Travesía",
+   "visitante": "Huracán",
+   "golesLocal": 4,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Lorenzo Molina",
+    "Lorenzo Molina",
+    "Juan Guardia",
+    "Francis Olmedo"
+   ],
+   "goleadoresVisitante": [
+    "Itiel Lujan"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 9,
+   "categoria": "B",
+   "division": "3ra",
+   "local": "Independiente",
+   "visitante": "Juventud Unida",
+   "golesLocal": 5,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Pedro Míguez",
+    "Pedro Míguez",
+    "Pedro Míguez",
+    "Thiago Altamirano",
+    "Jonás Soler"
+   ],
+   "goleadoresVisitante": [
+    "Ali Martínez"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 9,
+   "categoria": "A",
+   "division": "3ra",
+   "local": "San Vicente",
+   "visitante": "Sarmiento",
+   "golesLocal": 4,
+   "golesVisitante": 3,
+   "goleadoresLocal": [
+    "Aaron Mercado",
+    "Joel Gauna",
+    "Abel Cortes",
+    "Luis Altamirano"
+   ],
+   "goleadoresVisitante": [
+    "Bautista Olmedo",
+    "Tobías Zárate",
+    "Tobías Farías",
+    "Lisandro Silva"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 9,
+   "categoria": "A",
+   "division": "3ra",
+   "local": "Atlanta",
+   "visitante": "Comercio",
+   "golesLocal": 0,
+   "golesVisitante": 3,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [
+    "Tiago Pereyra",
+    "Santino Bustos",
+    "Caetano Alizzi"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 9,
+   "categoria": "B",
+   "division": "3ra",
+   "local": "Sargento Cabral",
+   "visitante": "Ardiles",
+   "golesLocal": 2,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Uriel Barrios",
+    "Jonas Gil"
+   ],
+   "goleadoresVisitante": [],
+   "fase": "liga"
+  },
+  {
+   "fecha": 9,
+   "categoria": "B",
+   "division": "3ra",
+   "local": "Luyaba",
+   "visitante": "Fátima",
+   "golesLocal": 1,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Mauro Montenegro"
+   ],
+   "goleadoresVisitante": [
+    "Yair Rodríguez"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 9,
+   "categoria": "A",
+   "division": "3ra",
+   "local": "San Brochero",
+   "visitante": "Las Rosas",
+   "golesLocal": 2,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Tomás Cora",
+    "Patricio Repetto"
+   ],
+   "goleadoresVisitante": [
+    "Santino Monzón"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 9,
+   "categoria": "A",
+   "division": "3ra",
+   "local": "A.F.I",
+   "visitante": "San Martín de S.P",
+   "golesLocal": 0,
+   "golesVisitante": 1,
+   "goleadoresLocal": [],
+   "goleadoresVisitante": [
+    "Benjamín Garay"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 9,
+   "categoria": "A",
+   "division": "3ra",
+   "local": "Defensores",
+   "visitante": "B.A.P",
+   "golesLocal": 6,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Luciano Vega",
+    "Luciano Vega",
+    "Luciano Vega",
+    "Luciano Vega",
+    "Bautista Villalobo",
+    "Gonzalo Juarez"
+   ],
+   "goleadoresVisitante": [],
+   "fase": "liga"
   }
  ],
  "comunicados": [
