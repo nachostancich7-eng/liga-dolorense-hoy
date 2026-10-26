@@ -6977,22 +6977,6 @@ window.SITE_DATA = {
    "fecha": 9,
    "categoria": "A",
    "division": "Primera",
-   "local": "San Vicente",
-   "visitante": "Sarmiento",
-   "golesLocal": 1,
-   "golesVisitante": 3,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [
-    "Agustín P. Merlo",
-    "Camilo Díaz",
-    "Agustín Ferreyra"
-   ],
-   "fase": "liga"
-  },
-  {
-   "fecha": 9,
-   "categoria": "A",
-   "division": "Primera",
    "local": "A.F.I",
    "visitante": "San Martín de S.P",
    "golesLocal": 1,
@@ -7122,6 +7106,24 @@ window.SITE_DATA = {
    "goleadoresVisitante": [
     "Éder Barcio",
     "Eric Barcio"
+   ],
+   "fase": "liga"
+  },
+  {
+   "fecha": 9,
+   "categoria": "A",
+   "division": "Primera",
+   "local": "San Vicente",
+   "visitante": "Sarmiento",
+   "golesLocal": 1,
+   "golesVisitante": 3,
+   "goleadoresLocal": [
+    "Hernán Ochoa"
+   ],
+   "goleadoresVisitante": [
+    "Agustín P. Merlo",
+    "Camilo Díaz",
+    "Agustín Ferreyra"
    ],
    "fase": "liga"
   }
