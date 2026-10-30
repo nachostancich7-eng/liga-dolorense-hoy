@@ -6,6 +6,9 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Carga · Liga Dolorense Hoy</title>
 <style>
+.tablero-playoff-label{margin:14px 0 6px;padding:7px 12px;border-radius:8px;
+  background:rgba(242,169,59,.14);border:1px solid rgba(242,169,59,.35);
+  color:#F2A93B;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-align:center;}
 :root{
   --bg:#2A1210; --bg-alt:#341612; --panel:#3B1A16; --header:#210D0B;
   --border:rgba(255,255,255,.12); --text:#F5EEE9; --muted:#C9A9A2; --dim:#A98882;
@@ -92,6 +95,7 @@ details summary{cursor:pointer;font-size:13px;color:var(--muted);padding:4px 0;}
     <h2>📋 Tablero de la fecha</h2>
     <div id="tablero-resumen"></div>
     <div id="tablero-divisiones"></div>
+    <div id="tablero-playoff"></div>
   </section>
 
   <!-- ============ CONFIGURACIÓN ============ -->
@@ -416,8 +420,56 @@ function estadoDe(hallazgo){
 let tableroAbierto = null; // {division, local, visitante} del partido desplegado ahora, o null
 
 function esElMismoPartido(p, ref){
-  return p.division===ref.division &&
-    ((p.local===ref.local&&p.visitante===ref.visitante)||(p.local===ref.visitante&&p.visitante===ref.local));
+  if(p.division!==ref.division) return false;
+  // En play off la ida y la vuelta son el mismo par invertido: no alcanza con
+  // mirar los equipos, hay que mirar la serie y el tramo.
+  if(p.leg || ref.leg){
+    return (p.leg||'')===(ref.leg||'') && (p.serie||'')===(ref.serie||'') && (p.cat||'')===(ref.cat||'');
+  }
+  return (p.local===ref.local&&p.visitante===ref.visitante)||(p.local===ref.visitante&&p.visitante===ref.local);
+}
+
+/* ============================================================
+   PLAY OFF: las semifinales ya estan en DATA.matches con
+   fecha 'SEMIFINALES', serie y leg. Se cargan igual que
+   cualquier partido, pero se buscan por serie + tramo.
+   ============================================================ */
+function partidosPlayoff(){
+  return (DATA.matches||[]).filter(m=>m.fecha==='SEMIFINALES');
+}
+function hayPlayoff(){ return partidosPlayoff().length>0; }
+
+function buscarPlayoff(division, cat, serie, leg){
+  const ref = { division, cat, serie, leg };
+  const enPend = PENDIENTES.find(p=>p.fase==='playoff' && esElMismoPartido(p, ref));
+  if(enPend) return { origen:'borrador', p: enPend };
+  const m = partidosPlayoff().find(m=>m.division===division && m.categoria===cat &&
+    m.serie===serie && m.leg===leg);
+  // Si todavia no tiene resultado es un partido programado, no uno cargado.
+  if(m && m.golesLocal!==null && m.golesLocal!==undefined) return { origen:'publicado', p: m };
+  return null;
+}
+
+function cargarDesdePlayoff(division, cat, serie, leg){
+  const prog = partidosPlayoff().find(m=>m.division===division && m.categoria===cat &&
+    m.serie===serie && m.leg===leg);
+  if(!prog) return;
+  const ref = { division, cat, serie, leg };
+  const ya = PENDIENTES.find(p=>p.fase==='playoff' && esElMismoPartido(p, ref));
+  if(!ya){
+    const previo = (prog.golesLocal!==null && prog.golesLocal!==undefined);
+    PENDIENTES.push({
+      fase:'playoff', division, cat, serie, leg,
+      local: prog.local, visitante: prog.visitante,
+      golesLocal: previo ? prog.golesLocal : 0,
+      golesVisitante: previo ? prog.golesVisitante : 0,
+      goleadoresLocal: previo ? (prog.goleadoresLocal||[]).slice() : [],
+      goleadoresVisitante: previo ? (prog.goleadoresVisitante||[]).slice() : [],
+      nota: prog.nota || '', suspendido: prog.estado==='suspendido',
+    });
+  }
+  tableroAbierto = { division, cat, serie, leg };
+  pintar();
 }
 
 // Guarda qué categorías están desplegadas, para que un redibujado no las cierre.
@@ -499,6 +551,73 @@ function pintarTablero(){
       ${filasHtml}
     </details>`;
   }).join('');
+
+  pintarPlayoff();
+}
+
+// Bloque aparte del tablero: las semifinales, con su ida y su vuelta.
+function pintarPlayoff(){
+  const cont = document.getElementById('tablero-playoff');
+  if(!cont) return;
+  if(!hayPlayoff()){ cont.innerHTML=''; return; }
+
+  const html = DIVISIONES_TABLERO.map(division=>{
+    const propios = partidosPlayoff().filter(m=>m.division===division);
+    if(!propios.length) return '';
+    let faltan = 0;
+    const filas = [];
+    ['A','B'].forEach(cat=>{
+      const series = [...new Set(propios.filter(m=>m.categoria===cat).map(m=>m.serie))].sort();
+      series.forEach(serie=>{
+        ['ida','vuelta'].forEach(leg=>{
+          const prog = propios.find(m=>m.categoria===cat && m.serie===serie && m.leg===leg);
+          if(!prog) return;
+          const hallazgo = buscarPlayoff(division, cat, serie, leg);
+          const estado = estadoDe(hallazgo);
+          if(estado==='vacio'||estado==='incompleto') faltan++;
+          const p = hallazgo ? hallazgo.p : prog;
+          const abierto = tableroAbierto && tableroAbierto.serie===serie &&
+            tableroAbierto.leg===leg && tableroAbierto.division===division &&
+            tableroAbierto.cat===cat;
+          const etiqueta = `${serie.replace('SEMIFINAL','SF')} ${leg==='ida'?'IDA':'VTA'}`;
+          if(abierto){
+            const idx = PENDIENTES.findIndex(x=>x.fase==='playoff' &&
+              esElMismoPartido(x,{division,cat,serie,leg}));
+            const card = idx>=0 ? renderPartidoCard(PENDIENTES[idx], idx) : '';
+            filas.push(`
+            <div class="tablero-fila-abierta">
+              <div class="tablero-fila activa" onclick="cerrarTablero()">
+                <span class="dot dot-${estado}"></span>
+                <span class="equipos">${esc(p.local)} vs ${esc(p.visitante)}
+                  <span class="cat-tag">(${cat} · ${etiqueta})</span></span>
+                <span class="tablero-cta">▲ Cerrar</span>
+              </div>
+              ${card}
+            </div>`);
+          } else {
+            filas.push(`
+            <div class="tablero-fila" onclick="cargarDesdePlayoff('${esc(division)}','${cat}','${esc(serie)}','${leg}')">
+              <span class="dot dot-${estado}"></span>
+              <span class="equipos">${esc(p.local)} vs ${esc(p.visitante)}
+                <span class="cat-tag">(${cat} · ${etiqueta})</span></span>
+              <span class="tablero-cta ${estado==='completo'?'ok':''}">${estado==='completo'?'✓':(estado==='vacio'?'Cargar ›':'Completar ›')}</span>
+            </div>`);
+          }
+        });
+      });
+    });
+    const clave = 'playoff-'+division;
+    const tieneElAbierto = tableroAbierto && tableroAbierto.serie &&
+      tableroAbierto.division===division;
+    const abierta = divisionesAbiertas.has(clave) || tieneElAbierto;
+    return `
+    <details class="tablero-div" data-division="${esc(clave)}" ${abierta?'open':''}>
+      <summary>${division==='Primera'?'1ra':division} <span class="cnt">${faltan>0?faltan+' pendiente(s)':'✓ completo'}</span></summary>
+      ${filas.join('')}
+    </details>`;
+  }).join('');
+
+  cont.innerHTML = `<div class="tablero-playoff-label">Semifinales</div>` + html;
 }
 
 // Abre (o cierra, si ya estaba abierto) el desplegable de este partido, ahí mismo en el tablero.
@@ -691,6 +810,26 @@ function aplicarPendientes(){
   const fecha = parseInt(document.getElementById('in-fecha').value,10);
   PENDIENTES.forEach(p=>{
     const cat = categoriaDe(p.local);
+    if(p.fase==='playoff'){
+      // El partido ya existe (con su horario y su serie): se completa, no se crea.
+      const m = DATA.matches.find(x=>x.fecha==='SEMIFINALES' && x.division===p.division &&
+        x.categoria===p.cat && x.serie===p.serie && x.leg===p.leg);
+      if(m){
+        m.local = p.local; m.visitante = p.visitante;
+        if(p.suspendido){
+          m.golesLocal = null; m.golesVisitante = null;
+          m.goleadoresLocal = []; m.goleadoresVisitante = [];
+          m.estado = 'suspendido';
+        } else {
+          m.golesLocal = p.golesLocal; m.golesVisitante = p.golesVisitante;
+          m.goleadoresLocal = p.goleadoresLocal.map(n=>resolverJugador(n,p.local).nombre);
+          m.goleadoresVisitante = p.goleadoresVisitante.map(n=>resolverJugador(n,p.visitante).nombre);
+          delete m.estado;
+        }
+        if(p.nota && p.nota.trim()) m.nota = p.nota.trim(); else delete m.nota;
+      }
+      return;
+    }
     // sacar duplicado previo
     DATA.matches = DATA.matches.filter(m=>!(m.division===p.division && m.fecha===fecha &&
       ((m.local===p.local&&m.visitante===p.visitante)||(m.local===p.visitante&&m.visitante===p.local))));

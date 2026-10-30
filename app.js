@@ -158,13 +158,29 @@ function el(tag, attrs = {}, children = []) {
   return e;
 }
 
+/* Valla menos vencida: cuenta los goles en contra de TODO el torneo, la fase
+   regular y el play off. La tabla de posiciones, en cambio, solo suma la fase
+   regular, por eso aca se recalcula en vez de reusarla. */
+function computeValla(categoria, division) {
+  const acc = {};
+  computeStandings(categoria, division).forEach(r => { acc[r.equipo] = { equipo: r.equipo, gc: r.gc }; });
+  DATA.matches
+    .filter(m => m.categoria === categoria && m.division === division &&
+      (m.fase || 'liga') !== 'liga' && m.estado !== 'suspendido')
+    .forEach(m => {
+      if (m.golesLocal === null || m.golesLocal === undefined) return;
+      if (acc[m.local]) acc[m.local].gc += m.golesVisitante;
+      if (acc[m.visitante]) acc[m.visitante].gc += m.golesLocal;
+    });
+  return Object.values(acc).sort((a, b) => a.gc - b.gc);
+}
+
 function renderVallaView(division) {
   const root = document.getElementById('view-root');
   root.innerHTML = '';
   const etiquetaDivision = division === 'Primera' ? 'Primera' : division;
   ['A', 'B'].forEach(cat => {
-    const rows = tablaTorneoActual(cat, division).slice()
-      .sort((a, b) => a.gc - b.gc);
+    const rows = computeValla(cat, division);
     const list = el('div', { class: 'valla-list' });
     rows.forEach((r, i) => {
       list.appendChild(el('div', { class: 'palmares-row' }, [
@@ -332,41 +348,38 @@ function renderPlantelCard() {
   root.appendChild(result);
 }
 
-function allSponsors() {
-  return [...(DATA.sponsors?.destacado || []), ...(DATA.sponsors?.estandar || [])];
-}
+/* Espacio publicitario principal: una franja arriba de todo. Las piezas son
+   archivos sueltos (no van dentro de imagenes.js) y se sirven con <picture>,
+   asi el celular descarga solo la suya y no la version de PC. */
+function renderBanner() {
+  const cont = document.getElementById('banner-top');
+  if (!cont) return;
+  cont.innerHTML = '';
+  const b = DATA.banner;
+  if (!b || !b.imagenMobile) return;
 
-function sponsorBanner(sponsor) {
-  const img = el('img', { src: (IMG.sponsors || {})[sponsor.nombre] || '', alt: sponsor.nombre });
-  if (sponsor.instagram) {
-    return el('a', {
-      class: 'sponsor-card', href: sponsor.instagram,
-      target: '_blank', rel: 'noopener noreferrer',
-      'aria-label': `${sponsor.nombre} en Instagram`,
-    }, [img]);
+  const picture = el('picture');
+  if (b.imagenDesktop) {
+    picture.appendChild(el('source', { media: '(min-width: 720px)', srcset: b.imagenDesktop }));
   }
-  return el('div', { class: 'sponsor-card' }, [img]);
-}
+  picture.appendChild(el('img', {
+    src: b.imagenMobile, alt: b.nombre, width: '960', height: '240', loading: 'eager',
+  }));
 
-function renderSponsors() {
-  const sponsors = allSponsors();
-  const desktop = document.getElementById('sponsors-desktop');
-  const mobile = document.getElementById('sponsors-mobile');
-  if (desktop) {
-    desktop.innerHTML = '';
-    sponsors.forEach(s => desktop.appendChild(sponsorBanner(s)));
-  }
-  if (mobile) {
-    mobile.innerHTML = '';
-    sponsors.forEach(s => mobile.appendChild(sponsorBanner(s)));
-  }
+  const caja = b.instagram
+    ? el('a', {
+        class: 'banner-top', href: b.instagram, target: '_blank', rel: 'noopener noreferrer',
+        'aria-label': `${b.nombre} en Instagram`,
+      }, [picture])
+    : el('div', { class: 'banner-top' }, [picture]);
+  cont.appendChild(caja);
 }
 
 function renderExtras() {
   renderFixtureCard();
   renderCampeonesCard();
   renderPlantelCard();
-  renderSponsors();
+  renderBanner();
 }
 
 function setupMenuToggle() {
@@ -1081,6 +1094,108 @@ function notaAscenso() {
   return base + ' Si el que asciende por esa vía es además el primero de esta tabla, el cupo por sumatoria pasa al segundo.';
 }
 
+/* ============================================================
+   SECCION SEMIFINALES
+   Muestra las dos series de cada categoria con la ida y la vuelta.
+   Mientras el partido no tenga resultado, en el lugar del marcador
+   va el horario; cuando se carga, pasa a mostrar el marcador y
+   aparece el global de la serie.
+   ============================================================ */
+const DIAS_SEMANA = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+
+function fechaLarga(iso) {
+  if (!iso) return '';
+  const d = new Date(iso + 'T00:00:00');
+  if (isNaN(d)) return '';
+  return `${DIAS_SEMANA[d.getDay()]} ${d.getDate()}/${d.getMonth() + 1}`;
+}
+
+function jugado(m) {
+  return !!m && m.golesLocal !== null && m.golesLocal !== undefined;
+}
+
+function semiEquipo(club, esVisita) {
+  return el('div', { class: 'semi-equipo' + (esVisita ? ' visita' : '') }, [
+    logoImg(club), el('span', { text: club }),
+  ]);
+}
+
+function semiLeg(m, etiqueta) {
+  const fila = el('div', { class: 'semi-leg', 'data-leg': etiqueta === 'Ida' ? 'ida' : 'vuelta' });
+  fila.appendChild(el('span', { class: 'leg-tag', text: etiqueta }));
+  if (!m) {
+    fila.appendChild(el('span', { class: 'semi-equipo' }, [el('span', { text: 'A confirmar' })]));
+    fila.appendChild(el('span', { class: 'semi-hora pendiente', text: '–' }));
+    fila.appendChild(el('span', {}));
+    return fila;
+  }
+  fila.appendChild(semiEquipo(m.local, false));
+  if (jugado(m)) {
+    fila.appendChild(el('span', { class: 'semi-marcador', text: `${m.golesLocal} - ${m.golesVisitante}` }));
+  } else {
+    fila.appendChild(el('span', {
+      class: 'semi-hora' + (m.hora ? '' : ' pendiente'), text: m.hora || '–',
+    }));
+  }
+  fila.appendChild(semiEquipo(m.visitante, true));
+  return fila;
+}
+
+function semiGlobal(ida, vta) {
+  if (!jugado(ida) || !jugado(vta)) return null;
+  const a = ida.local, b = ida.visitante;
+  const ga = ida.golesLocal + (vta.local === a ? vta.golesLocal : vta.golesVisitante);
+  const gb = ida.golesVisitante + (vta.local === b ? vta.golesLocal : vta.golesVisitante);
+  return el('div', { class: 'playoff-global' }, [
+    el('span', { text: `Global: ${a} ${ga} - ${gb} ${b}` }),
+  ]);
+}
+
+function renderSemifinalesView(division) {
+  const root = document.getElementById('view-root');
+  root.innerHTML = '';
+  const etiqueta = division === 'Primera' ? '1ra' : division;
+
+  ['A', 'B'].forEach(cat => {
+    const partidos = DATA.matches.filter(m =>
+      m.fecha === 'SEMIFINALES' && m.categoria === cat && m.division === division);
+
+    const inner = [el('div', { class: `cat-header cat-${cat}` }, [
+      el('span', { text: `Semifinales · ${etiqueta} ${cat}` }),
+    ])];
+
+    if (!partidos.length) {
+      inner.push(el('div', { class: 'empty-state', text: 'Todavía no están definidas las semifinales de esta categoría.' }));
+      root.appendChild(el('div', { class: `cat-block cat-block-${cat}` }, inner));
+      return;
+    }
+
+    const series = {};
+    partidos.forEach(m => {
+      const k = m.serie || 'SEMIFINAL 1';
+      if (!series[k]) series[k] = {};
+      series[k][m.leg] = m;
+    });
+
+    const dia = (series[Object.keys(series)[0]].ida || {}).dia;
+    const textoDia = fechaLarga(dia);
+    if (textoDia) inner.push(el('div', { class: 'semi-fecha', text: `Ida · ${textoDia}` }));
+
+    Object.keys(series).sort().forEach(k => {
+      const legs = series[k];
+      const caja = el('div', { class: 'semi-serie' }, [
+        el('div', { class: 'semi-serie-label', text: `${etiqueta} ${cat} · ${k.charAt(0) + k.slice(1).toLowerCase()}` }),
+      ]);
+      caja.appendChild(semiLeg(legs.ida, 'Ida'));
+      caja.appendChild(semiLeg(legs.vuelta, 'Vta'));
+      const g = semiGlobal(legs.ida, legs.vuelta);
+      if (g) caja.appendChild(g);
+      inner.push(caja);
+    });
+    root.appendChild(el('div', { class: `cat-block cat-block-${cat}` }, inner));
+  });
+}
+
 function renderSumatoriaView() {
   const root = document.getElementById('view-root');
   root.innerHTML = '';
@@ -1223,6 +1338,7 @@ function render() {
   else if (currentView === 'valla') renderVallaView(currentDivision);
   else if (currentView === 'sumatoria') renderSumatoriaView();
   else if (currentView === 'anual') renderAnualView();
+  else if (currentView === 'semifinales') renderSemifinalesView(currentDivision);
   else renderGoleadoresView(currentDivision);
 }
 
