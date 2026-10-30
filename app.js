@@ -1,7 +1,15 @@
 const DATA = window.SITE_DATA;
 const IMG = window.SITE_IMG || {};
 const DIVISIONS = ['6ta', '5ta', '4ta', '3ra', 'Primera'];
-let currentView = 'resultados';
+// Vista con la que abre la pagina. Mientras haya play off cargado se entra
+// directo a Semifinales; cuando el torneo se ponga en cero y no queden esos
+// partidos, vuelve sola a Resultados sin tocar nada.
+function vistaInicial() {
+  const hayPlayoff = (window.SITE_DATA && window.SITE_DATA.matches || [])
+    .some(m => m.fecha === 'SEMIFINALES' || m.fecha === 'FINAL');
+  return hayPlayoff ? 'semifinales' : 'resultados';
+}
+let currentView = vistaInicial();
 let currentDivision = 'Primera';
 let currentFecha = null;
 
@@ -1343,6 +1351,9 @@ function render() {
 }
 
 function setupToggle() {
+  // Marcar como activo el boton de la vista con la que abre la pagina.
+  document.querySelectorAll('.view-toggle button')
+    .forEach(b => b.classList.toggle('active', b.dataset.view === currentView));
   document.querySelectorAll('.view-toggle button').forEach(btn => {
     btn.addEventListener('click', () => {
       currentView = btn.dataset.view;
