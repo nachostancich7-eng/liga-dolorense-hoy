@@ -7165,9 +7165,11 @@ window.SITE_DATA = {
    "division": "Primera",
    "fase": "playoff",
    "serie": "SEMIFINAL 2",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
+   "golesLocal": 1,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Franco Aguilera"
+   ],
    "goleadoresVisitante": [],
    "leg": "ida",
    "local": "Atlanta",
@@ -7197,9 +7199,13 @@ window.SITE_DATA = {
    "division": "3ra",
    "fase": "playoff",
    "serie": "SEMIFINAL 1",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
+   "golesLocal": 3,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Valentino Oyola",
+    "Andrés Prado",
+    "Neuen Baigorria"
+   ],
    "goleadoresVisitante": [],
    "leg": "ida",
    "local": "Defensores",
@@ -7229,9 +7235,11 @@ window.SITE_DATA = {
    "division": "3ra",
    "fase": "playoff",
    "serie": "SEMIFINAL 2",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
+   "golesLocal": 1,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Thiago Lescano"
+   ],
    "goleadoresVisitante": [],
    "leg": "ida",
    "local": "Atlanta",
@@ -7293,10 +7301,14 @@ window.SITE_DATA = {
    "division": "4ta",
    "fase": "playoff",
    "serie": "SEMIFINAL 2",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
+   "golesLocal": 1,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Braian Oviedo"
+   ],
+   "goleadoresVisitante": [
+    "Santino Páez"
+   ],
    "leg": "ida",
    "local": "Defensores",
    "visitante": "San Martín de S.P",
@@ -7357,10 +7369,14 @@ window.SITE_DATA = {
    "division": "5ta",
    "fase": "playoff",
    "serie": "SEMIFINAL 2",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
+   "golesLocal": 1,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Simón Ávila"
+   ],
+   "goleadoresVisitante": [
+    "Jasiel Aguilera"
+   ],
    "leg": "ida",
    "local": "Defensores",
    "visitante": "Las Rosas",
@@ -7389,9 +7405,11 @@ window.SITE_DATA = {
    "division": "6ta",
    "fase": "playoff",
    "serie": "SEMIFINAL 1",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
+   "golesLocal": 1,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Bautista Cuello"
+   ],
    "goleadoresVisitante": [],
    "leg": "ida",
    "local": "Comercio",
@@ -7421,9 +7439,11 @@ window.SITE_DATA = {
    "division": "6ta",
    "fase": "playoff",
    "serie": "SEMIFINAL 2",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
+   "golesLocal": 1,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Felipe Salomón"
+   ],
    "goleadoresVisitante": [],
    "leg": "ida",
    "local": "San Brochero",
@@ -7453,10 +7473,16 @@ window.SITE_DATA = {
    "division": "Primera",
    "fase": "playoff",
    "serie": "SEMIFINAL 1",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
+   "golesLocal": 2,
+   "golesVisitante": 2,
+   "goleadoresLocal": [
+    "Nicolás Dobal",
+    "Ulises Rodríguez"
+   ],
+   "goleadoresVisitante": [
+    "Walter Fredes",
+    "Pablo Cáceres"
+   ],
    "leg": "ida",
    "local": "Juventud Unida",
    "visitante": "Huracán",
@@ -7485,10 +7511,15 @@ window.SITE_DATA = {
    "division": "Primera",
    "fase": "playoff",
    "serie": "SEMIFINAL 2",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
+   "golesLocal": 2,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Pablo Villarreal",
+    "Joaquín Mercado"
+   ],
+   "goleadoresVisitante": [
+    "Leonel Sosa"
+   ],
    "leg": "ida",
    "local": "Sargento Cabral",
    "visitante": "Independiente",
@@ -7517,10 +7548,17 @@ window.SITE_DATA = {
    "division": "3ra",
    "fase": "playoff",
    "serie": "SEMIFINAL 1",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
+   "golesLocal": 3,
+   "golesVisitante": 2,
+   "goleadoresLocal": [
+    "Maximiliano Salas",
+    "Uriel Barrios",
+    "Uriel Barrios"
+   ],
+   "goleadoresVisitante": [
+    "Benjamín García",
+    "Benjamín García"
+   ],
    "leg": "ida",
    "local": "Sargento Cabral",
    "visitante": "Las Tapias",
@@ -7549,10 +7587,16 @@ window.SITE_DATA = {
    "division": "3ra",
    "fase": "playoff",
    "serie": "SEMIFINAL 2",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
+   "golesLocal": 3,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Uriel Aguilera",
+    "Tommy Moran",
+    "Lautaro Suárez"
+   ],
+   "goleadoresVisitante": [
+    "Thiago Altamirano"
+   ],
    "leg": "ida",
    "local": "San José",
    "visitante": "Independiente",
@@ -7581,10 +7625,13 @@ window.SITE_DATA = {
    "division": "4ta",
    "fase": "playoff",
    "serie": "SEMIFINAL 1",
-   "golesLocal": null,
-   "golesVisitante": null,
+   "golesLocal": 0,
+   "golesVisitante": 2,
    "goleadoresLocal": [],
-   "goleadoresVisitante": [],
+   "goleadoresVisitante": [
+    "Tadeo Leal",
+    "Axel Farías"
+   ],
    "leg": "ida",
    "local": "Juventud Unida",
    "visitante": "San José",
@@ -7613,10 +7660,14 @@ window.SITE_DATA = {
    "division": "4ta",
    "fase": "playoff",
    "serie": "SEMIFINAL 2",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
+   "golesLocal": 1,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Danilo Horvath"
+   ],
+   "goleadoresVisitante": [
+    "Kevin Pedernera"
+   ],
    "leg": "ida",
    "local": "Luyaba",
    "visitante": "Independiente",
@@ -7645,10 +7696,16 @@ window.SITE_DATA = {
    "division": "5ta",
    "fase": "playoff",
    "serie": "SEMIFINAL 1",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
+   "golesLocal": 2,
+   "golesVisitante": 2,
+   "goleadoresLocal": [
+    "Santino Aguilera",
+    "Gael Soto"
+   ],
+   "goleadoresVisitante": [
+    "Gonzalo Guevara",
+    "Gonzalo Guevara"
+   ],
    "leg": "ida",
    "local": "Independiente",
    "visitante": "Huracán",
@@ -7677,10 +7734,14 @@ window.SITE_DATA = {
    "division": "5ta",
    "fase": "playoff",
    "serie": "SEMIFINAL 2",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
+   "golesLocal": 1,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Elías Lescano"
+   ],
+   "goleadoresVisitante": [
+    "Jabes Guzmán"
+   ],
    "leg": "ida",
    "local": "Juventud Unida",
    "visitante": "Las Tapias",
@@ -7709,10 +7770,12 @@ window.SITE_DATA = {
    "division": "6ta",
    "fase": "playoff",
    "serie": "SEMIFINAL 1",
-   "golesLocal": null,
-   "golesVisitante": null,
+   "golesLocal": 0,
+   "golesVisitante": 1,
    "goleadoresLocal": [],
-   "goleadoresVisitante": [],
+   "goleadoresVisitante": [
+    "Benjamín Longo"
+   ],
    "leg": "ida",
    "local": "San José",
    "visitante": "Ardiles",
@@ -7741,8 +7804,8 @@ window.SITE_DATA = {
    "division": "6ta",
    "fase": "playoff",
    "serie": "SEMIFINAL 2",
-   "golesLocal": null,
-   "golesVisitante": null,
+   "golesLocal": 0,
+   "golesVisitante": 0,
    "goleadoresLocal": [],
    "goleadoresVisitante": [],
    "leg": "ida",
