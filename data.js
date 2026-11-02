@@ -7133,9 +7133,11 @@ window.SITE_DATA = {
    "division": "Primera",
    "fase": "playoff",
    "serie": "SEMIFINAL 1",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
+   "golesLocal": 1,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Alejandro Castro"
+   ],
    "goleadoresVisitante": [],
    "leg": "ida",
    "local": "Defensores",
@@ -7269,9 +7271,11 @@ window.SITE_DATA = {
    "division": "4ta",
    "fase": "playoff",
    "serie": "SEMIFINAL 1",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
+   "golesLocal": 1,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Joel Juárez"
+   ],
    "goleadoresVisitante": [],
    "leg": "ida",
    "local": "Comercio",
@@ -7337,9 +7341,12 @@ window.SITE_DATA = {
    "division": "5ta",
    "fase": "playoff",
    "serie": "SEMIFINAL 1",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
+   "golesLocal": 2,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Dylan Caballero",
+    "Astor Meriggi"
+   ],
    "goleadoresVisitante": [],
    "leg": "ida",
    "local": "Comercio",
