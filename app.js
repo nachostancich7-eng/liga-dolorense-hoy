@@ -1129,13 +1129,15 @@ function semiEquipo(club, esVisita) {
 }
 
 function semiLeg(m, etiqueta) {
+  const cont = el('div', { class: 'semi-leg-wrap' });
   const fila = el('div', { class: 'semi-leg', 'data-leg': etiqueta === 'Ida' ? 'ida' : 'vuelta' });
   fila.appendChild(el('span', { class: 'leg-tag', text: etiqueta }));
   if (!m) {
     fila.appendChild(el('span', { class: 'semi-equipo' }, [el('span', { text: 'A confirmar' })]));
     fila.appendChild(el('span', { class: 'semi-hora pendiente', text: '–' }));
     fila.appendChild(el('span', {}));
-    return fila;
+    cont.appendChild(fila);
+    return cont;
   }
   fila.appendChild(semiEquipo(m.local, false));
   if (jugado(m)) {
@@ -1146,7 +1148,21 @@ function semiLeg(m, etiqueta) {
     }));
   }
   fila.appendChild(semiEquipo(m.visitante, true));
-  return fila;
+  cont.appendChild(fila);
+
+  // Autores de los goles, igual que en Resultados: local a la izquierda, visitante a la derecha.
+  if (jugado(m)) {
+    const gl = (m.goleadoresLocal || []).length ? summarizeScorers(m.goleadoresLocal) : '';
+    const gv = (m.goleadoresVisitante || []).length ? summarizeScorers(m.goleadoresVisitante) : '';
+    if (gl || gv) {
+      cont.appendChild(el('div', { class: 'scorers semi-scorers' }, [
+        el('span', { text: gl }),
+        el('span', { class: 'away-scorers', text: gv }),
+      ]));
+    }
+  }
+  if (m.nota) cont.appendChild(el('div', { class: 'semi-nota', text: m.nota }));
+  return cont;
 }
 
 function semiGlobal(ida, vta) {

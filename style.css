@@ -511,7 +511,7 @@ table.pos-table tr:last-child{border-bottom:none;}
 .semi-serie-label{padding:7px 13px;background:rgba(0,0,0,.22);border-bottom:1px solid var(--border);
   font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim);}
 .semi-leg{display:grid;grid-template-columns:34px 1fr auto 1fr;align-items:center;gap:8px;padding:9px 12px;}
-.semi-leg + .semi-leg{border-top:1px solid var(--border);}
+.semi-leg-wrap + .semi-leg-wrap{border-top:1px solid var(--border);}
 .semi-leg .leg-tag{font-size:9.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;
   color:var(--gold-text);background:var(--gold);border-radius:999px;padding:3px 0;text-align:center;}
 .semi-leg[data-leg="vuelta"] .leg-tag{background:rgba(255,255,255,.12);color:var(--text-dim);}
@@ -539,3 +539,10 @@ table.pos-table tr:last-child{border-bottom:none;}
 .banner-top{display:block;max-width:1320px;margin:0 auto;line-height:0;}
 .banner-top picture{display:block;}
 .banner-top img{display:block;width:100%;height:auto;}
+
+/* Autores de los goles dentro de las series de semifinales */
+.semi-scorers{background:rgba(0,0,0,.22);border-top:1px solid var(--border);
+  padding:6px 12px 7px 46px;line-height:1.35;}
+.semi-nota{padding:6px 12px 8px;font-size:11px;font-style:italic;color:var(--text-dim);
+  background:rgba(0,0,0,.22);}
+@media (max-width:460px){ .semi-scorers{padding-left:40px;padding-right:9px;} }
