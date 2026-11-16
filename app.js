@@ -1161,7 +1161,12 @@ function semiEquipo(club, esVisita) {
 
 function semiLeg(m, etiqueta, global) {
   const cont = el('div', { class: 'semi-leg-wrap' });
-  const fila = el('div', { class: 'semi-leg', 'data-leg': etiqueta === 'Ida' ? 'ida' : 'vuelta' });
+  const fila = el('div', {
+    class: 'semi-leg',
+    'data-leg': etiqueta === 'Ida' ? 'ida' : 'vuelta',
+    // Un tramo ya jugado lleva la etiqueta en dorado; el que falta, apagada.
+    'data-jugado': jugado(m) ? 'si' : 'no',
+  });
   fila.appendChild(el('span', { class: 'leg-tag', text: etiqueta }));
   if (!m) {
     fila.appendChild(el('span', { class: 'semi-equipo' }, [el('span', { text: 'A confirmar' })]));
