@@ -6,6 +6,11 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Carga · Liga Dolorense Hoy</title>
 <style>
+.penales{margin:2px 0 8px;padding:8px 10px;border-radius:8px;
+  border:1px dashed rgba(242,169,59,.4);background:rgba(242,169,59,.06);}
+.penales-label{display:block;font-size:11px;color:#F7D9A6;margin-bottom:6px;}
+.penales-fila{display:grid;grid-template-columns:1fr 18px 1fr;gap:8px;align-items:center;}
+.penales-guion{text-align:center;opacity:.6;}
 .tablero-playoff-label{margin:14px 0 6px;padding:7px 12px;border-radius:8px;
   background:rgba(242,169,59,.14);border:1px solid rgba(242,169,59,.35);
   color:#F2A93B;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-align:center;}
@@ -465,6 +470,8 @@ function cargarDesdePlayoff(division, cat, serie, leg){
       golesVisitante: previo ? prog.golesVisitante : 0,
       goleadoresLocal: previo ? (prog.goleadoresLocal||[]).slice() : [],
       goleadoresVisitante: previo ? (prog.goleadoresVisitante||[]).slice() : [],
+      penalesLocal: (prog.penales && prog.penales.local !== undefined) ? prog.penales.local : '',
+      penalesVisitante: (prog.penales && prog.penales.visitante !== undefined) ? prog.penales.visitante : '',
       nota: prog.nota || '', suspendido: prog.estado==='suspendido',
     });
   }
@@ -686,6 +693,21 @@ function renderPartidoCard(p, i){
     <input placeholder="Goleadores del visitante (separados por coma)" value="${esc(p.goleadoresVisitante.join(', '))}"
            onchange="setGoleadores(${i},'goleadoresVisitante',this.value)">
     <div class="chips">${chipsDe(p.goleadoresVisitante,p.visitante)}</div>`;
+  // Los penales se definen en la vuelta: solo ahi se ofrecen los campos.
+  const esVueltaPlayoff = p.fase === 'playoff' && p.leg !== 'ida';
+  const camposPenales = (esVueltaPlayoff && !p.suspendido) ? `
+    <div class="penales">
+      <span class="penales-label">Penales — completar solo si el global terminó empatado</span>
+      <div class="penales-fila">
+        <input type="number" min="0" inputmode="numeric" placeholder="${esc(p.local||'Local')}"
+               value="${p.penalesLocal===0||p.penalesLocal ? p.penalesLocal : ''}"
+               onchange="setCampo(${i},'penalesLocal',this.value)">
+        <span class="penales-guion">—</span>
+        <input type="number" min="0" inputmode="numeric" placeholder="${esc(p.visitante||'Visitante')}"
+               value="${p.penalesVisitante===0||p.penalesVisitante ? p.penalesVisitante : ''}"
+               onchange="setCampo(${i},'penalesVisitante',this.value)">
+      </div>
+    </div>` : '';
   const clubesSuspendido = p.suspendido ? `
     <div class="lado">
       <select onchange="setCampo(${i},'local',this.value)">${optsEquipos(p.local)}</select>
@@ -703,6 +725,7 @@ function renderPartidoCard(p, i){
     </div>
     ${clubesSuspendido}
     ${camposResultado}
+    ${camposPenales}
     <button class="btn-suspender ${p.suspendido?'activo':''}" onclick="toggleSuspendido(${i})">
       ${p.suspendido ? '🚩 Marcado como suspendido/reprogramado — tocá para deshacer' : 'Marcar como suspendido / reprogramado'}
     </button>
@@ -763,7 +786,12 @@ function avisosDe(p){
   return a.map(([t,m])=>`<div class="aviso ${t}">${m}</div>`).join('');
 }
 function setCampo(i,campo,val){
-  PENDIENTES[i][campo] = (campo==='golesLocal'||campo==='golesVisitante') ? (parseInt(val,10)||0) : val;
+  const esNumero = campo==='golesLocal' || campo==='golesVisitante';
+  const esPenal  = campo==='penalesLocal' || campo==='penalesVisitante';
+  // En penales, vacio significa que NO hubo definicion por penales.
+  PENDIENTES[i][campo] = esNumero ? (parseInt(val,10)||0)
+                       : esPenal  ? (String(val).trim()==='' ? '' : (parseInt(val,10)||0))
+                       : val;
   // aprender alias de club
   if(campo==='local' && PENDIENTES[i].localTexto) ALIAS[norm(PENDIENTES[i].localTexto)]=val;
   if(campo==='visitante' && PENDIENTES[i].visitanteTexto) ALIAS[norm(PENDIENTES[i].visitanteTexto)]=val;
@@ -825,6 +853,12 @@ function aplicarPendientes(){
           m.goleadoresLocal = p.goleadoresLocal.map(n=>resolverJugador(n,p.local).nombre);
           m.goleadoresVisitante = p.goleadoresVisitante.map(n=>resolverJugador(n,p.visitante).nombre);
           delete m.estado;
+          const pl = p.penalesLocal, pv = p.penalesVisitante;
+          if(pl!=='' && pl!==null && pl!==undefined && pv!=='' && pv!==null && pv!==undefined){
+            m.penales = { local: Number(pl), visitante: Number(pv) };
+          } else {
+            delete m.penales;
+          }
         }
         if(p.nota && p.nota.trim()) m.nota = p.nota.trim(); else delete m.nota;
       }

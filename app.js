@@ -502,6 +502,41 @@ function renderMatches(categoria, division, fecha) {
   return wrap;
 }
 
+/* ============================================================
+   PENALES
+   Se cargan en el partido de VUELTA, con la orientacion de ese
+   partido (local y visitante tal como se jugo la vuelta). Se
+   muestran entre parentesis al lado del marcador, estilo
+   (4) 0 - 0 (3), y la linea del global dice quien avanzo.
+   ============================================================ */
+function tienePenales(m) {
+  return !!(m && m.penales &&
+    m.penales.local !== null && m.penales.local !== undefined &&
+    m.penales.visitante !== null && m.penales.visitante !== undefined);
+}
+
+// Los penales van en letra mas chica, pegados al marcador: (4)1 - 1(3)
+function marcadorNodos(m) {
+  const base = document.createTextNode(`${m.golesLocal} - ${m.golesVisitante}`);
+  if (!tienePenales(m)) return [base];
+  return [
+    el('span', { class: 'pen', text: `(${m.penales.local})` }),
+    base,
+    el('span', { class: 'pen', text: `(${m.penales.visitante})` }),
+  ];
+}
+
+/* El global se muestra debajo del marcador de la vuelta, y va en la
+   orientacion de ESE partido: el primer numero es el local de la vuelta. */
+function textoGlobal(ida, vta) {
+  if (!jugado(ida) || !jugado(vta)) return null;
+  const golLocal = vta.golesLocal +
+    (ida.local === vta.local ? ida.golesLocal : ida.golesVisitante);
+  const golVisita = vta.golesVisitante +
+    (ida.local === vta.visitante ? ida.golesLocal : ida.golesVisitante);
+  return `Global ${golLocal} - ${golVisita}`;
+}
+
 function summarizeScorers(list) {
   const counts = {};
   list.forEach(n => counts[n] = (counts[n] || 0) + 1);
@@ -555,6 +590,7 @@ function renderPlayoffRound(categoria, division, fechaLabel) {
     if (serieKey !== 'FINAL') {
       box.appendChild(el('div', { class: 'playoff-serie-label', text: serieKey }));
     }
+    const globalSerie = textoGlobal(legs.ida, legs.vuelta);
     ['ida', 'vuelta'].forEach(legName => {
       const m = legs[legName];
       const legCard = el('div', { class: 'match playoff-leg-card' });
@@ -565,7 +601,13 @@ function renderPlayoffRound(categoria, division, fechaLabel) {
       if (m && m.golesLocal !== null && m.golesLocal !== undefined) {
         row.appendChild(logoImg(m.local));
         row.appendChild(el('span', { class: 'team home', text: m.local }));
-        row.appendChild(el('span', { class: 'score', text: `${m.golesLocal} - ${m.golesVisitante}` }));
+        const cajaScore = el('div', { class: 'score-box' }, [
+          el('span', { class: 'score' + (tienePenales(m) ? ' con-penales' : '') }, marcadorNodos(m)),
+        ]);
+        if (legName === 'vuelta' && globalSerie) {
+          cajaScore.appendChild(el('span', { class: 'semi-global', text: globalSerie }));
+        }
+        row.appendChild(cajaScore);
         row.appendChild(el('span', { class: 'team away', text: m.visitante }));
         row.appendChild(logoImg(m.visitante));
         const localGoals = m.goleadoresLocal.length ? summarizeScorers(m.goleadoresLocal) : '';
@@ -591,18 +633,7 @@ function renderPlayoffRound(categoria, division, fechaLabel) {
       box.appendChild(legCard);
     });
 
-    const idaPlayed = legs.ida && legs.ida.golesLocal !== null && legs.ida.golesLocal !== undefined;
-    const vueltaPlayed = legs.vuelta && legs.vuelta.golesLocal !== null && legs.vuelta.golesLocal !== undefined;
-    if (idaPlayed && vueltaPlayed) {
-      const ida = legs.ida, vta = legs.vuelta;
-      // global uses the same two teams regardless of who was local each leg
-      const teamA = ida.local, teamB = ida.visitante;
-      const golesA = ida.golesLocal + (vta.local === teamA ? vta.golesLocal : vta.golesVisitante);
-      const golesB = ida.golesVisitante + (vta.local === teamB ? vta.golesLocal : vta.golesVisitante);
-      box.appendChild(el('div', { class: 'playoff-global' }, [
-        el('span', { text: `Global: ${teamA} ${golesA} - ${golesB} ${teamB}` }),
-      ]));
-    }
+
     wrap.appendChild(box);
   });
   return wrap;
@@ -1128,7 +1159,7 @@ function semiEquipo(club, esVisita) {
   ]);
 }
 
-function semiLeg(m, etiqueta) {
+function semiLeg(m, etiqueta, global) {
   const cont = el('div', { class: 'semi-leg-wrap' });
   const fila = el('div', { class: 'semi-leg', 'data-leg': etiqueta === 'Ida' ? 'ida' : 'vuelta' });
   fila.appendChild(el('span', { class: 'leg-tag', text: etiqueta }));
@@ -1141,7 +1172,11 @@ function semiLeg(m, etiqueta) {
   }
   fila.appendChild(semiEquipo(m.local, false));
   if (jugado(m)) {
-    fila.appendChild(el('span', { class: 'semi-marcador', text: `${m.golesLocal} - ${m.golesVisitante}` }));
+    const caja = el('div', { class: 'semi-marcador-box' }, [
+      el('span', { class: 'semi-marcador' + (tienePenales(m) ? ' con-penales' : '') }, marcadorNodos(m)),
+    ]);
+    if (global) caja.appendChild(el('span', { class: 'semi-global', text: global }));
+    fila.appendChild(caja);
   } else {
     fila.appendChild(el('span', {
       class: 'semi-hora' + (m.hora ? '' : ' pendiente'), text: m.hora || '–',
@@ -1163,16 +1198,6 @@ function semiLeg(m, etiqueta) {
   }
   if (m.nota) cont.appendChild(el('div', { class: 'semi-nota', text: m.nota }));
   return cont;
-}
-
-function semiGlobal(ida, vta) {
-  if (!jugado(ida) || !jugado(vta)) return null;
-  const a = ida.local, b = ida.visitante;
-  const ga = ida.golesLocal + (vta.local === a ? vta.golesLocal : vta.golesVisitante);
-  const gb = ida.golesVisitante + (vta.local === b ? vta.golesLocal : vta.golesVisitante);
-  return el('div', { class: 'playoff-global' }, [
-    el('span', { text: `Global: ${a} ${ga} - ${gb} ${b}` }),
-  ]);
 }
 
 function renderSemifinalesView(division) {
@@ -1211,9 +1236,7 @@ function renderSemifinalesView(division) {
         el('div', { class: 'semi-serie-label', text: `${etiqueta} ${cat} · ${k.charAt(0) + k.slice(1).toLowerCase()}` }),
       ]);
       caja.appendChild(semiLeg(legs.ida, 'Ida'));
-      caja.appendChild(semiLeg(legs.vuelta, 'Vta'));
-      const g = semiGlobal(legs.ida, legs.vuelta);
-      if (g) caja.appendChild(g);
+      caja.appendChild(semiLeg(legs.vuelta, 'Vta', textoGlobal(legs.ida, legs.vuelta)));
       inner.push(caja);
     });
     root.appendChild(el('div', { class: `cat-block cat-block-${cat}` }, inner));
