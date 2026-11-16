@@ -7151,15 +7151,24 @@ window.SITE_DATA = {
    "division": "Primera",
    "fase": "playoff",
    "serie": "SEMIFINAL 1",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
+   "golesLocal": 2,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Rodrigo Mercado",
+    "Cristian Villarreal"
+   ],
+   "goleadoresVisitante": [
+    "Santiago Vega"
+   ],
    "leg": "vuelta",
    "local": "San Martín de S.P",
    "visitante": "Defensores",
    "hora": null,
-   "dia": null
+   "dia": null,
+   "penales": {
+    "local": 4,
+    "visitante": 2
+   }
   },
   {
    "fecha": "SEMIFINALES",
@@ -7185,15 +7194,21 @@ window.SITE_DATA = {
    "division": "Primera",
    "fase": "playoff",
    "serie": "SEMIFINAL 2",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
+   "golesLocal": 1,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Camilo Díaz"
+   ],
    "goleadoresVisitante": [],
    "leg": "vuelta",
    "local": "Sarmiento",
    "visitante": "Atlanta",
    "hora": null,
-   "dia": null
+   "dia": null,
+   "penales": {
+    "local": 3,
+    "visitante": 4
+   }
   },
   {
    "fecha": "SEMIFINALES",
@@ -7221,10 +7236,12 @@ window.SITE_DATA = {
    "division": "3ra",
    "fase": "playoff",
    "serie": "SEMIFINAL 1",
-   "golesLocal": null,
-   "golesVisitante": null,
+   "golesLocal": 0,
+   "golesVisitante": 1,
    "goleadoresLocal": [],
-   "goleadoresVisitante": [],
+   "goleadoresVisitante": [
+    "Bautista Villalobo"
+   ],
    "leg": "vuelta",
    "local": "San Martín de S.P",
    "visitante": "Defensores",
@@ -7255,10 +7272,14 @@ window.SITE_DATA = {
    "division": "3ra",
    "fase": "playoff",
    "serie": "SEMIFINAL 2",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
+   "golesLocal": 1,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Patricio Repetto"
+   ],
+   "goleadoresVisitante": [
+    "Alex Hualpa"
+   ],
    "leg": "vuelta",
    "local": "San Brochero",
    "visitante": "Atlanta",
@@ -7297,7 +7318,9 @@ window.SITE_DATA = {
    "local": "B.A.P",
    "visitante": "Comercio",
    "hora": null,
-   "dia": null
+   "dia": null,
+   "estado": "suspendido",
+   "nota": "Se juega el martes a las 18.30 hs."
   },
   {
    "fecha": "SEMIFINALES",
@@ -7333,7 +7356,9 @@ window.SITE_DATA = {
    "local": "San Martín de S.P",
    "visitante": "Defensores",
    "hora": null,
-   "dia": null
+   "dia": null,
+   "estado": "suspendido",
+   "nota": "Se juega el martes a las 18.30 hs."
   },
   {
    "fecha": "SEMIFINALES",
@@ -7360,10 +7385,14 @@ window.SITE_DATA = {
    "division": "5ta",
    "fase": "playoff",
    "serie": "SEMIFINAL 1",
-   "golesLocal": null,
-   "golesVisitante": null,
+   "golesLocal": 0,
+   "golesVisitante": 3,
    "goleadoresLocal": [],
-   "goleadoresVisitante": [],
+   "goleadoresVisitante": [
+    "Lisandro Díaz",
+    "Gaspar Nester",
+    "Dylan Caballero"
+   ],
    "leg": "vuelta",
    "local": "San Martín de S.P",
    "visitante": "Comercio",
@@ -7396,15 +7425,19 @@ window.SITE_DATA = {
    "division": "5ta",
    "fase": "playoff",
    "serie": "SEMIFINAL 2",
-   "golesLocal": null,
-   "golesVisitante": null,
+   "golesLocal": 0,
+   "golesVisitante": 0,
    "goleadoresLocal": [],
    "goleadoresVisitante": [],
    "leg": "vuelta",
    "local": "Las Rosas",
    "visitante": "Defensores",
    "hora": null,
-   "dia": null
+   "dia": null,
+   "penales": {
+    "local": 4,
+    "visitante": 5
+   }
   },
   {
    "fecha": "SEMIFINALES",
@@ -7430,15 +7463,21 @@ window.SITE_DATA = {
    "division": "6ta",
    "fase": "playoff",
    "serie": "SEMIFINAL 1",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
+   "golesLocal": 1,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Mateo Ledesma"
+   ],
    "goleadoresVisitante": [],
    "leg": "vuelta",
    "local": "A.F.I",
    "visitante": "Comercio",
    "hora": null,
-   "dia": null
+   "dia": null,
+   "penales": {
+    "local": 3,
+    "visitante": 4
+   }
   },
   {
    "fecha": "SEMIFINALES",
@@ -7464,15 +7503,21 @@ window.SITE_DATA = {
    "division": "6ta",
    "fase": "playoff",
    "serie": "SEMIFINAL 2",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
+   "golesLocal": 1,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Lucas Pereyra"
+   ],
    "goleadoresVisitante": [],
    "leg": "vuelta",
    "local": "San Martín de S.P",
    "visitante": "San Brochero",
    "hora": null,
-   "dia": null
+   "dia": null,
+   "penales": {
+    "local": 2,
+    "visitante": 0
+   }
   },
   {
    "fecha": "SEMIFINALES",
@@ -7502,9 +7547,11 @@ window.SITE_DATA = {
    "division": "Primera",
    "fase": "playoff",
    "serie": "SEMIFINAL 1",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
+   "golesLocal": 1,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Gabriel Mercado"
+   ],
    "goleadoresVisitante": [],
    "leg": "vuelta",
    "local": "Huracán",
@@ -7539,10 +7586,14 @@ window.SITE_DATA = {
    "division": "Primera",
    "fase": "playoff",
    "serie": "SEMIFINAL 2",
-   "golesLocal": null,
-   "golesVisitante": null,
+   "golesLocal": 0,
+   "golesVisitante": 3,
    "goleadoresLocal": [],
-   "goleadoresVisitante": [],
+   "goleadoresVisitante": [
+    "Valentín Bruno",
+    "Gabriel Oyola",
+    "Ezequiel Ramírez"
+   ],
    "leg": "vuelta",
    "local": "Independiente",
    "visitante": "Sargento Cabral",
@@ -7578,10 +7629,12 @@ window.SITE_DATA = {
    "division": "3ra",
    "fase": "playoff",
    "serie": "SEMIFINAL 1",
-   "golesLocal": null,
-   "golesVisitante": null,
+   "golesLocal": 0,
+   "golesVisitante": 1,
    "goleadoresLocal": [],
-   "goleadoresVisitante": [],
+   "goleadoresVisitante": [
+    "Valentín Pedernera"
+   ],
    "leg": "vuelta",
    "local": "Las Tapias",
    "visitante": "Sargento Cabral",
@@ -7616,10 +7669,14 @@ window.SITE_DATA = {
    "division": "3ra",
    "fase": "playoff",
    "serie": "SEMIFINAL 2",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
+   "golesLocal": 1,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Pedro Míguez"
+   ],
+   "goleadoresVisitante": [
+    "Lautaro Suárez"
+   ],
    "leg": "vuelta",
    "local": "Independiente",
    "visitante": "San José",
@@ -7659,7 +7716,9 @@ window.SITE_DATA = {
    "local": "San José",
    "visitante": "Juventud Unida",
    "hora": null,
-   "dia": null
+   "dia": null,
+   "estado": "suspendido",
+   "nota": "Se juega el martes a las 20.30 hs."
   },
   {
    "fecha": "SEMIFINALES",
@@ -7695,7 +7754,9 @@ window.SITE_DATA = {
    "local": "Independiente",
    "visitante": "Luyaba",
    "hora": null,
-   "dia": null
+   "dia": null,
+   "estado": "suspendido",
+   "nota": "Se juega el martes a las 20.30 hs."
   },
   {
    "fecha": "SEMIFINALES",
@@ -7725,15 +7786,25 @@ window.SITE_DATA = {
    "division": "5ta",
    "fase": "playoff",
    "serie": "SEMIFINAL 1",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
+   "golesLocal": 2,
+   "golesVisitante": 2,
+   "goleadoresLocal": [
+    "Gonzalo Guevara",
+    "Teo Nuñez"
+   ],
+   "goleadoresVisitante": [
+    "Dylan Herner",
+    "Damián Palacios"
+   ],
    "leg": "vuelta",
    "local": "Huracán",
    "visitante": "Independiente",
    "hora": null,
-   "dia": null
+   "dia": null,
+   "penales": {
+    "local": 3,
+    "visitante": 4
+   }
   },
   {
    "fecha": "SEMIFINALES",
@@ -7761,15 +7832,23 @@ window.SITE_DATA = {
    "division": "5ta",
    "fase": "playoff",
    "serie": "SEMIFINAL 2",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
-   "goleadoresVisitante": [],
+   "golesLocal": 1,
+   "golesVisitante": 1,
+   "goleadoresLocal": [
+    "Uriel Altamirano"
+   ],
+   "goleadoresVisitante": [
+    "Enzo Moyano"
+   ],
    "leg": "vuelta",
    "local": "Las Tapias",
    "visitante": "Juventud Unida",
    "hora": null,
-   "dia": null
+   "dia": null,
+   "penales": {
+    "local": 4,
+    "visitante": 5
+   }
   },
   {
    "fecha": "SEMIFINALES",
@@ -7795,8 +7874,8 @@ window.SITE_DATA = {
    "division": "6ta",
    "fase": "playoff",
    "serie": "SEMIFINAL 1",
-   "golesLocal": null,
-   "golesVisitante": null,
+   "golesLocal": 0,
+   "golesVisitante": 0,
    "goleadoresLocal": [],
    "goleadoresVisitante": [],
    "leg": "vuelta",
@@ -7827,9 +7906,12 @@ window.SITE_DATA = {
    "division": "6ta",
    "fase": "playoff",
    "serie": "SEMIFINAL 2",
-   "golesLocal": null,
-   "golesVisitante": null,
-   "goleadoresLocal": [],
+   "golesLocal": 2,
+   "golesVisitante": 0,
+   "goleadoresLocal": [
+    "Francisco Arregui",
+    "Mikeas Flores"
+   ],
    "goleadoresVisitante": [],
    "leg": "vuelta",
    "local": "Travesía",
