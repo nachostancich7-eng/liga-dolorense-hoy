@@ -440,7 +440,7 @@ function esElMismoPartido(p, ref){
    cualquier partido, pero se buscan por serie + tramo.
    ============================================================ */
 function partidosPlayoff(){
-  return (DATA.matches||[]).filter(m=>m.fecha==='SEMIFINALES');
+  return (DATA.matches||[]).filter(m=>m.fecha==='SEMIFINALES' || m.fecha==='FINAL');
 }
 function hayPlayoff(){ return partidosPlayoff().length>0; }
 
@@ -464,7 +464,7 @@ function cargarDesdePlayoff(division, cat, serie, leg){
   if(!ya){
     const previo = (prog.golesLocal!==null && prog.golesLocal!==undefined);
     PENDIENTES.push({
-      fase:'playoff', division, cat, serie, leg,
+      fase:'playoff', fechaPO: prog.fecha, division, cat, serie, leg,
       local: prog.local, visitante: prog.visitante,
       golesLocal: previo ? prog.golesLocal : 0,
       golesVisitante: previo ? prog.golesVisitante : 0,
@@ -624,7 +624,7 @@ function pintarPlayoff(){
     </details>`;
   }).join('');
 
-  cont.innerHTML = `<div class="tablero-playoff-label">Semifinales</div>` + html;
+  cont.innerHTML = `<div class="tablero-playoff-label">Play off</div>` + html;
 }
 
 // Abre (o cierra, si ya estaba abierto) el desplegable de este partido, ahí mismo en el tablero.
@@ -840,7 +840,8 @@ function aplicarPendientes(){
     const cat = categoriaDe(p.local);
     if(p.fase==='playoff'){
       // El partido ya existe (con su horario y su serie): se completa, no se crea.
-      const m = DATA.matches.find(x=>x.fecha==='SEMIFINALES' && x.division===p.division &&
+      // La fase viaja en el pendiente: sirve igual para semifinales y final.
+      const m = DATA.matches.find(x=>x.fecha===(p.fechaPO||'SEMIFINALES') && x.division===p.division &&
         x.categoria===p.cat && x.serie===p.serie && x.leg===p.leg);
       if(m){
         m.local = p.local; m.visitante = p.visitante;

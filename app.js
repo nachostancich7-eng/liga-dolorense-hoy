@@ -5,9 +5,12 @@ const DIVISIONS = ['6ta', '5ta', '4ta', '3ra', 'Primera'];
 // directo a Semifinales; cuando el torneo se ponga en cero y no queden esos
 // partidos, vuelve sola a Resultados sin tocar nada.
 function vistaInicial() {
-  const hayPlayoff = (window.SITE_DATA && window.SITE_DATA.matches || [])
-    .some(m => m.fecha === 'SEMIFINALES' || m.fecha === 'FINAL');
-  return hayPlayoff ? 'semifinales' : 'resultados';
+  const partidos = (window.SITE_DATA && window.SITE_DATA.matches) || [];
+  // Mientras haya final cargada se entra ahi; si no, a las semifinales; y
+  // cuando el torneo se ponga en cero, vuelve sola a Resultados.
+  if (partidos.some(m => m.fecha === 'FINAL')) return 'finales';
+  if (partidos.some(m => m.fecha === 'SEMIFINALES')) return 'semifinales';
+  return 'resultados';
 }
 let currentView = vistaInicial();
 let currentDivision = 'Primera';
@@ -1205,35 +1208,42 @@ function semiLeg(m, etiqueta, global) {
   return cont;
 }
 
-function renderSemifinalesView(division) {
+/* Las semifinales y la final se dibujan igual: cambia la fase y el titulo. */
+function renderPlayoffView(division, fase) {
   const root = document.getElementById('view-root');
   root.innerHTML = '';
   const etiqueta = division === 'Primera' ? '1ra' : division;
+  const titulo = fase === 'FINAL' ? 'Finales' : 'Semifinales';
+  const vacio = fase === 'FINAL'
+    ? 'La final se define cuando terminen las semifinales de esta categoría.'
+    : 'Todavía no están definidas las semifinales de esta categoría.';
 
   ['A', 'B'].forEach(cat => {
     const partidos = DATA.matches.filter(m =>
-      m.fecha === 'SEMIFINALES' && m.categoria === cat && m.division === division);
+      m.fecha === fase && m.categoria === cat && m.division === division);
 
     const inner = [el('div', { class: `cat-header cat-${cat}` }, [
-      el('span', { text: `Semifinales · ${etiqueta} ${cat}` }),
+      el('span', { text: `${titulo} · ${etiqueta} ${cat}` }),
     ])];
 
     if (!partidos.length) {
-      inner.push(el('div', { class: 'empty-state', text: 'Todavía no están definidas las semifinales de esta categoría.' }));
+      inner.push(el('div', { class: 'empty-state', text: vacio }));
       root.appendChild(el('div', { class: `cat-block cat-block-${cat}` }, inner));
       return;
     }
 
     const series = {};
     partidos.forEach(m => {
-      const k = m.serie || 'SEMIFINAL 1';
+      const k = m.serie || fase;
       if (!series[k]) series[k] = {};
       series[k][m.leg] = m;
     });
 
     const dia = (series[Object.keys(series)[0]].ida || {}).dia;
     const textoDia = fechaLarga(dia);
-    if (textoDia) inner.push(el('div', { class: 'semi-fecha', text: `Ida · ${textoDia}` }));
+    inner.push(textoDia
+      ? el('div', { class: 'semi-fecha', text: `Ida · ${textoDia}` })
+      : el('div', { class: 'semi-fecha sin-fecha', text: 'Día y horario a confirmar' }));
 
     Object.keys(series).sort().forEach(k => {
       const legs = series[k];
@@ -1247,6 +1257,9 @@ function renderSemifinalesView(division) {
     root.appendChild(el('div', { class: `cat-block cat-block-${cat}` }, inner));
   });
 }
+
+function renderSemifinalesView(division) { renderPlayoffView(division, 'SEMIFINALES'); }
+function renderFinalesView(division) { renderPlayoffView(division, 'FINAL'); }
 
 function renderSumatoriaView() {
   const root = document.getElementById('view-root');
@@ -1391,6 +1404,7 @@ function render() {
   else if (currentView === 'sumatoria') renderSumatoriaView();
   else if (currentView === 'anual') renderAnualView();
   else if (currentView === 'semifinales') renderSemifinalesView(currentDivision);
+  else if (currentView === 'finales') renderFinalesView(currentDivision);
   else renderGoleadoresView(currentDivision);
 }
 

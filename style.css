@@ -501,7 +501,7 @@ table.pos-table tr:last-child{border-bottom:none;}
 
 
 /* ===== Sección Semifinales ===== */
-.view-toggle button.tab-ancho{flex:1 1 100%;}
+.view-toggle button.tab-ancho{flex:1 1 calc(50% - 3px);}
 .semi-fecha{display:flex;align-items:center;justify-content:center;padding:9px 14px;
   background:rgba(0,0,0,.2);border-bottom:1px solid var(--border);
   font-family:var(--font-display);font-size:13px;font-weight:600;letter-spacing:.06em;
@@ -571,3 +571,7 @@ table.pos-table tr:last-child{border-bottom:none;}
 /* La etiqueta Ida/Vta en dorado cuando ese partido ya se jugó */
 .semi-leg[data-jugado="si"] .leg-tag{background:var(--gold);color:var(--gold-text);}
 .semi-leg[data-jugado="no"] .leg-tag{background:rgba(255,255,255,.12);color:var(--text-dim);}
+
+/* Cuando todavía no hay fecha confirmada para la serie */
+.semi-fecha.sin-fecha{color:var(--text-dim);font-style:italic;text-transform:none;
+  letter-spacing:0;font-weight:500;font-family:var(--font);font-size:12px;}
